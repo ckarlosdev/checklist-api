@@ -16,9 +16,6 @@ import java.util.Date;
 public class ChecklistDto implements Serializable {
 
     private Integer checklistsId;
-//    private Equipment equipment;
-//    private Employee employee;
-//    private Job job;
     private Integer equipmentsId;
     private Integer employeesId;
     private Integer jobsId;
@@ -35,9 +32,4 @@ public class ChecklistDto implements Serializable {
     private String diesel;
     private String clean;
     private String comment;
-    private String createdBy;
-    private Date createdDate;
-    private String updatedBy;
-    private Date updatedDate;
-    private String status;
 }

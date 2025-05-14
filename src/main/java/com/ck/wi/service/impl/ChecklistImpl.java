@@ -14,6 +14,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -37,6 +38,7 @@ public class ChecklistImpl implements IChecklist {
         Optional<Employee> employee = employeeDao.findById(checklistDto.getEmployeesId());
         Optional<Job> job = jobDao.findById(checklistDto.getJobsId());
         Optional<Equipment> equipment = equipmentDao.findById(checklistDto.getEquipmentsId());
+        Date today = new Date();
 
         if (employee.isPresent() && job.isPresent() && equipment.isPresent()) {
 
@@ -58,11 +60,11 @@ public class ChecklistImpl implements IChecklist {
                     .diesel(checklistDto.getDiesel())
                     .clean(checklistDto.getClean())
                     .comment(checklistDto.getComment())
-                    .createdDate(checklistDto.getCreatedDate())
-                    .createdBy(checklistDto.getCreatedBy())
-                    .updatedBy(checklistDto.getUpdatedBy())
-                    .updatedDate(checklistDto.getUpdatedDate())
-                    .status(checklistDto.getStatus())
+                    .createdDate(today)
+                    .createdBy(employee.get().getFirstName() +" "+employee.get().getLastName())
+                    .updatedBy("")
+                    .updatedDate(today)
+                    .status("1")
                     .build();
 
             return checklistDao.save(checklist);

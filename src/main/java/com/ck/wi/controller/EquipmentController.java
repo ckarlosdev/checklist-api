@@ -5,6 +5,11 @@ import com.ck.wi.service.IEquipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+//@CrossOrigin(origins = "https://oleo-soft.com", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = {
+        "http://127.0.0.1:5500",
+        "https://oleo-soft.com"
+})
 @RestController
 @RequestMapping("/api/v1")
 public class EquipmentController {

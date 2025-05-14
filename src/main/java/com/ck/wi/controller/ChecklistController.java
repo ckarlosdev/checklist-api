@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+//@CrossOrigin(origins = "https://oleo-soft.com", methods = {RequestMethod.GET, RequestMethod.POST})
+@CrossOrigin(origins = {
+        "http://127.0.0.1:5500",
+        "https://oleo-soft.com"
+})
 @RestController
 @RequestMapping("/api/v1")
 public class ChecklistController {
@@ -37,11 +42,6 @@ public class ChecklistController {
                 .diesel(checklistUpdate.getDiesel())
                 .clean(checklistUpdate.getClean())
                 .comment(checklistUpdate.getComment())
-                .createdDate(checklistUpdate.getCreatedDate())
-                .createdBy(checklistUpdate.getCreatedBy())
-                .updatedBy(checklistUpdate.getUpdatedBy())
-                .updatedDate(checklistUpdate.getUpdatedDate())
-                .status(checklistUpdate.getStatus())
                 .build();
     }
 
@@ -73,11 +73,6 @@ public class ChecklistController {
                 .diesel(checklist.getDiesel())
                 .clean(checklist.getClean())
                 .comment(checklist.getComment())
-                .createdDate(checklist.getCreatedDate())
-                .createdBy(checklist.getCreatedBy())
-                .updatedBy(checklist.getUpdatedBy())
-                .updatedDate(checklist.getUpdatedDate())
-                .status(checklist.getStatus())
                 .build();
     }
 
@@ -103,11 +98,6 @@ public class ChecklistController {
                 .diesel(checklistSave.getDiesel())
                 .clean(checklistSave.getClean())
                 .comment(checklistSave.getComment())
-                .createdDate(checklistSave.getCreatedDate())
-                .createdBy(checklistSave.getCreatedBy())
-                .updatedBy(checklistSave.getUpdatedBy())
-                .updatedDate(checklistSave.getUpdatedDate())
-                .status(checklistSave.getStatus())
                 .build();
     }
 }

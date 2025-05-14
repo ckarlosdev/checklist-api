@@ -13,12 +13,24 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("https://oleo-soft.com")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                registry.addMapping("/api/**") // Aplica la configuración a todas las rutas bajo /api/
+                        .allowedOrigins("http://127.0.0.1:5500", "https://oleo-soft.com") // Permite peticiones desde tu frontend de desarrollo
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
+                        .allowedHeaders("*") // Permite todos los encabezados
+                        .allowCredentials(true) // Si necesitas manejar cookies o encabezados de autenticación
+                        .maxAge(3600); // Tiempo máximo (en segundos) que el navegador puede cachear la respuesta CORS
             }
         };
+
+//        return new WebMvcConfigurer() {
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins("https://oleo-soft.com")
+//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                        .allowedHeaders("*")
+//                        .allowCredentials(true);
+//            }
+//        };
     }
 }
