@@ -1,4 +1,5 @@
 com\ck\wi\model\dao\ChecklistDao.class
+com\ck\wi\model\dto\JobDto.class
 com\ck\wi\model\dto\EmployeeDto$EmployeeDtoBuilder.class
 com\ck\wi\model\entity\Job.class
 com\ck\wi\service\IChecklist.class
@@ -13,6 +14,7 @@ com\ck\wi\model\entity\Equipment.class
 com\ck\wi\service\impl\JobImpl.class
 com\ck\wi\CorsConfig.class
 com\ck\wi\model\dao\EquipmentDao.class
+com\ck\wi\model\dto\JobDto$JobDtoBuilder.class
 com\ck\wi\model\dao\EmployeeDao.class
 com\ck\wi\controller\JobController.class
 com\ck\wi\model\dto\ChecklistDto$ChecklistDtoBuilder.class
@@ -27,3 +29,4 @@ com\ck\wi\service\IJob.class
 com\ck\wi\model\dto\EmployeeDto.class
 com\ck\wi\service\IEquipment.class
 com\ck\wi\model\dao\JobDao.class
+com\ck\wi\model\entity\Job$JobBuilder.class
