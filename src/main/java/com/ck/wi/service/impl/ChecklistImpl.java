@@ -5,6 +5,7 @@ import com.ck.wi.model.dao.EmployeeDao;
 import com.ck.wi.model.dao.EquipmentDao;
 import com.ck.wi.model.dao.JobDao;
 import com.ck.wi.model.dto.ChecklistDto;
+import com.ck.wi.model.dto.JobDto;
 import com.ck.wi.model.entity.Checklist;
 import com.ck.wi.model.entity.Employee;
 import com.ck.wi.model.entity.Equipment;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -76,6 +78,16 @@ public class ChecklistImpl implements IChecklist {
     @Override
     public Checklist findById(Integer id) {
         return checklistDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public Checklist findByJob(Job job) {
+        return checklistDao.findByJob(job).orElse(null);
+    }
+
+    @Override
+    public List<Checklist> findAll() {
+        return (List<Checklist>) checklistDao.findAll();
     }
 
     @Override

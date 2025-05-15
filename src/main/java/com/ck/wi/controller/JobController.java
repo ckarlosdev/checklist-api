@@ -44,6 +44,11 @@ public class JobController {
         return jobService.findById(id);
     }
 
+    @GetMapping("job/number/{jobNumber}")
+    public Job showByNumber(@PathVariable String jobNumber){
+        return jobService.findByNumber(jobNumber);
+    }
+
     @GetMapping("job")
     public List<JobDto> showAll(){
         List<Job> jobs = jobService.findAll();

@@ -30,6 +30,12 @@ public class JobImpl implements IJob {
 
     @Transactional(readOnly = true)
     @Override
+    public Job findByNumber(String number) {
+        return jobDao.findByNumber(number).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Job> findAll() {
         return (List<Job>) jobDao.findAll();
     }

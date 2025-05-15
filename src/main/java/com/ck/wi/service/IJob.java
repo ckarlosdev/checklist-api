@@ -10,6 +10,8 @@ public interface IJob {
 
     Job findById(Integer id);
 
+    Job findByNumber(String number);
+
     List<Job> findAll();
 
     void delete(Job job);
