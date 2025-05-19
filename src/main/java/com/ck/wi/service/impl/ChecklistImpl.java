@@ -66,7 +66,7 @@ public class ChecklistImpl implements IChecklist {
                     .createdBy(employee.get().getFirstName() +" "+employee.get().getLastName())
                     .updatedBy("")
                     .updatedDate(today)
-                    .status(checklistDto.getStatus())
+                    .status("1")
                     .build();
 
             return checklistDao.save(checklist);
