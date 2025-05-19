@@ -50,6 +50,7 @@ public class ChecklistController {
                 .diesel(checklistUpdate.getDiesel())
                 .clean(checklistUpdate.getClean())
                 .comment(checklistUpdate.getComment())
+                .status(checklistUpdate.getStatus())
                 .build();
     }
 
@@ -83,35 +84,40 @@ public class ChecklistController {
                                 .diesel(checklist.getDiesel())
                                 .clean(checklist.getClean())
                                 .comment(checklist.getComment())
+                                .status(checklist.getStatus())
                                 .build())
                 .collect(Collectors.toList());
     }
 
-//    @GetMapping("checklist/job/{jobNumber}")
-//    public List<ChecklistDto> getChecklistsByJobNumber(@PathVariable String jobNumber) {
-//        Job job = jobService.findByNumber(jobNumber);
-//        Checklist checklist = checklistService.findByJob(job);
-//
-//        return ChecklistDto.builder()
-//                .checklistsId(checklist.getChecklistsId())
-//                .employeesId(checklist.getEmployee().getEmployeesId())
-//                .jobsId(checklist.getJob().getJobsId())
-//                .equipmentsId(checklist.getEquipment().getEquipmentsId())
-//                .type(checklist.getType())
-//                .date(checklist.getDate())
-//                .odometer(checklist.getOdometer())
-//                .oil(checklist.getOil())
-//                .hydraulic(checklist.getHydraulic())
-//                .filter(checklist.getFilter())
-//                .radiator(checklist.getRadiator())
-//                .track(checklist.getTrack())
-//                .attachment(checklist.getAttachment())
-//                .leaking(checklist.getLeaking())
-//                .diesel(checklist.getDiesel())
-//                .clean(checklist.getClean())
-//                .comment(checklist.getComment())
-//                .build();
-//    }
+    @GetMapping("checklist/job/{jobNumber}")
+    public List<ChecklistDto> getChecklistsByJobNumber(@PathVariable String jobNumber) {
+        Job job = jobService.findByNumber(jobNumber);
+        List<Checklist> checklists = checklistService.findByJob(job);
+
+        return checklists.stream()
+                .map( checklist ->
+                        ChecklistDto.builder()
+                                .checklistsId(checklist.getChecklistsId())
+                                .employeesId(checklist.getEmployee().getEmployeesId())
+                                .jobsId(checklist.getJob().getJobsId())
+                                .equipmentsId(checklist.getEquipment().getEquipmentsId())
+                                .type(checklist.getType())
+                                .date(checklist.getDate())
+                                .odometer(checklist.getOdometer())
+                                .oil(checklist.getOil())
+                                .hydraulic(checklist.getHydraulic())
+                                .filter(checklist.getFilter())
+                                .radiator(checklist.getRadiator())
+                                .track(checklist.getTrack())
+                                .attachment(checklist.getAttachment())
+                                .leaking(checklist.getLeaking())
+                                .diesel(checklist.getDiesel())
+                                .clean(checklist.getClean())
+                                .comment(checklist.getComment())
+                                .status(checklist.getStatus())
+                                .build())
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("checklist/{id}")
     public ChecklistDto getChecklistById(@PathVariable Integer id) {
@@ -135,6 +141,7 @@ public class ChecklistController {
                 .diesel(checklist.getDiesel())
                 .clean(checklist.getClean())
                 .comment(checklist.getComment())
+                .status(checklist.getStatus())
                 .build();
     }
 
@@ -160,6 +167,7 @@ public class ChecklistController {
                 .diesel(checklistSave.getDiesel())
                 .clean(checklistSave.getClean())
                 .comment(checklistSave.getComment())
+                .status(checklistSave.getStatus())
                 .build();
     }
 }

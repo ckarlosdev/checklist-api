@@ -66,7 +66,7 @@ public class ChecklistImpl implements IChecklist {
                     .createdBy(employee.get().getFirstName() +" "+employee.get().getLastName())
                     .updatedBy("")
                     .updatedDate(today)
-                    .status("1")
+                    .status(checklistDto.getStatus())
                     .build();
 
             return checklistDao.save(checklist);
@@ -81,8 +81,8 @@ public class ChecklistImpl implements IChecklist {
     }
 
     @Override
-    public Checklist findByJob(Job job) {
-        return checklistDao.findByJob(job).orElse(null);
+    public List<Checklist> findByJob(Job job) {
+        return (List<Checklist>) checklistDao.findByJobAndStatus(job, "1");
     }
 
     @Override

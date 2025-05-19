@@ -10,7 +10,7 @@ import java.util.List;
 public interface IChecklist {
     Checklist processAndSaveChecklist(ChecklistDto checklistDto);
 
-    Checklist findByJob(Job job);
+    List<Checklist> findByJob(Job job);
 
     Checklist findById(Integer id);
 

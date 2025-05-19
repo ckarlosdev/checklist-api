@@ -32,4 +32,5 @@ public class ChecklistDto implements Serializable {
     private String diesel;
     private String clean;
     private String comment;
+    private String status;
 }
