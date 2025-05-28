@@ -1,0 +1,31 @@
+package com.ck.wi.service.impl.dailyReport;
+
+import com.ck.wi.model.dao.dailyReport.DailyReportDao;
+import com.ck.wi.model.entity.dailyReport.DailyReport;
+import com.ck.wi.service.dailyReport.IDailyReport;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class DailyReportImpl implements IDailyReport {
+
+    @Autowired
+    private DailyReportDao dailyReportDao;
+
+    @Override
+    public List<DailyReport> findByNumber(String number){
+        return (List<DailyReport>) dailyReportDao.findByNumberAndStatus(number, "1");
+    }
+
+    @Override
+    public DailyReport findById(Integer id){
+        return dailyReportDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<DailyReport> findAll() {
+        return (List<DailyReport>) dailyReportDao.findAll();
+    }
+}

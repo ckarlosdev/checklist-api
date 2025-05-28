@@ -1,0 +1,41 @@
+package com.ck.wi.controller.dailyReport;
+
+import com.ck.wi.model.dto.dailyReport.PhotoDto;
+import com.ck.wi.model.entity.dailyReport.Photo;
+import com.ck.wi.service.dailyReport.IPhoto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@CrossOrigin(origins = {
+        "http://127.0.0.1:5500",
+        "https://oleo-soft.com"
+})
+@RestController
+@RequestMapping("/api/v1")
+public class PhotoController {
+
+    @Autowired
+    private IPhoto photoService;
+
+    @GetMapping("photo/dailyReport/{dailyReportId}")
+    public List<PhotoDto> getPhotosByDailyReportId(@PathVariable Integer dailyReportId){
+        List<Photo> photos = photoService.findByDailyReportId(dailyReportId);
+
+        return photos.stream()
+                .map(photo ->
+                        PhotoDto.builder()
+                                .photosId(photo.getPhotosId())
+                                .dailyReportId(photo.getPhotosId())
+                                .drDate(photo.getDrDate())
+                                .pathId(photo.getPathId())
+                                .folderId(photo.getFolderId())
+                                .name(photo.getName())
+                                .type(photo.getType())
+                                .status(photo.getStatus())
+                                .build())
+                .collect(Collectors.toList());
+    }
+}
