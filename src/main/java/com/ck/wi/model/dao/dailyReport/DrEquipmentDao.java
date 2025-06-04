@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface DrEquipmentDao extends CrudRepository<DrEquipment, Integer> {
     List<DrEquipment> findByDailyReportIdAndStatus(Integer dailyReportId, String status);
+
+    List<DrEquipment> findByDailyReportIdIn(List<Integer> dailyReportIds);
 }

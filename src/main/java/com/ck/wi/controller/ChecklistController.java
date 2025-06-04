@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 //@CrossOrigin(origins = "https://oleo-soft.com", methods = {RequestMethod.GET, RequestMethod.POST})
 @CrossOrigin(origins = {
         "http://127.0.0.1:5500",
-        "https://oleo-soft.com"
+        "https://oleo-soft.com",
+        "http://localhost:5173"
 })
 @RestController
 @RequestMapping("/api/v1")

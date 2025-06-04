@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface IDrEmployee {
     List<DrEmployee> findByDailyReportId(Integer dailyReportId);
+
+    List<DrEmployee> findByDailyReportIds(List<Integer> dailyReportId);
 }

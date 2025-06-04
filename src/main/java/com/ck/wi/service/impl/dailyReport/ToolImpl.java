@@ -17,6 +17,10 @@ public class ToolImpl implements ITool {
     @Override
     public List<Tool> findByDailyReportId(Integer dailyReportId){
         return (List<Tool>) toolDao.findByDailyReportIdAndStatus(dailyReportId, "1");
+    }
 
+    @Override
+    public List<Tool> findByDailyReportIds(List<Integer> dailyReportIds){
+        return (List<Tool>) toolDao.findByDailyReportIdIn(dailyReportIds);
     }
 }

@@ -5,5 +5,8 @@ import com.ck.wi.model.entity.dailyReport.Photo;
 import java.util.List;
 
 public interface IPhoto {
-    List<Photo> findByDailyReportId(Integer id);
+    List<Photo> findByDailyReportId(Integer dailyReportId);
+
+    List<Photo> findByDailyReportIds(List<Integer> dailyReportIds);
+
 }

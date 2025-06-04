@@ -21,6 +21,7 @@ com\ck\wi\CorsConfig.class
 com\ck\wi\controller\dailyReport\DailyReportController.class
 com\ck\wi\model\dto\JobDto$JobDtoBuilder.class
 com\ck\wi\model\dto\dailyReport\DailyReportDto$DailyReportDtoBuilder.class
+com\ck\wi\model\dto\request\DrEmployeeRequest.class
 com\ck\wi\service\dailyReport\IDailyReport.class
 com\ck\wi\service\impl\dailyReport\ProblemImpl.class
 com\ck\wi\service\IEmployee.class
@@ -30,13 +31,16 @@ com\ck\wi\model\dto\dailyReport\DumpsterDto.class
 com\ck\wi\model\entity\dailyReport\Tool$ToolBuilder.class
 com\ck\wi\model\entity\dailyReport\DrEmployee.class
 com\ck\wi\model\entity\dailyReport\DrEquipment.class
+com\ck\wi\model\dto\request\DailyReportRequest.class
 com\ck\wi\model\dto\ChecklistDto.class
 com\ck\wi\service\impl\EquipmentImpl.class
 com\ck\wi\service\impl\dailyReport\DailyReportImpl.class
 com\ck\wi\CorsConfig$1.class
 com\ck\wi\service\IJob.class
 com\ck\wi\model\dto\EmployeeDto.class
+com\ck\wi\model\dto\request\ToolRequest.class
 com\ck\wi\model\dto\dailyReport\DailyReportDto.class
+com\ck\wi\model\dto\request\DumpsterRequest.class
 com\ck\wi\model\entity\dailyReport\DrEmployee$DrEmployeeBuilder.class
 com\ck\wi\service\dailyReport\ITool.class
 com\ck\wi\model\dao\ChecklistDao.class
@@ -51,9 +55,11 @@ com\ck\wi\controller\ChecklistController.class
 com\ck\wi\controller\dailyReport\ProblemController.class
 com\ck\wi\model\entity\Checklist$ChecklistBuilder.class
 com\ck\wi\service\impl\dailyReport\PhotoImpl.class
+com\ck\wi\model\dto\request\DrEquipmentRequest.class
 com\ck\wi\model\entity\Employee.class
 com\ck\wi\model\dto\dailyReport\PhotoDto$PhotoDtoBuilder.class
 com\ck\wi\model\dao\dailyReport\DrEmployeeDao.class
+com\ck\wi\model\dto\request\PhotoRequest.class
 com\ck\wi\model\dto\dailyReport\DrEquipmentDto$DrEquipmentDtoBuilder.class
 com\ck\wi\model\dto\dailyReport\PhotoDto.class
 com\ck\wi\HmbrandtApiRestApplication.class
@@ -81,6 +87,7 @@ com\ck\wi\controller\dailyReport\DumpsterController.class
 com\ck\wi\service\impl\dailyReport\DrEquipmentImpl.class
 com\ck\wi\model\dto\dailyReport\DrEmployeeDto$DrEmployeeDtoBuilder.class
 com\ck\wi\service\impl\dailyReport\ToolImpl.class
+com\ck\wi\model\dto\request\ProblemRequest.class
 com\ck\wi\model\entity\dailyReport\DrEquipment$DrEquipmentBuilder.class
 com\ck\wi\service\IEquipment.class
 com\ck\wi\controller\dailyReport\ToolController.class

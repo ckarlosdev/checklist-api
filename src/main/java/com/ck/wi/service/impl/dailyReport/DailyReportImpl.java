@@ -20,6 +20,11 @@ public class DailyReportImpl implements IDailyReport {
     }
 
     @Override
+    public List<DailyReport> findByNumbers(List<String> numbers){
+        return (List<DailyReport>) dailyReportDao.findByNumberIn(numbers);
+    }
+
+    @Override
     public DailyReport findById(Integer id){
         return dailyReportDao.findById(id).orElse(null);
     }

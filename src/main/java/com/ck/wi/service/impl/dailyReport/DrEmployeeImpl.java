@@ -17,4 +17,8 @@ public class DrEmployeeImpl implements IDrEmployee {
     public List<DrEmployee> findByDailyReportId(Integer dailyReportId){
         return (List<DrEmployee>) drEmployeeDao.findByDailyReportIdAndStatus(dailyReportId, "1");
     }
+
+    public List<DrEmployee> findByDailyReportIds(List<Integer> dailyReportIds){
+        return (List<DrEmployee>) drEmployeeDao.findByDailyReportIdIn(dailyReportIds);
+    }
 }

@@ -18,4 +18,9 @@ public class PhotoImpl implements IPhoto {
     public List<Photo> findByDailyReportId(Integer dailyReportId){
         return (List<Photo>) photoDao.findByDailyReportIdAndStatus(dailyReportId, "1");
     }
+
+    @Override
+    public List<Photo> findByDailyReportIds(List<Integer> dailyReportIds){
+        return (List<Photo>) photoDao.findByDailyReportIdIn(dailyReportIds);
+    }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface PhotoDao extends CrudRepository<Photo, Integer> {
     List<Photo> findByDailyReportIdAndStatus(Integer dailyReportId, String status);
+
+    List<Photo> findByDailyReportIdIn(List<Integer> dailyReportIds);
 }

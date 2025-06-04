@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
     List<DailyReport> findByNumberAndStatus(String number, String status);
+
+    List<DailyReport> findByNumberIn(List<String> number);
 }

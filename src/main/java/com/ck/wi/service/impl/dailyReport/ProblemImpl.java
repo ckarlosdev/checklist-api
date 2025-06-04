@@ -18,4 +18,9 @@ public class ProblemImpl implements IProblem {
     public List<Problem> findByDrEquipmentsId(Integer drEquipmentId){
         return (List<Problem>) problemDao.findByDrEquipmentsIdAndStatus(drEquipmentId, "1");
     }
+    @Override
+    public List<Problem> findByDrEquipmentsIds(List<Integer> drEquipmentIds){
+        return (List<Problem>) problemDao.findByDrEquipmentsIdIn(drEquipmentIds);
+    }
+
 }

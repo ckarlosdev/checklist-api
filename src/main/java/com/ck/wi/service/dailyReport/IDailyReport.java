@@ -7,6 +7,8 @@ import java.util.List;
 public interface IDailyReport {
     List<DailyReport> findByNumber(String number);
 
+    List<DailyReport> findByNumbers(List<String> numbers);
+
     DailyReport findById(Integer id);
 
     List<DailyReport> findAll();

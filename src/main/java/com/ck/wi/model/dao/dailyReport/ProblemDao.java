@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ProblemDao extends CrudRepository<Problem, Integer> {
     List<Problem> findByDrEquipmentsIdAndStatus(Integer drEquipmentsId, String status);
+
+    List<Problem> findByDrEquipmentsIdIn(List<Integer> drEquipmentsIds);
 }

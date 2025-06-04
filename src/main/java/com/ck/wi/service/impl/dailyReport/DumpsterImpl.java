@@ -19,4 +19,9 @@ public class DumpsterImpl implements IDumpster {
         return (List<Dumpster>) dumpsterDao.findByDailyReportIdAndStatus(dailyReportId, "1");
     }
 
+    @Override
+    public List<Dumpster> findByDailyReportIds(List<Integer> dailyReportIds){
+        return (List<Dumpster>) dumpsterDao.findByDailyReportIdIn(dailyReportIds);
+    }
+
 }

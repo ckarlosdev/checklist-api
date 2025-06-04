@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ToolDao extends CrudRepository<Tool, Integer> {
     List<Tool> findByDailyReportIdAndStatus(Integer dailyReportId, String status);
+
+    List<Tool> findByDailyReportIdIn(List<Integer> dailyReportIds);
 }
