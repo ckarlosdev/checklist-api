@@ -5,8 +5,13 @@ import com.ck.wi.model.dto.request.DailyReportRequest;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import com.ck.wi.service.dailyReport.IDailyReport;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -121,6 +126,43 @@ public class DailyReportController {
     @GetMapping("dailyReport/{id}")
     public DailyReportDto getDailyReportByID(@PathVariable Integer id){
         DailyReport dailyReport = dailyReportService.findById(id);
+
+        return DailyReportDto.builder()
+                .dailyReportId(dailyReport.getDailyReportId())
+                .number(dailyReport.getNumber())
+                .address(dailyReport.getAddress())
+                .name(dailyReport.getName())
+                .workingFor(dailyReport.getWorkingFor())
+                .date(dailyReport.getDate())
+                .foreman(dailyReport.getForeman())
+                .crew(dailyReport.getCrew())
+                .description(dailyReport.getDescription())
+                .manTotal(dailyReport.getManTotal())
+                .manHoursTotal(dailyReport.getManHoursTotal())
+                .manOther(dailyReport.getManOther())
+                .equipmentTotal(dailyReport.getEquipmentTotal())
+                .equipHoursTotal(dailyReport.getEquipHoursTotal())
+                .equipmentOther(dailyReport.getEquipmentOther())
+                .issues(dailyReport.getIssues())
+                .createdBy(dailyReport.getCreatedBy())
+                .createdDate(dailyReport.getCreatedDate())
+                .updatedBy(dailyReport.getUpdatedBy())
+                .updatedDate(dailyReport.getUpdatedDate())
+                .status(dailyReport.getStatus())
+                .build();
+    }
+
+    @GetMapping("dailyReport/{number}/by-date")
+    public DailyReportDto getDailyReportByIdAndDate(
+            @PathVariable String number,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+        DailyReport dailyReport = dailyReportService.findByNumberAndDate(number, date);
+        System.out.println("Incoming number: " + number);
+        System.out.println("Incoming date: " + date);
+
+        if (dailyReport == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DailyReport not found for given job id and date");
+        }
 
         return DailyReportDto.builder()
                 .dailyReportId(dailyReport.getDailyReportId())

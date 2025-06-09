@@ -6,6 +6,8 @@ import com.ck.wi.service.dailyReport.IDailyReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +29,11 @@ public class DailyReportImpl implements IDailyReport {
     @Override
     public DailyReport findById(Integer id){
         return dailyReportDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public DailyReport findByNumberAndDate(String number, LocalDate date){
+        return dailyReportDao.findByNumberAndDate(number, date);
     }
 
     @Override
