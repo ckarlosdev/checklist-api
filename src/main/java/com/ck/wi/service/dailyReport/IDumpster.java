@@ -5,7 +5,7 @@ import com.ck.wi.model.entity.dailyReport.Dumpster;
 import java.util.List;
 
 public interface IDumpster {
-    List<Dumpster> findByDailyReportId(Integer dailyReportId);
+    Dumpster findByDailyReportId(Integer dailyReportId);
 
     List<Dumpster> findByDailyReportIds(List<Integer> dailyReportIds);
 }

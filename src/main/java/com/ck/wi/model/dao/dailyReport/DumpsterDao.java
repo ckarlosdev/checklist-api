@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface DumpsterDao extends CrudRepository<Dumpster, Integer> {
-    List<Dumpster> findByDailyReportIdAndStatus(Integer dailyReportId, String status);
+    Dumpster findByDailyReportIdAndStatus(Integer dailyReportId, String status);
 
     List<Dumpster> findByDailyReportIdIn(List<Integer> dailyReportIds);
 }
