@@ -69,8 +69,8 @@ public class ProblemController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("problem/job/{dailyReportId}")
-    public List<ProblemDto> getProblemsByJobNumber(@PathVariable Integer dailyReportId){
+    @GetMapping("problem/dailyReport/{dailyReportId}")
+    public List<ProblemDto> getProblemsByDailyReportId(@PathVariable Integer dailyReportId){
         List<Integer> drEquipmentIds = drEquipmentService.findDrEquipmentIdsByDrId(dailyReportId);
 
         List<Problem> problems = problemService.findByDrEquipmentsIds(drEquipmentIds);
