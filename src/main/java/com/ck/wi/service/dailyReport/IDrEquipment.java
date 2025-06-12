@@ -9,4 +9,6 @@ public interface IDrEquipment {
     List<DrEquipment> findByDailyReportId(Integer dailyReportId);
 
     List<DrEquipment> findByDailyReportIds(List<Integer> dailyReportIds);
+
+    List<Integer> findDrEquipmentIdsByDrId(Integer drId);
 }

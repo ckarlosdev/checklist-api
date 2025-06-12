@@ -23,4 +23,9 @@ public class DrEquipmentImpl implements IDrEquipment {
     public List<DrEquipment> findByDailyReportIds(List<Integer> dailyReportIds){
         return (List<DrEquipment>) drEquipmentDao.findByDailyReportIdIn(dailyReportIds);
     }
+
+    @Override
+    public List<Integer> findDrEquipmentIdsByDrId(Integer drId){
+        return (List<Integer>) drEquipmentDao.findDrEquipmentIdsByDR(drId);
+    }
 }
