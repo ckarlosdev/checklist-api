@@ -1,5 +1,7 @@
 package com.ck.wi.model.entity.dailyReport;
 
+import com.ck.wi.model.dto.dailyReport.DrEquipmentDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +22,11 @@ public class Problem implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer problemsId;
 
-    @Column(name = "dr_equipments_id")
-    private Integer drEquipmentsId;
+//    @Column(name = "dr_equipments_id")
+    @ManyToOne
+    @JoinColumn(name = "dr_equipments_id")
+    @JsonBackReference
+    private DrEquipment drEquipment;
 
     @Column(name = "type")
     private String type;

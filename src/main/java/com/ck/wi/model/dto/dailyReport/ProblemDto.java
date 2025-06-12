@@ -1,5 +1,6 @@
 package com.ck.wi.model.dto.dailyReport;
 
+import com.ck.wi.model.entity.dailyReport.DrEquipment;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,7 +14,7 @@ import java.sql.Date;
 @Builder
 public class ProblemDto implements Serializable {
     private Integer problemsId;
-    private Integer drEquipmentsId;
+    private DrEquipment drEquipment;
     private String type;
     private String priority;
     private String description;
