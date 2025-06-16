@@ -1,6 +1,5 @@
 package com.ck.wi.model.dto.dailyReport;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;

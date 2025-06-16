@@ -157,8 +157,6 @@ public class DailyReportController {
             @PathVariable String number,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
         DailyReport dailyReport = dailyReportService.findByNumberAndDate(number, date);
-        System.out.println("Incoming number: " + number);
-        System.out.println("Incoming date: " + date);
 
         if (dailyReport == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "DailyReport not found for given job id and date");

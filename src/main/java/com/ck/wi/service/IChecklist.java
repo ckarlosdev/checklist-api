@@ -8,6 +8,7 @@ import com.ck.wi.model.entity.Job;
 import java.util.List;
 
 public interface IChecklist {
+
     Checklist processAndSaveChecklist(ChecklistDto checklistDto);
 
     List<Checklist> findByJob(Job job);
