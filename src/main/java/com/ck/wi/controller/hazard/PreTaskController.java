@@ -44,7 +44,7 @@ public class PreTaskController {
     }
 
     @GetMapping("pretask/{jobNumber}/by-date")
-    public PreTaskDto getPretaskByJobNumberAndDate(
+    public ResponseEntity<PreTaskDto> getPretaskByJobNumberAndDate(
             @PathVariable String jobNumber,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)LocalDate date
             ){
@@ -52,27 +52,32 @@ public class PreTaskController {
 
         PreTask preTask = preTaskService.findByJobsIdAndDate(job.getJobsId(), date);
 
-        if(preTask == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pretask not found for given job id and date");
-        }
+        Optional<PreTaskDto> pretaskDetailDto = preTaskService.getPretaskWithActivities(preTask.getPreTasksId());
 
-        return PreTaskDto.builder()
-                .preTasksId(preTask.getPreTasksId())
-                .jobsId(preTask.getJobsId())
-                .date(preTask.getDate())
-                .supervisor(preTask.getSupervisor())
-                .comment(preTask.getComment())
-                .build();
+        return pretaskDetailDto.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+
+//        if(pretaskDetailDto == null){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pretask not found for given job id and date");
+//        }
+
+
+
+//        return PreTaskDto.builder()
+//                .preTasksId(preTask.getPreTasksId())
+//                .jobsId(preTask.getJobsId())
+//                .date(preTask.getDate())
+//                .supervisor(preTask.getSupervisor())
+//                .comment(preTask.getComment())
+//                .build();
     }
 
     @GetMapping("pt/{id}")
     public ResponseEntity<PreTaskDto> getPretaskWithActivities(@PathVariable Integer id) {
-        // Llama al servicio para obtener la Pretask con sus actividades
         Optional<PreTaskDto> pretaskDetailDto = preTaskService.getPretaskWithActivities(id);
 
-        // Devuelve la respuesta HTTP
-        return pretaskDetailDto.map(ResponseEntity::ok) // Si se encuentra, devuelve 200 OK con el DTO
-                .orElse(ResponseEntity.notFound().build()); // Si no se encuentra, devuelve 404 Not Found
+        return pretaskDetailDto.map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 
