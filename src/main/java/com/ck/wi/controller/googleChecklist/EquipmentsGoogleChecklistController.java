@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = {
         "http://127.0.0.1:5500",
         "https://oleo-soft.com",
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://ckarlosdev.github.io/Dashboard"
 })
 @RestController
 @RequestMapping("/api/v1")
