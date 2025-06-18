@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
         "http://127.0.0.1:5500",
         "https://oleo-soft.com",
         "http://localhost:5173",
-        "https://ckarlosdev.github.io/Dashboard"
+        "https://ckarlosdev.github.io"
 })
 @RestController
 @RequestMapping("/api/v1")
