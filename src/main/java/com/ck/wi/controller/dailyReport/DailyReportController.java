@@ -1,6 +1,7 @@
 package com.ck.wi.controller.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DailyReportDto;
+import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.request.DailyReportRequest;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import com.ck.wi.service.dailyReport.IDailyReport;
@@ -90,6 +91,18 @@ public class DailyReportController {
                                 .status(dailyReport.getStatus())
                                 .build())
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("dailyReport/totalDays/{jobNumber}")
+    public Integer getDaysByJobNumber(@PathVariable String jobNumber){
+        List<DailyReport> dailyReports = dailyReportService.findByNumber(jobNumber);
+        return dailyReports.size();
+    }
+
+    @GetMapping("dailyReport/summary/{jobNumber}")
+    public List<DailyReportSummaryDto> getSummaryByJobNumber(@PathVariable String jobNumber){
+        List<DailyReportSummaryDto> dailyReports = dailyReportService.findSummaryByJobNumber(jobNumber);
+        return dailyReports;
     }
 
     @GetMapping("dailyReport/jobs")

@@ -1,6 +1,7 @@
 package com.ck.wi.controller.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DrEmployeeDto;
+import com.ck.wi.model.dto.dailyReport.DrEmployeeHoursDto;
 import com.ck.wi.model.dto.request.DrEmployeeRequest;
 import com.ck.wi.model.entity.dailyReport.DrEmployee;
 import com.ck.wi.service.dailyReport.IDrEmployee;
@@ -66,5 +67,11 @@ public class DrEmployeeController {
                                 .status(drEmployee.getStatus())
                                 .build())
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("drEmployee/hours/{jobNumber}")
+    public List<DrEmployeeHoursDto> getDrEmployeeHours(@PathVariable String jobNumber){
+        List<DrEmployeeHoursDto> drEmployeeHours = drEmployeeService.findHoursByJobNumber(jobNumber);
+        return drEmployeeHours;
     }
 }

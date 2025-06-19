@@ -1,5 +1,6 @@
 package com.ck.wi.model.dao.dailyReport;
 
+import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,4 +23,10 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
             nativeQuery = true
     )
     DailyReport findByNumberAndDate(@Param("number") String number, @Param("date") LocalDate date);
+
+    @Query(
+            value = "call GetDailyReportSummary(:jobNumber)",
+            nativeQuery = true
+    )
+    List<DailyReportSummaryDto> findSummaryByJobNumber(@Param("jobNumber") String jobNumber);
 }

@@ -1,6 +1,7 @@
 package com.ck.wi.controller.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DumpsterDto;
+import com.ck.wi.model.dto.dailyReport.DumpsterSummaryDto;
 import com.ck.wi.model.dto.request.DumpsterRequest;
 import com.ck.wi.model.entity.dailyReport.Dumpster;
 import com.ck.wi.service.dailyReport.IDumpster;
@@ -21,6 +22,11 @@ import java.util.stream.Collectors;
 public class DumpsterController {
     @Autowired
     private IDumpster dumpsterService;
+
+    @GetMapping("dumpster/summary/{jobNumber}")
+    public DumpsterSummaryDto getDumpstersByDailyReportId(@PathVariable String jobNumber){
+        return dumpsterService.findSummaryByJobNumber(jobNumber);
+    }
 
     @GetMapping("dumpster/dailyReport/{dailyReportId}")
     public DumpsterDto getDumpstersByDailyReportId(@PathVariable Integer dailyReportId){

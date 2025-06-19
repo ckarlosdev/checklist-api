@@ -1,5 +1,6 @@
 package com.ck.wi.service.dailyReport;
 
+import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 
 import java.time.LocalDate;
@@ -15,4 +16,6 @@ public interface IDailyReport {
     DailyReport findByNumberAndDate(String number, LocalDate date);
 
     List<DailyReport> findAll();
+
+    List<DailyReportSummaryDto> findSummaryByJobNumber(String jobNumber);
 }

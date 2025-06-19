@@ -38,9 +38,12 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\JobDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\ChecklistDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DailyReportDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DailyReportSummaryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DrEmployeeDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DrEmployeeHoursDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DrEquipmentDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DumpsterDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\DumpsterSummaryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\PhotoDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\ProblemDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\dailyReport\ToolDto.java

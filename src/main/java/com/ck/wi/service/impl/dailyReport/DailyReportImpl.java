@@ -1,6 +1,7 @@
 package com.ck.wi.service.impl.dailyReport;
 
 import com.ck.wi.model.dao.dailyReport.DailyReportDao;
+import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import com.ck.wi.service.dailyReport.IDailyReport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class DailyReportImpl implements IDailyReport {
     @Override
     public List<DailyReport> findAll() {
         return (List<DailyReport>) dailyReportDao.findAll();
+    }
+
+    @Override
+    public List<DailyReportSummaryDto> findSummaryByJobNumber(String jobNumber){
+        return (List<DailyReportSummaryDto>) dailyReportDao.findSummaryByJobNumber(jobNumber);
     }
 }
