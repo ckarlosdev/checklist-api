@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class ChecklistImpl implements IChecklist {
         Optional<Employee> employee = employeeDao.findById(checklistDto.getEmployeesId());
         Optional<Job> job = jobDao.findById(checklistDto.getJobsId());
         Optional<Equipment> equipment = equipmentDao.findById(checklistDto.getEquipmentsId());
-        Date today = new Date();
+        LocalDateTime today = LocalDateTime.now();
 
         if (employee.isPresent() && job.isPresent() && equipment.isPresent()) {
 
@@ -71,7 +72,7 @@ public class ChecklistImpl implements IChecklist {
 
             return checklistDao.save(checklist);
         } else {
-            throw new IllegalArgumentException("Empleado, trabajo o equipo no encontrado.");
+            throw new IllegalArgumentException("Employee, job or equipment not found.");
         }
     }
 
