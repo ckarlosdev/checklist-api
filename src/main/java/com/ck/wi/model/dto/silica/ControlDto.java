@@ -15,14 +15,14 @@ public class ControlDto implements Serializable {
     private String controlGroup;
     private String controlType;
     private String typeDescription;
-    private List<ControlsDescription> descriptions;
+    private List<ControlDescriptionRequestDto> descriptions;
 
     public ControlDto(
             Integer controlsId,
             String controlGroup,
             String controlType,
             String typeDescription,
-            List<ControlsDescription> descriptions
+            List<ControlDescriptionRequestDto> descriptions
     ){
         this.controlsId = controlsId;
         this.controlGroup = controlGroup;

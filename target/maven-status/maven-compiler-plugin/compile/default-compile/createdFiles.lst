@@ -36,6 +36,7 @@ com\ck\wi\model\dto\request\DailyReportRequest.class
 com\ck\wi\model\dto\dailyReport\DumpsterSummaryDto.class
 com\ck\wi\service\impl\EquipmentImpl.class
 com\ck\wi\model\entity\hazard\PreTask.class
+com\ck\wi\model\dto\silica\ControlDescriptionRequestDto$ControlDescriptionRequestDtoBuilder.class
 com\ck\wi\model\dao\silica\SilicaControlDao.class
 com\ck\wi\service\impl\dailyReport\DailyReportImpl.class
 com\ck\wi\CorsConfig$1.class
@@ -138,6 +139,7 @@ com\ck\wi\model\entity\googleChecklist\EquipmentsGoogleChecklist.class
 com\ck\wi\model\entity\hazard\Activity.class
 com\ck\wi\model\entity\hazard\PretasksCheckboxOption.class
 com\ck\wi\service\dailyReport\IPhoto.class
+com\ck\wi\model\dto\silica\ControlDescriptionRequestDto.class
 com\ck\wi\service\impl\googleChecklist\GoogleChecklistImpl.class
 com\ck\wi\model\entity\dailyReport\DailyReport$DailyReportBuilder.class
 com\ck\wi\model\entity\dailyReport\Photo$PhotoBuilder.class

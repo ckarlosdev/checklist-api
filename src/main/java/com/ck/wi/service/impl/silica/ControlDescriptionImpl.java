@@ -1,6 +1,7 @@
 package com.ck.wi.service.impl.silica;
 
 import com.ck.wi.model.dao.silica.ControlDescriptionDao;
+import com.ck.wi.model.dto.silica.ControlDescriptionRequestDto;
 import com.ck.wi.model.entity.silica.Control;
 import com.ck.wi.model.entity.silica.ControlsDescription;
 import com.ck.wi.service.silica.IControlsDescription;
@@ -25,7 +26,13 @@ public class ControlDescriptionImpl implements IControlsDescription {
 
     @Transactional
     @Override
-    public List<ControlsDescription> findByControl(Control control){
+    public List<ControlDescriptionRequestDto> findByControl(Control control){
         return controlDescriptionDao.findByControl(control);
+    }
+
+    @Transactional
+    @Override
+    public List<ControlDescriptionRequestDto> findByControlId(Integer controlId){
+        return controlDescriptionDao.findDescriptionsByControlId(controlId);
     }
 }

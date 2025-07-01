@@ -1,5 +1,6 @@
 package com.ck.wi.controller.silica;
 
+import com.ck.wi.model.dto.silica.ControlDescriptionRequestDto;
 import com.ck.wi.model.dto.silica.ControlDto;
 import com.ck.wi.model.entity.silica.Control;
 import com.ck.wi.model.entity.silica.ControlsDescription;
@@ -35,8 +36,8 @@ public class ControlController {
 
         controls.forEach(control -> {
 
-            List<ControlsDescription> controlsDescriptions =
-                    controlsDescriptionService.findByControl(control);
+            List<ControlDescriptionRequestDto> controlsDescriptions =
+                    controlsDescriptionService.findByControlId(control.getControlsId());
 
             ControlDto controlDto = ControlDto.builder()
                     .controlsId(control.getControlsId())
