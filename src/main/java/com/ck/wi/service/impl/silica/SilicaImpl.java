@@ -128,7 +128,7 @@ public class SilicaImpl implements ISilica {
                                 .orElseThrow(() -> new IllegalArgumentException("ControlsDescription not found for ID: " + silicaControlDto.getControlDescriptionId()));
 
                         SilicaControl silicaControl;
-                        if (silicaControlDto.getSilicaControlId() != null && existingControlsMap.containsKey(silicaControlDto.getSilicaControlId())) {
+                        if (silicaControlDto.getSilicaControlId() != null && silicaControlDto.getSilicaControlId() != 0 && existingControlsMap.containsKey(silicaControlDto.getSilicaControlId())) {
 
                             silicaControl = existingControlsMap.get(silicaControlDto.getSilicaControlId());
                             silicaControl.setControlsDescription(controlsDescription);
