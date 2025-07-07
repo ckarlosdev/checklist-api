@@ -61,7 +61,7 @@ public class SilicaImpl implements ISilica {
             Silica silica;
 
             // --- Determine if it's a CREATE or UPDATE ---
-            if (silicaCreateDto.getSilicaId() != null) {
+            if (silicaCreateDto.getSilicaId() != null && silicaCreateDto.getSilicaId() != 0) {
                 // UPDATE: Fetch existing Silica entity
                 silica = silicaDao.findById(silicaCreateDto.getSilicaId())
                         .orElseThrow(() -> new IllegalArgumentException("Silica not found for ID: " + silicaCreateDto.getSilicaId()));
