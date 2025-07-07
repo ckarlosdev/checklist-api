@@ -1,5 +1,6 @@
 package com.ck.wi.controller.silica;
 
+import com.ck.wi.model.dto.silica.SilicaControlCreateDto;
 import com.ck.wi.model.dto.silica.SilicaControlDto;
 import com.ck.wi.model.dto.silica.SilicaCreateDto;
 import com.ck.wi.model.dto.silica.SilicaDto;
@@ -41,25 +42,25 @@ public class SilicaController {
     private ISilicaControl silicaControlService;
 
     @PostMapping("silica")
-    public SilicaDto submitSilica(@RequestBody SilicaCreateDto silicaCreateDto){
+    public SilicaCreateDto submitSilica(@RequestBody SilicaCreateDto silicaCreateDto){
         Silica silica = silicaService.processAndSaveSilica(silicaCreateDto);
 
-        List<SilicaControlDto> silicaControlDtos =
+        List<SilicaControlCreateDto> silicaControlDtos =
                 Optional.ofNullable(silica.getSilicaControls())
                         .orElse(Collections.emptyList())
                         .stream()
                         .map( silicaControl ->
-                                SilicaControlDto.builder()
+                                SilicaControlCreateDto.builder()
                                         .silicaControlId(silicaControl.getSilicaControlsId())
-                                        .controlDescription(silicaControl.getControlsDescription())
+                                        .controlDescriptionId(silicaControl.getControlsDescription().getControlsDescriptionsId())
                                         .controlAnswer(silicaControl.getControlAnswer())
                                         .build())
                         .collect(Collectors.toList());
 
-        return SilicaDto.builder()
+        return SilicaCreateDto.builder()
                 .silicaId(silica.getSilicaId())
-                .job(silica.getJob())
-                .employee(silica.getEmployee())
+                .jobsId(silica.getJob().getJobsId())
+                .employeesId(silica.getEmployee().getEmployeesId())
                 .eventDate(silica.getEventDate())
                 .workDescription(silica.getWorkDescription())
                 .diagramId(silica.getDiagramId())
@@ -74,25 +75,25 @@ public class SilicaController {
     }
 
     @PutMapping("silica")
-    public SilicaDto updateSilica(@RequestBody SilicaCreateDto silicaCreateDto){
+    public SilicaCreateDto updateSilica(@RequestBody SilicaCreateDto silicaCreateDto){
         Silica silica = silicaService.processAndSaveSilica(silicaCreateDto);
 
-        List<SilicaControlDto> silicaControlDtos =
+        List<SilicaControlCreateDto> silicaControlDtos =
                 Optional.ofNullable(silica.getSilicaControls())
                         .orElse(Collections.emptyList())
                         .stream()
                         .map( silicaControl ->
-                                SilicaControlDto.builder()
+                                SilicaControlCreateDto.builder()
                                         .silicaControlId(silicaControl.getSilicaControlsId())
-                                        .controlDescription(silicaControl.getControlsDescription())
+                                        .controlDescriptionId(silicaControl.getControlsDescription().getControlsDescriptionsId())
                                         .controlAnswer(silicaControl.getControlAnswer())
                                         .build())
                         .collect(Collectors.toList());
 
-        return SilicaDto.builder()
+        return SilicaCreateDto.builder()
                 .silicaId(silica.getSilicaId())
-                .job(silica.getJob())
-                .employee(silica.getEmployee())
+                .jobsId(silica.getJob().getJobsId())
+                .employeesId(silica.getEmployee().getEmployeesId())
                 .eventDate(silica.getEventDate())
                 .workDescription(silica.getWorkDescription())
                 .diagramId(silica.getDiagramId())
