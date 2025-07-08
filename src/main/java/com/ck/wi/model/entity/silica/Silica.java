@@ -42,11 +42,11 @@ public class Silica {
     @Column(name = "work_description")
     private String workDescription;
 
-    @Column(name = "diagram_id")
-    private String diagramId;
-
-    @Column(name = "diagram_folder")
-    private String diagramFolder;
+//    @Column(name = "diagram_id")
+//    private String diagramId;
+//
+//    @Column(name = "diagram_folder")
+//    private String diagramFolder;
 
     @Column(name = "plan_area")
     private String ventilationArea;
@@ -62,6 +62,9 @@ public class Silica {
 
     @Column(name = "signature_folder")
     private String signatureFolder;
+
+    @Column(name = "diagram_data")
+    private String diagramData;
 
     @Column(name = "created_by")
     private String createdBy;

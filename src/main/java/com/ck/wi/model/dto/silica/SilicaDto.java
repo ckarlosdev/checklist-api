@@ -21,12 +21,15 @@ public class SilicaDto implements Serializable {
     private Employee employee;
     private LocalDate eventDate;
     private String workDescription;
-    private String diagramId;
-    private String diagramFolder;
+//    private String diagramId;
+//    private String diagramFolder;
     private String ventilationArea;
     private Date datePlan;
     private String equipmentDescription;
     private String signatureId;
     private String signatureFolder;
     private List<SilicaControlDto> silicaControls;
+    private String diagramData;
+    private String createdBy;
+    private String updatedBy;
 }

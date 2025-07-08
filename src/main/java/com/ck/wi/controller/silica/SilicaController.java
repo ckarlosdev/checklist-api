@@ -63,14 +63,15 @@ public class SilicaController {
                 .employeesId(silica.getEmployee().getEmployeesId())
                 .eventDate(silica.getEventDate())
                 .workDescription(silica.getWorkDescription())
-                .diagramId(silica.getDiagramId())
-                .diagramFolder(silica.getDiagramFolder())
+//                .diagramId(silica.getDiagramId())
+//                .diagramFolder(silica.getDiagramFolder())
                 .ventilationArea(silica.getVentilationArea())
                 .datePlan(silica.getDatePlan())
                 .equipmentDescription(silica.getEquipmentDescription())
                 .signatureId(silica.getSignatureId())
                 .signatureFolder(silica.getSignatureFolder())
                 .silicaControls(silicaControlDtos)
+                .diagramData(silica.getDiagramData())
                 .build();
     }
 
@@ -96,14 +97,15 @@ public class SilicaController {
                 .employeesId(silica.getEmployee().getEmployeesId())
                 .eventDate(silica.getEventDate())
                 .workDescription(silica.getWorkDescription())
-                .diagramId(silica.getDiagramId())
-                .diagramFolder(silica.getDiagramFolder())
+//                .diagramId(silica.getDiagramId())
+//                .diagramFolder(silica.getDiagramFolder())
                 .ventilationArea(silica.getVentilationArea())
                 .datePlan(silica.getDatePlan())
                 .equipmentDescription(silica.getEquipmentDescription())
                 .signatureId(silica.getSignatureId())
                 .signatureFolder(silica.getSignatureFolder())
                 .silicaControls(silicaControlDtos)
+                .diagramData(silica.getDiagramData())
                 .build();
     }
 
@@ -134,14 +136,15 @@ public class SilicaController {
                     .employee(silica.getEmployee())
                     .eventDate(silica.getEventDate())
                     .workDescription(silica.getWorkDescription())
-                    .diagramId(silica.getDiagramId())
-                    .diagramFolder(silica.getDiagramFolder())
+//                    .diagramId(silica.getDiagramId())
+//                    .diagramFolder(silica.getDiagramFolder())
                     .ventilationArea(silica.getVentilationArea())
                     .datePlan(silica.getDatePlan())
                     .equipmentDescription(silica.getEquipmentDescription())
                     .signatureId(silica.getSignatureId())
                     .signatureFolder(silica.getSignatureFolder())
                     .silicaControls(silicaControlDtos)
+                    .diagramData(silica.getDiagramData())
                     .build();
 
             silicaDtos.add(silicaDto);

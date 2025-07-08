@@ -71,14 +71,13 @@ public class SilicaImpl implements ISilica {
                 silica.setEmployee(employeeOpt.get());
                 silica.setEventDate(silicaCreateDto.getEventDate());
                 silica.setWorkDescription(silicaCreateDto.getWorkDescription());
-                silica.setDiagramId(silicaCreateDto.getDiagramId());
-                silica.setDiagramFolder(silicaCreateDto.getDiagramFolder());
                 silica.setVentilationArea(silicaCreateDto.getVentilationArea());
                 silica.setDatePlan(silicaCreateDto.getDatePlan());
                 silica.setEquipmentDescription(silicaCreateDto.getEquipmentDescription());
                 silica.setSignatureId(silicaCreateDto.getSignatureId());
                 silica.setSignatureFolder(silicaCreateDto.getSignatureFolder());
-                silica.setUpdatedBy("test_update"); // Use a distinct 'updatedBy'
+                silica.setDiagramData(silicaCreateDto.getDiagramData());
+                silica.setUpdatedBy(silicaCreateDto.getUpdatedBy()); // Use a distinct 'updatedBy'
                 silica.setUpdatedDate(today);
                 // Status should probably not be hardcoded to "1" on update unless it's always active
                 // silica.setStatus("1");
@@ -89,16 +88,17 @@ public class SilicaImpl implements ISilica {
                         .employee(employeeOpt.get())
                         .eventDate(silicaCreateDto.getEventDate())
                         .workDescription(silicaCreateDto.getWorkDescription())
-                        .diagramId(silicaCreateDto.getDiagramId())
-                        .diagramFolder(silicaCreateDto.getDiagramFolder())
+//                        .diagramId(silicaCreateDto.getDiagramId())
+//                        .diagramFolder(silicaCreateDto.getDiagramFolder())
                         .ventilationArea(silicaCreateDto.getVentilationArea())
                         .datePlan(silicaCreateDto.getDatePlan())
                         .equipmentDescription(silicaCreateDto.getEquipmentDescription())
                         .signatureId(silicaCreateDto.getSignatureId())
                         .signatureFolder(silicaCreateDto.getSignatureFolder())
-                        .createdBy("test_create") // Use a distinct 'createdBy'
+                        .diagramData(silicaCreateDto.getDiagramData())
+                        .createdBy(silicaCreateDto.getCreatedBy()) // Use a distinct 'createdBy'
                         .createdDate(today)
-                        .updatedBy("test_create")
+                        .updatedBy(silicaCreateDto.getCreatedBy())
                         .updatedDate(today)
                         .status("1")
                         .build();
@@ -133,7 +133,7 @@ public class SilicaImpl implements ISilica {
                             silicaControl = existingControlsMap.get(silicaControlDto.getSilicaControlId());
                             silicaControl.setControlsDescription(controlsDescription);
                             silicaControl.setControlAnswer(silicaControlDto.getControlAnswer());
-                            silicaControl.setUpdatedBy("test");
+                            silicaControl.setUpdatedBy(silicaCreateDto.getUpdatedBy());
                             silicaControl.setUpdatedDate(today);
                             silicaControl.setStatus("1"); // Again, consider if status should be hardcoded
                             existingControlsMap.remove(silicaControl.getSilicaControlsId()); // Remove from map, so remaining are orphans
@@ -142,9 +142,9 @@ public class SilicaImpl implements ISilica {
                             silicaControl = SilicaControl.builder()
                                     .controlsDescription(controlsDescription)
                                     .controlAnswer(silicaControlDto.getControlAnswer())
-                                    .createdBy("test")
+                                    .createdBy(silicaCreateDto.getCreatedBy())
                                     .createdDate(today)
-                                    .updatedBy("test")
+                                    .updatedBy(silicaCreateDto.getCreatedBy())
                                     .updatedDate(today)
                                     .status("1")
                                     .build();
@@ -164,9 +164,7 @@ public class SilicaImpl implements ISilica {
                 }
             }
 
-            // Re-save the parent to ensure cascades and orphanRemoval are applied
-            // This might seem redundant if it was already saved, but it ensures the collection changes are persisted
-            return silicaDao.save(silicaSaved); // Return the fully updated and persisted Silica entity
+            return silicaDao.save(silicaSaved);
 
         } else {
             throw new IllegalArgumentException("Employee or job not found.");
@@ -198,14 +196,17 @@ public class SilicaImpl implements ISilica {
                     silica.getEmployee(),
                     silica.getEventDate(),
                     silica.getWorkDescription(),
-                    silica.getDiagramId(),
-                    silica.getDiagramFolder(),
+//                    silica.getDiagramId(),
+//                    silica.getDiagramFolder(),
                     silica.getVentilationArea(),
                     silica.getDatePlan(),
                     silica.getEquipmentDescription(),
                     silica.getSignatureId(),
                     silica.getSignatureFolder(),
-                    silicaControlDtos);
+                    silicaControlDtos,
+                    silica.getDiagramData(),
+                    silica.getCreatedBy(),
+                    silica.getUpdatedBy());
         });
     }
 }
