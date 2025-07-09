@@ -153,6 +153,42 @@ public class SilicaController {
         return silicaDtos;
     }
 
+    @GetMapping("silica/{silicaId}")
+    public SilicaCreateDto getSilicaById(
+            @PathVariable Integer silicaId
+    ){
+        Silica silica = silicaService.findById(silicaId);
+
+        List<SilicaControlCreateDto> silicaControlDtos =
+                Optional.ofNullable(silica.getSilicaControls())
+                        .orElse(Collections.emptyList())
+                        .stream()
+                        .map( silicaControl ->
+                                SilicaControlCreateDto.builder()
+                                        .silicaControlId(silicaControl.getSilicaControlsId())
+                                        .controlDescriptionId(silicaControl.getControlsDescription().getControlsDescriptionsId())
+                                        .controlAnswer(silicaControl.getControlAnswer())
+                                        .build())
+                        .collect(Collectors.toList());
+
+        return SilicaCreateDto.builder()
+                .silicaId(silica.getSilicaId())
+                .jobsId(silica.getJob().getJobsId())
+                .employeesId(silica.getEmployee().getEmployeesId())
+                .eventDate(silica.getEventDate())
+                .workDescription(silica.getWorkDescription())
+//                .diagramId(silica.getDiagramId())
+//                .diagramFolder(silica.getDiagramFolder())
+                .ventilationArea(silica.getVentilationArea())
+                .datePlan(silica.getDatePlan())
+                .equipmentDescription(silica.getEquipmentDescription())
+                .signatureId(silica.getSignatureId())
+                .signatureFolder(silica.getSignatureFolder())
+                .silicaControls(silicaControlDtos)
+                .diagramData(silica.getDiagramData())
+                .build();
+    }
+
     @GetMapping("silica/job/{number}")
     public List<SilicaDto> getSilicaByNumber(
             @PathVariable String number

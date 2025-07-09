@@ -18,4 +18,6 @@ public interface ISilica {
     List<Silica> findByJob(Job job);
 
     Silica processAndSaveSilica(SilicaCreateDto silicaCreateDto);
+
+    Silica findById(Integer silicaId);
 }

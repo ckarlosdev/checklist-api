@@ -179,6 +179,12 @@ public class SilicaImpl implements ISilica {
 
     @Transactional
     @Override
+    public Silica findById(Integer silicaId){
+        return silicaDao.findById(silicaId).orElse(null);
+    }
+
+    @Transactional
+    @Override
     public Optional<SilicaDto> getSilicaWithControls(Integer silicaId) {
 
         Optional<Silica> silicaOptional = silicaDao.findById(silicaId);
