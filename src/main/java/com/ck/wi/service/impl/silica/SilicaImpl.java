@@ -45,6 +45,12 @@ public class SilicaImpl implements ISilica {
         return (List<Silica>) silicaDao.findByJobAndEventDate(job, eventDate);
     }
 
+    @Override
+    public List<Silica> findByJob(Job job){
+        return (List<Silica>) silicaDao.findByJob(job);
+    }
+
+
     @Transactional
     @Override
     public Silica processAndSaveSilica(SilicaCreateDto silicaCreateDto){

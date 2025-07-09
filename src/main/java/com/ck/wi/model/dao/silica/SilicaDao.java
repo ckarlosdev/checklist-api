@@ -10,5 +10,8 @@ import java.util.List;
 
 @Repository
 public interface SilicaDao extends CrudRepository<Silica, Integer> {
+
     List<Silica> findByJobAndEventDate(Job job, LocalDate date);
+
+    List<Silica> findByJob(Job job);
 }

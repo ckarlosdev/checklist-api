@@ -15,5 +15,7 @@ public interface ISilica {
 
     List<Silica> findByJobAndEventDate(Job job, LocalDate eventDate);
 
+    List<Silica> findByJob(Job job);
+
     Silica processAndSaveSilica(SilicaCreateDto silicaCreateDto);
 }

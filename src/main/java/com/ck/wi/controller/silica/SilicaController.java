@@ -152,4 +152,44 @@ public class SilicaController {
 
         return silicaDtos;
     }
+
+    @GetMapping("silica/job/{number}")
+    public List<SilicaDto> getSilicaByNumber(
+            @PathVariable String number
+    ){
+        Job job = jobService.findByNumber(number);
+        List<Silica> silicas = silicaService.findByJob(job);
+        List<SilicaDto> silicaDtos = new ArrayList<>();
+
+        silicas.forEach( silica -> {
+            List<SilicaControlDto> silicaControlDtos =
+                    silica.getSilicaControls().stream()
+                            .map( silicaControl ->
+                                    SilicaControlDto.builder()
+                                            .silicaControlId(silicaControl.getSilicaControlsId())
+                                            .controlDescription(silicaControl.getControlsDescription())
+                                            .controlAnswer(silicaControl.getControlAnswer())
+                                            .build())
+                            .collect(Collectors.toList());
+
+            SilicaDto silicaDto = SilicaDto.builder()
+                    .silicaId(silica.getSilicaId())
+                    .job(silica.getJob())
+                    .employee(silica.getEmployee())
+                    .eventDate(silica.getEventDate())
+                    .workDescription(silica.getWorkDescription())
+                    .ventilationArea(silica.getVentilationArea())
+                    .datePlan(silica.getDatePlan())
+                    .equipmentDescription(silica.getEquipmentDescription())
+                    .signatureId(silica.getSignatureId())
+                    .signatureFolder(silica.getSignatureFolder())
+                    .silicaControls(silicaControlDtos)
+                    .diagramData(silica.getDiagramData())
+                    .build();
+
+            silicaDtos.add(silicaDto);
+        });
+
+        return silicaDtos;
+    }
 }
