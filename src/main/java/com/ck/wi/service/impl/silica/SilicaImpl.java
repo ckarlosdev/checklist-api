@@ -47,7 +47,7 @@ public class SilicaImpl implements ISilica {
 
     @Override
     public List<Silica> findByJob(Job job){
-        return (List<Silica>) silicaDao.findByJob(job);
+        return (List<Silica>) silicaDao.findByJobOrderByEventDateDesc(job);
     }
 
 
