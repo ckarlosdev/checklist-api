@@ -5,6 +5,7 @@ import com.ck.wi.model.entity.Job;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class SilicaWithControlsDto implements Serializable {
 //    private String diagramId;
 //    private String diagramFolder;
     private String ventilationArea;
-    private Date datePlan;
+    private LocalDate datePlan;
     private String equipmentDescription;
     private String signatureId;
     private String signatureFolder;

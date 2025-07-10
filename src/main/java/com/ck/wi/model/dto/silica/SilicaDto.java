@@ -24,7 +24,7 @@ public class SilicaDto implements Serializable {
 //    private String diagramId;
 //    private String diagramFolder;
     private String ventilationArea;
-    private Date datePlan;
+    private LocalDate datePlan;
     private String equipmentDescription;
     private String signatureId;
     private String signatureFolder;

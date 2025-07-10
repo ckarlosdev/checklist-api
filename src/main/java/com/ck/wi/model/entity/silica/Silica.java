@@ -52,7 +52,7 @@ public class Silica {
     private String ventilationArea;
 
     @Column(name = "plan_date")
-    private Date datePlan;
+    private LocalDate datePlan;
 
     @Column(name = "plan_equipment")
     private String equipmentDescription;
