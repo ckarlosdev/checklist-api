@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -14,7 +15,7 @@ import java.util.Date;
 @Builder
 @Entity
 @Table(name = "silica_controls")
-public class SilicaControl {
+public class SilicaControl implements Serializable {
 
     @Id
     @Column(name = "silica_controls_id")

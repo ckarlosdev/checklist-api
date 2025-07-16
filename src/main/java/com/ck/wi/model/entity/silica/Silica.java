@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -19,7 +20,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "silica")
-public class Silica {
+public class Silica implements Serializable {
 
     @Id
     @Column(name = "silica_id")

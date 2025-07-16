@@ -1,6 +1,5 @@
 package com.ck.wi.model.dao;
 
-import com.ck.wi.model.entity.Checklist;
 import com.ck.wi.model.entity.Job;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

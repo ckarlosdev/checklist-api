@@ -1,8 +1,6 @@
 package com.ck.wi.controller;
 
-import com.ck.wi.model.dto.EmployeeDto;
 import com.ck.wi.model.dto.JobDto;
-import com.ck.wi.model.entity.Employee;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.service.IJob;
 import org.springframework.beans.factory.annotation.Autowired;
