@@ -61,4 +61,27 @@ public class EquipmentIssueController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("issues/{flow}")
+    public List<EquipmentIssueRequestDto> showIssuesByFlow(@PathVariable String flow){
+        List<EquipmentIssue> issues = equipmentIssueService.findByFlow(flow);
+
+        return issues.stream()
+                .map(issue ->
+                        EquipmentIssueRequestDto.builder()
+                                .equipmentsIssuesId(issue.getEquipmentsIssuesId())
+                                .equipmentNumber(issue.getEquipment().getNumber())
+                                .equipmentName(issue.getEquipment().getName())
+                                .flow(issue.getFlow())
+                                .reportedBy(issue.getReportedBy())
+                                .reportedDate(issue.getReportedDate())
+                                .priorityIssue(issue.getPriorityIssue())
+                                .typeIssue(issue.getTypeIssue())
+                                .descriptionIssue(issue.getDescriptionIssue())
+                                .details(issue.getDetails())
+                                .createdBy(issue.getCreatedBy())
+                                .updatedBy(issue.getUpdatedBy())
+                                .build())
+                .collect(Collectors.toList());
+    }
+
 }

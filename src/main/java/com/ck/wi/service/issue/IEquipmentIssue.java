@@ -14,4 +14,6 @@ public interface IEquipmentIssue {
     EquipmentIssue findById(Integer equipmentIssueId);
 
     List<EquipmentIssue> findAll();
+
+    List<EquipmentIssue> findByFlow(String flow);
 }

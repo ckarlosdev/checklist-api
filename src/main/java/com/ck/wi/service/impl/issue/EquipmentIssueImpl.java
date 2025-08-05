@@ -104,4 +104,10 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     public List<EquipmentIssue> findAll() {
         return (List<EquipmentIssue>) equipmentIssueDao.findAll();
     }
+
+    @Override
+    public List<EquipmentIssue> findByFlow(String flow) {
+
+        return (List<EquipmentIssue>) equipmentIssueDao.findByFlowAndIssueStatus(flow, "1");
+    }
 }
