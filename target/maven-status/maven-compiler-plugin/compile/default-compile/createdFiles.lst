@@ -81,6 +81,7 @@ com\ck\wi\service\impl\googleChecklist\GoogleChecklistImpl.class
 com\ck\wi\model\entity\dailyReport\Photo$PhotoBuilder.class
 com\ck\wi\service\impl\silica\SilicaControlImpl.class
 com\ck\wi\controller\dailyReport\ProblemController.class
+com\ck\wi\model\dto\issue\EquipmentIssueRequestDto$EquipmentIssueRequestDtoBuilder.class
 com\ck\wi\model\entity\googleChecklist\EquipmentsGoogleChecklist$EquipmentsGoogleChecklistBuilder.class
 com\ck\wi\model\dto\request\DrEquipmentRequest.class
 com\ck\wi\model\dto\request\PhotoRequest.class
@@ -190,6 +191,7 @@ com\ck\wi\model\dto\dailyReport\ToolDto$ToolDtoBuilder.class
 com\ck\wi\model\dao\EmployeeDao.class
 com\ck\wi\model\dto\silica\SilicaControlDto$SilicaControlDtoBuilder.class
 com\ck\wi\model\entity\Checklist.class
+com\ck\wi\model\dto\issue\EquipmentIssueRequestDto.class
 com\ck\wi\controller\EmployeeController.class
 com\ck\wi\model\entity\hazard\PretasksSignature$PretasksSignatureBuilder.class
 com\ck\wi\model\dao\silica\ControlDescriptionDao.class

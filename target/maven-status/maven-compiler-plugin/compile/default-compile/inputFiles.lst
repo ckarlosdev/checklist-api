@@ -67,6 +67,7 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\PretasksOptionDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\PretasksSignatureDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\EquipmentIssueDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\EquipmentIssueRequestDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\IssuesHistoryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\JobDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\request\DailyReportRequest.java
