@@ -34,8 +34,23 @@ public class EquipmentIssueController {
     }
 
     @GetMapping("issue/{id}")
-    public EquipmentIssue showById(@PathVariable Integer id){
-        return equipmentIssueService.findById(id);
+    public EquipmentIssueRequestDto showById(@PathVariable Integer id){
+        EquipmentIssue equipmentIssue = equipmentIssueService.findById(id);
+
+        return EquipmentIssueRequestDto.builder()
+                    .equipmentsIssuesId(equipmentIssue.getEquipmentsIssuesId())
+                    .equipmentNumber(equipmentIssue.getEquipment().getNumber())
+                    .equipmentName(equipmentIssue.getEquipment().getName())
+                    .flow(equipmentIssue.getFlow())
+                    .reportedBy(equipmentIssue.getReportedBy())
+                    .reportedDate(equipmentIssue.getReportedDate())
+                    .priorityIssue(equipmentIssue.getPriorityIssue())
+                    .typeIssue(equipmentIssue.getTypeIssue())
+                    .descriptionIssue(equipmentIssue.getDescriptionIssue())
+                    .details(equipmentIssue.getDetails())
+                    .createdBy(equipmentIssue.getCreatedBy())
+                    .updatedBy(equipmentIssue.getUpdatedBy())
+                    .build();
     }
 
     @GetMapping("issues")
