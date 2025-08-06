@@ -29,8 +29,23 @@ public class EquipmentIssueController {
     }
 
     @PutMapping("issue")
-    public EquipmentIssue updateIssue(@RequestBody EquipmentIssueRequestDto equipmentIssueRequestDto){
-        return equipmentIssueService.update(equipmentIssueRequestDto);
+    public EquipmentIssueRequestDto updateIssue(@RequestBody EquipmentIssueRequestDto equipmentIssueRequestDto){
+        EquipmentIssue equipmentIssue = equipmentIssueService.update(equipmentIssueRequestDto);
+
+        return EquipmentIssueRequestDto.builder()
+                .equipmentsIssuesId(equipmentIssue.getEquipmentsIssuesId())
+                .equipmentNumber(equipmentIssue.getEquipment().getNumber())
+                .equipmentName(equipmentIssue.getEquipment().getName())
+                .flow(equipmentIssue.getFlow())
+                .reportedBy(equipmentIssue.getReportedBy())
+                .reportedDate(equipmentIssue.getReportedDate())
+                .priorityIssue(equipmentIssue.getPriorityIssue())
+                .typeIssue(equipmentIssue.getTypeIssue())
+                .descriptionIssue(equipmentIssue.getDescriptionIssue())
+                .details(equipmentIssue.getDetails())
+                .createdBy(equipmentIssue.getCreatedBy())
+                .updatedBy(equipmentIssue.getUpdatedBy())
+                .build();
     }
 
     @GetMapping("issue/{id}")
