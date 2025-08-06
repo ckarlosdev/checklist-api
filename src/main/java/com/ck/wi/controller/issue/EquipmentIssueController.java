@@ -29,8 +29,8 @@ public class EquipmentIssueController {
     }
 
     @PutMapping("issue")
-    public EquipmentIssue updateIssue(@RequestBody EquipmentIssueDto equipmentIssueDto){
-        return equipmentIssueService.update(equipmentIssueDto);
+    public EquipmentIssue updateIssue(@RequestBody EquipmentIssueRequestDto equipmentIssueRequestDto){
+        return equipmentIssueService.update(equipmentIssueRequestDto);
     }
 
     @GetMapping("issue/{id}")

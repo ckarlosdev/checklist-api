@@ -4,6 +4,7 @@ import com.ck.wi.model.dao.ChecklistDao;
 import com.ck.wi.model.dao.EquipmentDao;
 import com.ck.wi.model.dao.issue.EquipmentIssueDao;
 import com.ck.wi.model.dto.issue.EquipmentIssueDto;
+import com.ck.wi.model.dto.issue.EquipmentIssueRequestDto;
 import com.ck.wi.model.entity.Checklist;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.model.entity.Issue.EquipmentIssue;
@@ -60,31 +61,28 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     }
 
     @Override
-    public EquipmentIssue update(EquipmentIssueDto equipmentIssueDto) {
+    public EquipmentIssue update(EquipmentIssueRequestDto equipmentIssueRequestDto) {
 
-        Checklist checklist = checklistDao.findById(equipmentIssueDto.getChecklistsId()).orElse(null);
-
-        Equipment equipment = equipmentDao.findById(equipmentIssueDto.getEquipmentsId()).orElse(null);
-
-        EquipmentIssue equipmentIssueObj = equipmentIssueDao.findById(equipmentIssueDto.getEquipmentsIssuesId()).orElse(null);
+        EquipmentIssue equipmentIssueObj = equipmentIssueDao.findById(equipmentIssueRequestDto.getEquipmentsIssuesId()).orElse(null);
 
         LocalDateTime today = LocalDateTime.now();
 
-        if(checklist != null && equipment != null && equipmentIssueObj != null){
+//        if(checklist != null && equipment != null && equipmentIssueObj != null){
+        if(equipmentIssueObj != null){
             EquipmentIssue equipmentIssue = EquipmentIssue.builder()
-                    .equipmentsIssuesId(equipmentIssueDto.getEquipmentsIssuesId())
-                    .checklist(checklist)
-                    .equipment(equipment)
-                    .flow(equipmentIssueDto.getFlow())
-                    .reportedBy(equipmentIssueDto.getReportedBy())
-                    .reportedDate(equipmentIssueDto.getReportedDate())
-                    .priorityIssue(equipmentIssueDto.getPriorityIssue())
-                    .typeIssue(equipmentIssueDto.getTypeIssue())
-                    .descriptionIssue(equipmentIssueDto.getDescriptionIssue())
-                    .details(equipmentIssueDto.getDetails())
+                    .equipmentsIssuesId(equipmentIssueObj.getEquipmentsIssuesId())
+                    .checklist(equipmentIssueObj.getChecklist())
+                    .equipment(equipmentIssueObj.getEquipment())
+                    .flow(equipmentIssueObj.getFlow())
+                    .reportedBy(equipmentIssueObj.getReportedBy())
+                    .reportedDate(equipmentIssueObj.getReportedDate())
+                    .priorityIssue(equipmentIssueObj.getPriorityIssue())
+                    .typeIssue(equipmentIssueObj.getTypeIssue())
+                    .descriptionIssue(equipmentIssueObj.getDescriptionIssue())
+                    .details(equipmentIssueObj.getDetails())
                     .createdBy(equipmentIssueObj.getCreatedBy())
                     .createdDate(equipmentIssueObj.getCreatedDate())
-                    .updatedBy(equipmentIssueDto.getUpdatedBy())
+                    .updatedBy(equipmentIssueObj.getUpdatedBy())
                     .updatedDate(today)
                     .issueStatus("1")
                     .build();
