@@ -5,10 +5,13 @@ import com.ck.wi.model.dao.EquipmentDao;
 import com.ck.wi.model.dao.issue.EquipmentIssueDao;
 import com.ck.wi.model.dto.issue.EquipmentIssueDto;
 import com.ck.wi.model.dto.issue.EquipmentIssueRequestDto;
+import com.ck.wi.model.dto.issue.IssuesHistoryDto;
 import com.ck.wi.model.entity.Checklist;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.model.entity.Issue.EquipmentIssue;
+import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
+import com.ck.wi.service.issue.IIssuesHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,9 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
 
     @Autowired
     private EquipmentDao equipmentDao;
+
+    @Autowired
+    private IIssuesHistory issuesHistoryService;
 
     @Override
     public EquipmentIssue save(EquipmentIssueDto equipmentIssueDto) {
@@ -54,7 +60,21 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
                     .issueStatus("1")
                     .build();
 
-            return equipmentIssueDao.save(equipmentIssue);
+//            return equipmentIssueDao.save(equipmentIssue);
+            EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
+
+
+            IssuesHistoryDto historyDto = IssuesHistoryDto.builder()
+                    .equipmentsIssuesId(updatedIssue.getEquipmentsIssuesId()) // ID del Issue padre
+                    .lastFlow("New insert") // Flujo anterior
+                    .newFlow(updatedIssue.getFlow()) // Nuevo flujo
+                    .comments("") // Asume que el DTO de Issue tiene un campo para comentarios de actualización
+                    .createdBy(equipmentIssueDto.getUpdatedBy()) // Quien actualizó el Issue es quien crea el historial
+                    .build();
+
+            issuesHistoryService.save(historyDto);
+
+            return updatedIssue;
         } else {
             throw new IllegalArgumentException("Issue not saved.");
         }
@@ -66,6 +86,7 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
         EquipmentIssue equipmentIssueObj = equipmentIssueDao.findById(equipmentIssueRequestDto.getEquipmentsIssuesId()).orElse(null);
 
         LocalDateTime today = LocalDateTime.now();
+        String oldFlow = equipmentIssueObj.getFlow();
 
 //        if(checklist != null && equipment != null && equipmentIssueObj != null){
         if(equipmentIssueObj != null){
@@ -87,7 +108,23 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
                     .issueStatus("1")
                     .build();
 
-            return equipmentIssueDao.save(equipmentIssue);
+//            return equipmentIssueDao.save(equipmentIssue);
+            EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
+
+
+            if (!oldFlow.equals(updatedIssue.getFlow())) {
+                IssuesHistoryDto historyDto = IssuesHistoryDto.builder()
+                        .equipmentsIssuesId(updatedIssue.getEquipmentsIssuesId()) // ID del Issue padre
+                        .lastFlow(oldFlow) // Flujo anterior
+                        .newFlow(updatedIssue.getFlow()) // Nuevo flujo
+                        .comments(equipmentIssueRequestDto.getComments()) // Asume que el DTO de Issue tiene un campo para comentarios de actualización
+                        .createdBy(equipmentIssueRequestDto.getUpdatedBy()) // Quien actualizó el Issue es quien crea el historial
+                        .build();
+
+                issuesHistoryService.save(historyDto); // Llama al servicio de historial
+            }
+
+            return updatedIssue;
         } else {
             throw new IllegalArgumentException("Issue not saved.");
         }

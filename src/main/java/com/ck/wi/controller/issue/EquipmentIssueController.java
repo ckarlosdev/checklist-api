@@ -3,6 +3,7 @@ package com.ck.wi.controller.issue;
 import com.ck.wi.model.dto.issue.EquipmentIssueDto;
 import com.ck.wi.model.dto.issue.EquipmentIssueRequestDto;
 import com.ck.wi.model.entity.Issue.EquipmentIssue;
+import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,7 @@ public class EquipmentIssueController {
                 .details(equipmentIssue.getDetails())
                 .createdBy(equipmentIssue.getCreatedBy())
                 .updatedBy(equipmentIssue.getUpdatedBy())
+                .comments("")
                 .build();
     }
 

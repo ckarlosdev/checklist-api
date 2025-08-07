@@ -26,26 +26,25 @@ public class IssuesHistoryImpl implements IIssuesHistory {
     @Override
     public IssuesHistory save(IssuesHistoryDto issuesHistoryDto) {
 
-        EquipmentIssue equipmentIssue =  equipmentIssueDao.findById(issuesHistoryDto.getEquipmentsIssuesId()).orElse(null);
+        EquipmentIssue equipmentIssue = equipmentIssueDao.findById(issuesHistoryDto.getEquipmentsIssuesId())
+                .orElseThrow(() -> new IllegalArgumentException("Equipment Issue with ID " + issuesHistoryDto.getEquipmentsIssuesId() + " not found."));
+
+        issuesHistoryDao.updateHistoryStatusByEquipmentIssueId(equipmentIssue.getEquipmentsIssuesId(), "2");
 
         LocalDateTime today = LocalDateTime.now();
 
-        if(equipmentIssue != null){
-            IssuesHistory issuesHistory = IssuesHistory.builder()
-                    .issuesHistoryId(issuesHistoryDto.getIssuesHistoryId())
-                    .equipmentIssue(equipmentIssue)
-                    .lastFlow(issuesHistoryDto.getLastFlow())
-                    .newFlow(issuesHistoryDto.getNewFlow())
-                    .comments(issuesHistoryDto.getComments())
-                    .createdBy(issuesHistoryDto.getCreatedBy())
-                    .createdDate(today)
-                    .historyStatus(issuesHistoryDto.getStatus())
-                    .build();
+        IssuesHistory issuesHistory = IssuesHistory.builder()
+//                .issuesHistoryId(issuesHistoryDto.getIssuesHistoryId())
+                .equipmentIssue(equipmentIssue)
+                .lastFlow(issuesHistoryDto.getLastFlow())
+                .newFlow(issuesHistoryDto.getNewFlow())
+                .comments(issuesHistoryDto.getComments())
+                .createdBy(issuesHistoryDto.getCreatedBy())
+                .createdDate(today)
+                .historyStatus("1")
+                .build();
 
-            return issuesHistoryDao.save(issuesHistory);
-        }else {
-            throw new IllegalArgumentException("Issue not found.");
-        }
+        return issuesHistoryDao.save(issuesHistory);
     }
 
     @Transactional

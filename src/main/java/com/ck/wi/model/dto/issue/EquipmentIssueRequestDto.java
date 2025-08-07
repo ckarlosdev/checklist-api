@@ -22,4 +22,5 @@ public class EquipmentIssueRequestDto {
     private String details;
     private String createdBy;
     private String updatedBy;
+    private String comments;
 }
