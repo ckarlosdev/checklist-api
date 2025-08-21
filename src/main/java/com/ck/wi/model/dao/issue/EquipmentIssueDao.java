@@ -11,4 +11,6 @@ public interface EquipmentIssueDao extends CrudRepository<EquipmentIssue, Intege
 
     List<EquipmentIssue> findByFlowAndIssueStatus(String flow, String status);
 
+    List<EquipmentIssue> findByIssueStatus(String issueStatus);
+
 }

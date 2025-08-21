@@ -141,6 +141,11 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     }
 
     @Override
+    public List<EquipmentIssue> findByIssueStatus() {
+        return (List<EquipmentIssue>) equipmentIssueDao.findByIssueStatus("1");
+    }
+
+    @Override
     public List<EquipmentIssue> findByFlow(String flow) {
 
         return (List<EquipmentIssue>) equipmentIssueDao.findByFlowAndIssueStatus(flow, "1");

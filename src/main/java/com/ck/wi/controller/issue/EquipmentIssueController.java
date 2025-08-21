@@ -72,7 +72,7 @@ public class EquipmentIssueController {
 
     @GetMapping("issues")
     public List<EquipmentIssueRequestDto> showAll(){
-        List<EquipmentIssue> issues = equipmentIssueService.findAll();
+        List<EquipmentIssue> issues = equipmentIssueService.findByIssueStatus();
 
         return issues.stream()
                 .map(issue ->

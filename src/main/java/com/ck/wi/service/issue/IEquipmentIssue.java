@@ -16,5 +16,9 @@ public interface IEquipmentIssue {
 
     List<EquipmentIssue> findAll();
 
+    List<EquipmentIssue> findByIssueStatus();
+
     List<EquipmentIssue> findByFlow(String flow);
+
+
 }
