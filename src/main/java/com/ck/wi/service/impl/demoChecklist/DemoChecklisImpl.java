@@ -39,100 +39,107 @@ public class DemoChecklisImpl implements IDemoChecklist {
 
     @Transactional
     @Override
-    public DemoChecklist processAndSaveDemoChecklist(DemoChecklistCreateDto demoChecklistCreateDto){
-        if(demoChecklistCreateDto.getJobsId() == null){
+    public DemoChecklist processAndSaveDemoChecklist(DemoChecklistCreateDto demoChecklistCreateDto) {
+        // ... (Tu código para encontrar o crear demoChecklist y job) ...
+        if (demoChecklistCreateDto.getJobsId() == null) {
             throw new IllegalArgumentException("Job ID must not be null");
         }
 
-        Optional<Job> jobOpt = jobDao.findById(demoChecklistCreateDto.getJobsId());
-        ZoneId yourZone = ZoneId.of("America/Chicago");
-        ZonedDateTime today = ZonedDateTime.now(yourZone);
+        Job job = jobDao.findById(demoChecklistCreateDto.getJobsId())
+                .orElseThrow(() -> new IllegalArgumentException("Job not found"));
 
-        if(jobOpt.isPresent()){
-            DemoChecklist demoChecklist;
-            if(demoChecklistCreateDto.getDemoChecklistsId() != null && demoChecklistCreateDto.getDemoChecklistsId() != 0){
-                demoChecklist = demoChecklistDao.findById(demoChecklistCreateDto.getDemoChecklistsId())
-                        .orElseThrow(() -> new IllegalArgumentException("Demo Checkist not found"));
+        ZonedDateTime today = ZonedDateTime.now(ZoneId.of("America/Chicago"));
+        DemoChecklist demoChecklist;
 
-                demoChecklist.setJob(jobOpt.get());
-                demoChecklist.setChecklistDate(demoChecklistCreateDto.getChecklistDate());
-                demoChecklist.setBuildingType(demoChecklistCreateDto.getBuildingType());
-                demoChecklist.setForeman(demoChecklistCreateDto.getForeman());
-                demoChecklist.setNotes(demoChecklistCreateDto.getNotes());
-                demoChecklist.setSignature(demoChecklistCreateDto.getSignature());
-                demoChecklist.setPermits(demoChecklistCreateDto.getPermits());
-                demoChecklist.setUpdatedBy(demoChecklistCreateDto.getUpdatedBy());
-                demoChecklist.setUpdatedDate(today);
+        if (demoChecklistCreateDto.getDemoChecklistsId() != null && demoChecklistCreateDto.getDemoChecklistsId() != 0) {
+            demoChecklist = demoChecklistDao.findById(demoChecklistCreateDto.getDemoChecklistsId())
+                    .orElseThrow(() -> new IllegalArgumentException("Demo Checklist not found"));
 
-            }else{
-                demoChecklist = DemoChecklist.builder()
-                        .job(jobOpt.get())
-                        .checklistDate(demoChecklistCreateDto.getChecklistDate())
-                        .buildingType(demoChecklistCreateDto.getBuildingType())
-                        .foreman(demoChecklistCreateDto.getForeman())
-                        .notes(demoChecklistCreateDto.getNotes())
-                        .signature(demoChecklistCreateDto.getSignature())
-                        .permits(demoChecklistCreateDto.getPermits())
-                        .createdBy(demoChecklistCreateDto.getCreatedBy())
-                        .createdDate(today)
-                        .updatedBy(demoChecklistCreateDto.getUpdatedBy())
-                        .updatedDate(today)
-                        .demoChecklistsStatus("1")
-                        .build();
-            }
+            demoChecklist.setJob(job);
+            demoChecklist.setChecklistDate(demoChecklistCreateDto.getChecklistDate());
+            demoChecklist.setBuildingType(demoChecklistCreateDto.getBuildingType());
+            demoChecklist.setForeman(demoChecklistCreateDto.getForeman());
+            demoChecklist.setNotes(demoChecklistCreateDto.getNotes());
+            demoChecklist.setSignature(demoChecklistCreateDto.getSignature());
+            demoChecklist.setPermits(demoChecklistCreateDto.getPermits());
+            demoChecklist.setUpdatedBy(demoChecklistCreateDto.getUpdatedBy());
+            demoChecklist.setUpdatedDate(today);
 
-            DemoChecklist demoChecklistSaved = demoChecklistDao.save(demoChecklist);
-
-            if(demoChecklistCreateDto.getItems() == null || demoChecklistCreateDto.getItems().isEmpty()){
-                if(demoChecklistSaved.getItems() != null){
-                    demoChecklistSaved.getItems().clear();
-                }
-            }else{
-                Map<Integer, DemoChecklistsItem> existingItemsMap =
-                        demoChecklistSaved.getItems() != null
-                                ? demoChecklistSaved.getItems().stream()
-                                .filter(c ->  c.getDemoChecklistsItemsId() != null)
-                                .collect(Collectors.toMap(DemoChecklistsItem::getDemoChecklistsItemsId,c -> c))
-                                : new HashMap<>();
-
-                List<DemoChecklistsItem> updatedItems = new ArrayList<>();
-
-                for(DemoChecklistsItemDto demoChecklistsItemDto : demoChecklistCreateDto.getItems()){
-                    DemoItem demoItem = demoItemDao.findById(demoChecklistsItemDto.getDemoItemsId())
-                            .orElseThrow(() -> new IllegalArgumentException("demoItem not found"));
-
-                    DemoChecklistsItem demoChecklistsItem;
-                    if(demoChecklistsItemDto.getDemoChecklistsId() != null && demoChecklistsItemDto.getDemoChecklistsId() != 0 && existingItemsMap.containsKey(demoChecklistsItemDto.getDemoChecklistsId())){
-                        // update
-                        demoChecklistsItem = existingItemsMap.get(demoChecklistsItemDto.getDemoChecklistsId());
-                        demoChecklistsItem.setDemoItem(demoItem);
-                        demoChecklistsItem.setResponse(demoChecklistsItemDto.getResponse());
-                        demoChecklistsItem.setDciStatus("1");
-                    }else{
-                        // create
-                        demoChecklistsItem = DemoChecklistsItem.builder()
-                                .demoItem(demoItem)
-                                .response(demoChecklistsItemDto.getResponse())
-                                .dciStatus("1")
-                                .build();
-                    }
-
-                    demoChecklistsItem.setDemoChecklist(demoChecklistSaved);
-                    updatedItems.add(demoChecklistsItem);
-                }
-
-                if(demoChecklistSaved.getItems() != null){
-                    demoChecklistSaved.getItems().clear();
-                    demoChecklistSaved.getItems().addAll(updatedItems);
-                } else {
-                    demoChecklistSaved.setItems(updatedItems);
-                }
-            }
-
-            return demoChecklistDao.save(demoChecklistSaved);
         } else {
-            throw new IllegalArgumentException("job not found");
+            demoChecklist = DemoChecklist.builder()
+                    .job(job)
+                    .checklistDate(demoChecklistCreateDto.getChecklistDate())
+                    .buildingType(demoChecklistCreateDto.getBuildingType())
+                    .foreman(demoChecklistCreateDto.getForeman())
+                    .notes(demoChecklistCreateDto.getNotes())
+                    .signature(demoChecklistCreateDto.getSignature())
+                    .permits(demoChecklistCreateDto.getPermits())
+                    .createdBy(demoChecklistCreateDto.getCreatedBy())
+                    .createdDate(today)
+                    .updatedBy(demoChecklistCreateDto.getUpdatedBy())
+                    .updatedDate(today)
+                    .demoChecklistsStatus("1")
+                    .build();
         }
+
+        DemoChecklist demoChecklistSaved = demoChecklistDao.save(demoChecklist);
+
+        // 2. Procesar los ítems
+        List<DemoChecklistsItem> existingItems = demoChecklistSaved.getItems();
+
+        if (demoChecklistCreateDto.getItems() == null || demoChecklistCreateDto.getItems().isEmpty()) {
+            // Eliminar todos los ítems existentes si no se envían nuevos.
+            if (existingItems != null && !existingItems.isEmpty()) {
+                existingItems.clear();
+            }
+        } else {
+            // Actualización inteligente:
+
+            // Mapear los ítems existentes para una búsqueda rápida
+            Map<Integer, DemoChecklistsItem> existingItemsMap = new HashMap<>();
+            if (existingItems != null) {
+                existingItems.forEach(item -> existingItemsMap.put(item.getDemoItem().getDemoItemsId(), item));
+            }
+
+            // Crear una lista de IDs de ítems entrantes para comparar
+            Set<Integer> incomingItemIds = demoChecklistCreateDto.getItems().stream()
+                    .map(DemoChecklistsItemDto::getDemoItemsId)
+                    .collect(Collectors.toSet());
+
+            // Identificar y eliminar los ítems huérfanos
+            if (existingItems != null) {
+                existingItems.removeIf(item -> !incomingItemIds.contains(item.getDemoItem().getDemoItemsId()));
+            }
+
+            // Procesar los ítems entrantes (crear o actualizar)
+            for (DemoChecklistsItemDto demoChecklistsItemDto : demoChecklistCreateDto.getItems()) {
+                DemoItem demoItem = demoItemDao.findById(demoChecklistsItemDto.getDemoItemsId())
+                        .orElseThrow(() -> new IllegalArgumentException("Demo Item not found"));
+
+                DemoChecklistsItem existingItem = existingItemsMap.get(demoChecklistsItemDto.getDemoItemsId());
+
+                if (existingItem != null) {
+                    // Actualizar el ítem existente
+                    existingItem.setResponse(demoChecklistsItemDto.getResponse());
+                    existingItem.setDemoItem(demoItem);
+                } else {
+                    // Crear un nuevo ítem y agregarlo a la colección gestionada por Hibernate
+                    DemoChecklistsItem newItem = DemoChecklistsItem.builder()
+                            .demoItem(demoItem)
+                            .response(demoChecklistsItemDto.getResponse())
+                            .dciStatus("1")
+                            .demoChecklist(demoChecklistSaved)
+                            .build();
+                    if (existingItems == null) {
+                        demoChecklistSaved.setItems(new ArrayList<>());
+                        existingItems = demoChecklistSaved.getItems();
+                    }
+                    existingItems.add(newItem);
+                }
+            }
+        }
+
+        return demoChecklistDao.save(demoChecklistSaved);
     }
 
     public Optional<DemoChecklistCreateDto> getDemoChecklistByID(Integer id){
