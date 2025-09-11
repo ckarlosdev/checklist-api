@@ -99,8 +99,11 @@ public class DemoChecklistController {
 
     @GetMapping("demoChecklist/{demoChecklistId}")
     public Optional<DemoChecklistCreateDto>  getDemoChecklist(@PathVariable Integer demoChecklistId){
-
         return demoChecklistService.getDemoChecklistByID(demoChecklistId);
+    }
 
+    @GetMapping("demoChecklist/job/{jobNumber}")
+    public List<DemoChecklist>  getDemoByJobNumber(@PathVariable String jobNumber){
+        return demoChecklistService.getDemoChecklistByjobNumber(jobNumber);
     }
 }

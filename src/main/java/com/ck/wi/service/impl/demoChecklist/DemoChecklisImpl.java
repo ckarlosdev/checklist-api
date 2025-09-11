@@ -172,4 +172,14 @@ public class DemoChecklisImpl implements IDemoChecklist {
                    demoChecklist.getUpdatedBy());
         });
     }
+
+    public List<DemoChecklist> getDemoChecklistByjobNumber(String jobNumber){
+        Job job = jobDao.findByNumber(jobNumber).orElse(null);
+
+        if(job != null) {
+            return demoChecklistDao.findByJobAndDemoChecklistsStatus(job, "1");
+        }
+
+        return null;
+    }
 }
