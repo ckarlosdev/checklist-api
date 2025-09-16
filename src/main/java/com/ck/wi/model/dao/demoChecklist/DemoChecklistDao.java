@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DemoChecklistDao extends CrudRepository<DemoChecklist, Integer> {
-    List<DemoChecklist> findByJobAndDemoChecklistsStatus(Job job, String status);
+    List<DemoChecklist> findByJobAndDemoChecklistsStatusOrderByChecklistDateDesc(Job job, String status);
 }

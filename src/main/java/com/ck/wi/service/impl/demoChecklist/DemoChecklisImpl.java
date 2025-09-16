@@ -177,7 +177,7 @@ public class DemoChecklisImpl implements IDemoChecklist {
         Job job = jobDao.findByNumber(jobNumber).orElse(null);
 
         if(job != null) {
-            return demoChecklistDao.findByJobAndDemoChecklistsStatus(job, "1");
+            return demoChecklistDao.findByJobAndDemoChecklistsStatusOrderByChecklistDateDesc(job, "1");
         }
 
         return null;
