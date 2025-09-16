@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class EquipmentImpl implements IEquipment {
 
@@ -29,5 +31,11 @@ public class EquipmentImpl implements IEquipment {
     @Override
     public void delete(Equipment equipment) {
         equipmentDao.delete(equipment);
+    }
+
+    @Transactional
+    @Override
+    public List<Equipment> findAll() {
+        return (List<Equipment>) equipmentDao.findAll();
     }
 }

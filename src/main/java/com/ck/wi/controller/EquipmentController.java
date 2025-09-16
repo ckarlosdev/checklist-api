@@ -5,6 +5,8 @@ import com.ck.wi.service.IEquipment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 //@CrossOrigin(origins = "https://oleo-soft.com", methods = {RequestMethod.GET, RequestMethod.POST})
 @CrossOrigin(origins = {
         "http://127.0.0.1:5500",
@@ -38,5 +40,10 @@ public class EquipmentController {
     @GetMapping("equipment/{id}")
     public Equipment showById(@PathVariable Integer id){
         return equipmentService.findById(id);
+    }
+
+    @GetMapping("equipments")
+    public List<Equipment> showById(){
+        return equipmentService.findAll();
     }
 }
