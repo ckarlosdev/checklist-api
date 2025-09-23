@@ -10,6 +10,7 @@ com\ck\wi\controller\googleChecklist\EquipmentsGoogleChecklistController.class
 com\ck\wi\model\dto\hazard\PreTaskDto$PreTaskDtoBuilder.class
 com\ck\wi\model\dao\silica\SilicaDao.class
 com\ck\wi\model\dto\googleChecklist\EquipmentsGoogleChecklistDto.class
+com\ck\wi\model\dto\odometer\OdometersHistoryDto$OdometersHistoryDtoBuilder.class
 com\ck\wi\model\dto\JobDto$JobDtoBuilder.class
 com\ck\wi\controller\silica\SilicaController.class
 com\ck\wi\model\dto\dailyReport\DailyReportDto$DailyReportDtoBuilder.class
@@ -18,6 +19,7 @@ com\ck\wi\service\dailyReport\IDailyReport.class
 com\ck\wi\service\impl\dailyReport\ProblemImpl.class
 com\ck\wi\model\entity\Issue\EquipmentIssue$EquipmentIssueBuilder.class
 com\ck\wi\model\entity\silica\Silica$SilicaBuilder.class
+com\ck\wi\service\odometer\IOdometer.class
 com\ck\wi\service\impl\ChecklistImpl.class
 com\ck\wi\model\dto\dailyReport\DumpsterDto.class
 com\ck\wi\model\entity\dailyReport\Tool$ToolBuilder.class
@@ -47,6 +49,7 @@ com\ck\wi\model\entity\demoChecklist\DemoChecklistsItem$DemoChecklistsItemBuilde
 com\ck\wi\model\dto\dailyReport\ProblemDto.class
 com\ck\wi\service\silica\IControl.class
 com\ck\wi\service\impl\silica\ControlImpl.class
+com\ck\wi\controller\odometer\OdometerController.class
 com\ck\wi\model\dto\silica\SilicaWithControlsDto$SilicaWithControlsDtoBuilder.class
 com\ck\wi\controller\dailyReport\DumpsterController.class
 com\ck\wi\model\entity\silica\Silica.class
@@ -82,6 +85,7 @@ com\ck\wi\service\IEmployee.class
 com\ck\wi\model\entity\googleChecklist\GoogleChecklist$GoogleChecklistBuilder.class
 com\ck\wi\model\dto\request\ToolRequest.class
 com\ck\wi\service\hazard\IPretasksSignature.class
+com\ck\wi\model\dto\odometer\OdometersHistoryDto.class
 com\ck\wi\model\entity\hazard\PretasksCheckboxOption.class
 com\ck\wi\service\dailyReport\IPhoto.class
 com\ck\wi\model\dto\silica\ControlDescriptionRequestDto.class
@@ -89,6 +93,7 @@ com\ck\wi\service\impl\googleChecklist\GoogleChecklistImpl.class
 com\ck\wi\model\entity\dailyReport\Photo$PhotoBuilder.class
 com\ck\wi\service\impl\silica\SilicaControlImpl.class
 com\ck\wi\controller\dailyReport\ProblemController.class
+com\ck\wi\model\dao\odometer\OdometersHistoryDao.class
 com\ck\wi\model\dto\issue\EquipmentIssueRequestDto$EquipmentIssueRequestDtoBuilder.class
 com\ck\wi\model\entity\googleChecklist\EquipmentsGoogleChecklist$EquipmentsGoogleChecklistBuilder.class
 com\ck\wi\model\dto\request\DrEquipmentRequest.class
@@ -96,7 +101,9 @@ com\ck\wi\model\dto\request\PhotoRequest.class
 com\ck\wi\model\dao\dailyReport\ToolDao.class
 com\ck\wi\model\entity\Equipment.class
 com\ck\wi\model\entity\Issue\IssuesHistory$IssuesHistoryBuilder.class
+com\ck\wi\model\dto\odometer\OdometerSearchDto.class
 com\ck\wi\service\silica\ISilicaControl.class
+com\ck\wi\model\entity\odometer\Odometer.class
 com\ck\wi\model\dao\issue\EquipmentIssueDao.class
 com\ck\wi\service\impl\dailyReport\DrEmployeeImpl.class
 com\ck\wi\model\dto\ChecklistDto$ChecklistDtoBuilder.class
@@ -114,6 +121,7 @@ com\ck\wi\model\entity\Job$JobBuilder.class
 com\ck\wi\controller\hazard\PretasksSignatureController.class
 com\ck\wi\model\dto\demoChecklist\DemoChecklistsItemDto.class
 com\ck\wi\service\issue\IIssuesHistory.class
+com\ck\wi\model\dto\odometer\OdometerSearchDto$OdometerSearchDtoBuilder.class
 com\ck\wi\model\dto\silica\ControlsDescriptionDto$ControlsDescriptionDtoBuilder.class
 com\ck\wi\model\entity\dailyReport\Photo.class
 com\ck\wi\model\dto\silica\SilicaCreateDto$SilicaCreateDtoBuilder.class
@@ -126,12 +134,14 @@ com\ck\wi\service\dailyReport\IProblem.class
 com\ck\wi\service\demoChecklist\IDemoChecklist.class
 com\ck\wi\service\impl\JobImpl.class
 com\ck\wi\controller\dailyReport\DailyReportController.class
+com\ck\wi\service\odometer\IOdometersHistory.class
 com\ck\wi\model\dao\hazard\PretasksCheckboxOptionDao.class
 com\ck\wi\SecurityConfig.class
 com\ck\wi\model\dto\request\DailyReportRequest.class
 com\ck\wi\model\dto\dailyReport\DumpsterSummaryDto.class
 com\ck\wi\service\impl\EquipmentImpl.class
 com\ck\wi\model\entity\hazard\PreTask.class
+com\ck\wi\service\impl\odometer\OdometersHistoryImpl.class
 com\ck\wi\service\IJob.class
 com\ck\wi\controller\hazard\PretasksCheckboxOptionController.class
 com\ck\wi\model\dto\EmployeeDto.class
@@ -165,6 +175,7 @@ com\ck\wi\controller\demoChecklist\DemoChecklistController.class
 com\ck\wi\model\dto\dailyReport\DrEmployeeDto$DrEmployeeDtoBuilder.class
 com\ck\wi\model\entity\silica\SilicaControl$SilicaControlBuilder.class
 com\ck\wi\service\IEquipment.class
+com\ck\wi\model\dao\odometer\OdometerDao.class
 com\ck\wi\model\dto\dailyReport\DrEquipmentDto.class
 com\ck\wi\model\dto\EmployeeDto$EmployeeDtoBuilder.class
 com\ck\wi\service\hazard\IPretasksCheckboxOption.class
@@ -176,16 +187,20 @@ com\ck\wi\model\entity\silica\Control$ControlBuilder.class
 com\ck\wi\model\entity\silica\Control.class
 com\ck\wi\controller\issue\IssuesHistoryController.class
 com\ck\wi\service\impl\silica\ControlDescriptionImpl.class
+com\ck\wi\model\dto\odometer\OdometerDto$OdometerDtoBuilder.class
 com\ck\wi\model\dto\demoChecklist\DemoChecklistCreateDto.class
 com\ck\wi\model\dto\issue\EquipmentIssueDto.class
 com\ck\wi\controller\dailyReport\PhotoController.class
 com\ck\wi\model\entity\hazard\PreTask$PreTaskBuilder.class
 com\ck\wi\model\entity\dailyReport\DrEmployee.class
+com\ck\wi\model\entity\odometer\OdometersHistory.class
 com\ck\wi\model\entity\dailyReport\DrEquipment.class
 com\ck\wi\model\dto\ChecklistDto.class
 com\ck\wi\model\dto\hazard\PretasksOptionDto.class
 com\ck\wi\model\entity\Issue\EquipmentIssue.class
+com\ck\wi\model\entity\odometer\Odometer$OdometerBuilder.class
 com\ck\wi\model\dao\demoChecklist\DemoItemDao.class
+com\ck\wi\model\dto\odometer\OdometerDto.class
 com\ck\wi\model\dto\request\DumpsterRequest.class
 com\ck\wi\model\dao\demoChecklist\DemoChecklistsItemDao.class
 com\ck\wi\model\dto\issue\IssuesHistoryDto$IssuesHistoryDtoBuilder.class
@@ -200,6 +215,8 @@ com\ck\wi\model\entity\dailyReport\DailyReport$DailyReportBuilder.class
 com\ck\wi\model\entity\dailyReport\Problem$ProblemBuilder.class
 com\ck\wi\model\dto\hazard\PretasksOptionDto$PretasksOptionDtoBuilder.class
 com\ck\wi\model\entity\Checklist$ChecklistBuilder.class
+com\ck\wi\model\entity\odometer\OdometersHistory$OdometersHistoryBuilder.class
+com\ck\wi\service\impl\odometer\OdometerImpl.class
 com\ck\wi\controller\hazard\ActivityController.class
 com\ck\wi\service\impl\dailyReport\PhotoImpl.class
 com\ck\wi\model\dto\dailyReport\PhotoDto$PhotoDtoBuilder.class

@@ -20,6 +20,7 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\issue\EquipmentIssueController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\issue\IssuesHistoryController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\JobController.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\odometer\OdometerController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\silica\ControlController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\silica\SilicaControlController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\silica\SilicaController.java
@@ -48,6 +49,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\issue\EquipmentIssueDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\issue\IssuesHistoryDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\JobDao.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\odometer\OdometerDao.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\odometer\OdometersHistoryDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\silica\ControlDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\silica\ControlDescriptionDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\silica\SilicaControlDao.java
@@ -77,6 +80,9 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\EquipmentIssueRequestDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\IssuesHistoryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\JobDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\odometer\OdometerDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\odometer\OdometerSearchDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\odometer\OdometersHistoryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\request\DailyReportRequest.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\request\DrEmployeeRequest.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\request\DrEquipmentRequest.java
@@ -115,6 +121,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\Issue\EquipmentIssue.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\Issue\IssuesHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\Job.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\odometer\Odometer.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\odometer\OdometersHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\silica\Control.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\silica\ControlsDescription.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\silica\Silica.java
@@ -160,12 +168,16 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\issue\EquipmentIssueImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\issue\IssuesHistoryImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\JobImpl.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\odometer\OdometerImpl.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\odometer\OdometersHistoryImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\silica\ControlDescriptionImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\silica\ControlImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\silica\SilicaControlImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\silica\SilicaImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\issue\IEquipmentIssue.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\issue\IIssuesHistory.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\odometer\IOdometer.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\odometer\IOdometersHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\silica\IControl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\silica\IControlsDescription.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\silica\ISilica.java
