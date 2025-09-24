@@ -2,8 +2,10 @@ package com.ck.wi.model.entity.odometer;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -34,7 +36,7 @@ public class OdometersHistory implements Serializable {
     private String reportedBy;
 
     @Column(name = "reported_date")
-    private Date reportedDate;
+    private LocalDate reportedDate;
 
     @Column(name = "created_by")
     private String createdBy;

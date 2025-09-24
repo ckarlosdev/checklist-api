@@ -178,6 +178,7 @@ com\ck\wi\service\IEquipment.class
 com\ck\wi\model\dao\odometer\OdometerDao.class
 com\ck\wi\model\dto\dailyReport\DrEquipmentDto.class
 com\ck\wi\model\dto\EmployeeDto$EmployeeDtoBuilder.class
+com\ck\wi\model\dto\odometer\OdometerSaveDto$OdometerSaveDtoBuilder.class
 com\ck\wi\service\hazard\IPretasksCheckboxOption.class
 com\ck\wi\service\impl\demoChecklist\DemoChecklistsItemImpl.class
 com\ck\wi\controller\dailyReport\DrEquipmentController.class
@@ -226,6 +227,7 @@ com\ck\wi\controller\googleChecklist\GoogleChecklistController.class
 com\ck\wi\service\impl\googleChecklist\EquipmentsGoogleChecklistImpl.class
 com\ck\wi\model\dto\dailyReport\ToolDto$ToolDtoBuilder.class
 com\ck\wi\model\dao\EmployeeDao.class
+com\ck\wi\model\dto\odometer\OdometerSaveDto.class
 com\ck\wi\model\dto\silica\SilicaControlDto$SilicaControlDtoBuilder.class
 com\ck\wi\model\entity\Checklist.class
 com\ck\wi\model\dto\issue\EquipmentIssueRequestDto.class

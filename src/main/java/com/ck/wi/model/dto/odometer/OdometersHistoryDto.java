@@ -3,7 +3,7 @@ package com.ck.wi.model.dto.odometer;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +17,7 @@ public class OdometersHistoryDto implements Serializable {
     private Double previousLecture;
     private Double newLecture;
     private String reportedBy;
-    private Date reportedDate;
+    private LocalDate reportedDate;
     private String createdBy;
 
 }

@@ -20,4 +20,16 @@ public interface OdometersHistoryDao extends CrudRepository<OdometersHistory, In
     @Modifying
     @Query("UPDATE OdometersHistory oh SET oh.odometersStatus = '0' WHERE oh.odometersId = :odometersId AND oh.odometersStatus = '1'")
     void invalidatePreviousRecords(@Param("odometersId") Integer odometersId);
+
+//    @Modifying
+//    @Query("UPDATE OdometersHistory oh SET oh.odometersStatus = '0' " +
+//            "WHERE oh.odometersId IN (SELECT o.odometersId FROM Odometer o WHERE o.equipmentsId = :equipmentsId) " +
+//            "AND oh.odometersStatus = '1'")
+//    void invalidatePreviousRecordsByEquipmentId(@Param("equipmentsId") Integer equipmentsId);
+
+    @Modifying
+    @Query("UPDATE OdometersHistory oh SET oh.odometersStatus = '0' " +
+            "WHERE oh.odometersId IN (SELECT o.odometersId FROM Odometer o WHERE o.equipment.id = :equipmentsId) " +
+            "AND oh.odometersStatus = '1'")
+    void invalidatePreviousRecordsByEquipmentId(@Param("equipmentsId") Integer equipmentsId);
 }

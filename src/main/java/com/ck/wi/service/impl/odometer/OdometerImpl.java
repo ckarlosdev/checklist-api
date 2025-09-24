@@ -4,6 +4,7 @@ import com.ck.wi.model.dao.EquipmentDao;
 import com.ck.wi.model.dao.odometer.OdometerDao;
 import com.ck.wi.model.dao.odometer.OdometersHistoryDao;
 import com.ck.wi.model.dto.odometer.OdometerDto;
+import com.ck.wi.model.dto.odometer.OdometerSaveDto;
 import com.ck.wi.model.dto.odometer.OdometersHistoryDto;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.model.entity.odometer.Odometer;
@@ -96,6 +97,69 @@ public class OdometerImpl implements IOdometer {
                 .odometer(odometerSaved.getOdometer())
                 .odometersHistory(odometersHistorySavedDto)
                 .build();
+    }
+
+    @Transactional
+    @Override
+    public void saveOdometerByEquipmentId(OdometerSaveDto odometerSaveDto){
+        if(odometerSaveDto == null){
+            throw new IllegalArgumentException("data must not be null");
+        }
+
+        Equipment equipment = equipmentDao.findById(odometerSaveDto.getEquipmentsId())
+                .orElseThrow(() -> new IllegalArgumentException("Equipment not found"));
+
+        if (odometerSaveDto.getEquipmentsId() != null) {
+            odometersHistoryDao.invalidatePreviousRecordsByEquipmentId(odometerSaveDto.getEquipmentsId());
+        }
+
+        ZonedDateTime today = ZonedDateTime.now(ZoneId.of("America/Chicago"));
+
+        Odometer odometer;
+
+        if(odometerSaveDto.getEquipmentsId() != null && odometerSaveDto.getEquipmentsId() != 0){
+            // update data
+            odometer = odometerDao.findByEquipment(equipment)
+                    .orElseThrow(() -> new IllegalArgumentException("Odometer data not found"));
+
+            odometer.setOdometer(odometerSaveDto.getNewLecture());
+
+        }else{
+            throw new IllegalArgumentException("data must not be null");
+        }
+
+        Odometer odometerSaved = odometerDao.save(odometer);
+
+        OdometersHistory odometersHistory = OdometersHistory.builder()
+                .odometersId(odometerSaved.getOdometersId())
+                .previousLecture(odometerSaveDto.getPreviousLecture())
+                .newLecture(odometerSaveDto.getNewLecture())
+                .reportedBy(odometerSaveDto.getReportedBy())
+                .reportedDate(odometerSaveDto.getReportedDate())
+                .createdBy(odometerSaveDto.getCreatedBy())
+                .createdDate(today)
+                .odometersStatus("1")
+                .build();
+
+        OdometersHistory odometersHistorySaved = odometersHistoryDao.save(odometersHistory);
+
+
+//        OdometersHistoryDto odometersHistorySavedDto = OdometersHistoryDto.builder()
+//                .odometersHistoryId(odometersHistorySaved.getOdometersHistoryId())
+//                .odometersId(odometersHistorySaved.getOdometersId())
+//                .previousLecture(odometersHistorySaved.getPreviousLecture())
+//                .newLecture(odometersHistorySaved.getNewLecture())
+//                .reportedBy(odometersHistorySaved.getReportedBy())
+//                .reportedDate(odometersHistorySaved.getReportedDate())
+//                .createdBy(odometersHistorySaved.getCreatedBy())
+//                .build();
+//
+//        return OdometerDto.builder()
+//                .odometersId(odometerSaved.getOdometersId())
+//                .equipmentsId(equipment.getEquipmentsId())
+//                .odometer(odometerSaved.getOdometer())
+//                .odometersHistory(odometersHistorySavedDto)
+//                .build();
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,7 @@
 package com.ck.wi.controller.odometer;
 
 import com.ck.wi.model.dto.odometer.OdometerDto;
+import com.ck.wi.model.dto.odometer.OdometerSaveDto;
 import com.ck.wi.model.dto.odometer.OdometerSearchDto;
 import com.ck.wi.model.entity.odometer.Odometer;
 import com.ck.wi.service.odometer.IOdometer;
@@ -26,6 +27,11 @@ public class OdometerController {
     @PostMapping("odometer")
     public OdometerDto create(@RequestBody OdometerDto odometerDto){
         return odometerService.processAndSaveOdometer(odometerDto);
+    }
+
+    @PostMapping("odometer/equipment")
+    public void create(@RequestBody OdometerSaveDto odometerSaveDto){
+        odometerService.saveOdometerByEquipmentId(odometerSaveDto);
     }
 
     @PutMapping("odometer")
