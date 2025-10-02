@@ -115,7 +115,7 @@ public class MaintenanceImpl implements IMaintenance {
     @Override
     public List<MaintenanceDto> findAll(){
 
-        List<Maintenance> maintenanceList = (List<Maintenance>) maintenanceDao.findAll();
+        List<Maintenance> maintenanceList = (List<Maintenance>) maintenanceDao.findByMaintenancesStatus("1");
 
         return maintenanceList.stream().map(maintenance -> {
 
