@@ -20,6 +20,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\issue\EquipmentIssueController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\issue\IssuesHistoryController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\JobController.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\maintenance\MaintenanceController.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\maintenance\MaintenanceHistoryController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\odometer\OdometerController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\silica\ControlController.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\controller\silica\SilicaControlController.java
@@ -49,6 +51,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\issue\EquipmentIssueDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\issue\IssuesHistoryDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\JobDao.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\maintenance\MaintenanceDao.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\maintenance\MaintenanceHistoryDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\odometer\OdometerDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\odometer\OdometersHistoryDao.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dao\silica\ControlDao.java
@@ -80,6 +84,9 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\EquipmentIssueRequestDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\issue\IssuesHistoryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\JobDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\maintenance\MaintenanceDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\maintenance\MaintenanceHistoryCreateDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\maintenance\MaintenanceHistoryDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\odometer\OdometerDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\odometer\OdometerSaveDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\odometer\OdometerSearchDto.java
@@ -122,6 +129,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\Issue\EquipmentIssue.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\Issue\IssuesHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\Job.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\maintenance\Maintenance.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\maintenance\MaintenanceHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\odometer\Odometer.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\odometer\OdometersHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\entity\silica\Control.java
@@ -169,6 +178,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\issue\EquipmentIssueImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\issue\IssuesHistoryImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\JobImpl.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\maintenance\MaintenanceHistoryImpl.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\maintenance\MaintenanceImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\odometer\OdometerImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\odometer\OdometersHistoryImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\silica\ControlDescriptionImpl.java
@@ -177,6 +188,8 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\impl\silica\SilicaImpl.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\issue\IEquipmentIssue.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\issue\IIssuesHistory.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\maintenance\IMaintenance.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\maintenance\IMaintenanceHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\odometer\IOdometer.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\odometer\IOdometersHistory.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\service\silica\IControl.java
