@@ -7,9 +7,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface MaintenanceHistoryDao extends CrudRepository<MaintenanceHistory, Integer> {
     MaintenanceHistory findByMaintenancesIdAndMeStatus(Integer maintenancesId, String status);
+
+    List<MaintenanceHistory> findByMaintenancesIdOrderByMaintenanceDateDesc(Integer maintenanceId);
 
     @Modifying
     @Query("UPDATE MaintenanceHistory mh SET mh.meStatus = '0' " +

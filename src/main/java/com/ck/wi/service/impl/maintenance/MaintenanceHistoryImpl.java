@@ -2,6 +2,7 @@ package com.ck.wi.service.impl.maintenance;
 
 import com.ck.wi.model.dao.maintenance.MaintenanceDao;
 import com.ck.wi.model.dao.maintenance.MaintenanceHistoryDao;
+import com.ck.wi.model.dto.demoChecklist.DemoChecklistsItemDto;
 import com.ck.wi.model.dto.maintenance.MaintenanceHistoryCreateDto;
 import com.ck.wi.model.dto.maintenance.MaintenanceHistoryDto;
 import com.ck.wi.model.entity.maintenance.Maintenance;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MaintenanceHistoryImpl implements IMaintenanceHistory {
@@ -85,6 +89,22 @@ public class MaintenanceHistoryImpl implements IMaintenanceHistory {
                  .build();
 
         return maintenanceHistoryDto;
+    }
+
+    @Transactional
+    @Override
+    public List<MaintenanceHistoryDto> getMaintenancesById(Integer maintenanceId){
+        List<MaintenanceHistory> maintenanceHistoryList = maintenanceHistoryDao.findByMaintenancesIdOrderByMaintenanceDateDesc(maintenanceId);
+
+        return maintenanceHistoryList.stream()
+                .map(maintenanceHistory -> MaintenanceHistoryDto.builder()
+                   .maintenanceDate(maintenanceHistory.getMaintenanceDate())
+                   .employee(maintenanceHistory.getEmployee())
+                   .odometer(maintenanceHistory.getOdometer())
+                   .comments(maintenanceHistory.getComments())
+                   .createdBy(maintenanceHistory.getCreatedBy())
+                   .build()
+        ).collect(Collectors.toList());
     }
 
 }
