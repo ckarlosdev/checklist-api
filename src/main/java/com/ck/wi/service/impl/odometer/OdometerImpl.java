@@ -232,4 +232,5 @@ public class OdometerImpl implements IOdometer {
     public List<Odometer> findAll(){
         return (List<Odometer>) odometerDao.findAll();
     }
+
 }
