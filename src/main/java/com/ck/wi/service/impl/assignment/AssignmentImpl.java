@@ -85,9 +85,9 @@ public class AssignmentImpl implements IAssignment {
                 .orElseThrow(() -> new RuntimeException("No se pudo recargar la asignación después de guardar."));
 
 //        System.out.println("Jobs: " + assignmentFinal.getAssignmentJobs().size());
-        assignmentFinal.getAssignmentJobs().forEach(job ->
-                System.out.println("  Employees: " + job.getAssignmentEmployees().size())
-        );
+//        assignmentFinal.getAssignmentJobs().forEach(job ->
+//                System.out.println("  Employees: " + job.getAssignmentEmployees().size())
+//        );
 
         return mapper.toDto(assignmentFinal);
     }
