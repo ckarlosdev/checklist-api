@@ -211,7 +211,6 @@ public class AssignmentImpl implements IAssignment {
     @Transactional(readOnly = true)
     @Override
     public List<Assignment> getAssignments(){
-
-        return (List<Assignment>) assignmentDao.findAll();
+        return (List<Assignment>) assignmentDao.findByAssignmentStatus("1");
     }
 }

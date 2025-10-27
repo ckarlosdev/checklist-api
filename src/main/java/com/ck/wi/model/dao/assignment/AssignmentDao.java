@@ -18,5 +18,6 @@ public interface AssignmentDao extends CrudRepository<Assignment, Integer> {
             "WHERE a.assignmentsId = :id AND a.assignmentStatus = '1'")
     Optional<Assignment> findFullAssignmentById(@Param("id") Integer id);
 
+    List<Assignment> findByAssignmentStatus(String status);
 
 }
