@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -42,5 +43,6 @@ public class AssignmentJob implements Serializable {
 
     @OneToMany(mappedBy = "assignmentJob", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
+    @Where(clause = "ae_status = '1'")
     private Set<AssignmentEmployee> assignmentEmployees = new HashSet<>();
 }
