@@ -1,5 +1,6 @@
 package com.ck.wi.model.entity.dailyReport;
 
+import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import jakarta.persistence.*;
 import lombok.*;
 

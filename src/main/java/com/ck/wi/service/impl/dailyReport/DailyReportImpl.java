@@ -1,13 +1,20 @@
 package com.ck.wi.service.impl.dailyReport;
 
 import com.ck.wi.model.dao.dailyReport.DailyReportDao;
+import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import com.ck.wi.service.dailyReport.IDailyReport;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.ParameterMode;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -44,5 +51,34 @@ public class DailyReportImpl implements IDailyReport {
     @Override
     public List<DailyReportSummaryDto> findSummaryByJobNumber(String jobNumber){
         return (List<DailyReportSummaryDto>) dailyReportDao.findSummaryByJobNumber(jobNumber);
+    }
+
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public List<DailyReportGralDto> getDrGral(String reportNumber) {
+        StoredProcedureQuery query = entityManager
+                .createStoredProcedureQuery("GetDailyReportGral");
+
+        query.registerStoredProcedureParameter("report_number", String.class, ParameterMode.IN);
+        query.setParameter("report_number", reportNumber);
+
+        List<Object[]> results = query.getResultList();
+
+        // 🔹 Mapear manualmente a DTO
+        return results.stream()
+                .map(r -> new DailyReportGralDto(
+                        ((Number) r[0]).intValue(),
+                        (Date) r[1],
+                        (String) r[2],
+                        (String) r[3],
+                        (String) r[4],
+                        ((Number) r[5]).intValue(),
+                        ((Number) r[6]).intValue(),
+                        ((Number) r[7]).intValue()
+
+                ))
+                .toList();
     }
 }

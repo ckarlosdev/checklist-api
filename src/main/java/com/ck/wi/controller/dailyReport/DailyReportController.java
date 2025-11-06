@@ -1,12 +1,15 @@
 package com.ck.wi.controller.dailyReport;
 
+import com.ck.wi.model.dao.dailyReport.DailyReportDao;
 import com.ck.wi.model.dto.dailyReport.DailyReportDto;
+import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.request.DailyReportRequest;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import com.ck.wi.service.dailyReport.IDailyReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.server.ResponseStatusException;
@@ -199,5 +202,12 @@ public class DailyReportController {
                 .updatedDate(dailyReport.getUpdatedDate())
                 .status(dailyReport.getStatus())
                 .build();
+    }
+
+    @GetMapping("dailyReport/gral/{reportNumber}")
+    public ResponseEntity<List<DailyReportGralDto>> getReportSummary(
+            @PathVariable String reportNumber)
+    {
+        return ResponseEntity.ok(dailyReportService.getDrGral(reportNumber));
     }
 }
