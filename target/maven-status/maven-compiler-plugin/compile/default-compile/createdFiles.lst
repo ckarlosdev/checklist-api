@@ -212,6 +212,7 @@ com\ck\wi\model\dao\odometer\OdometerDao.class
 com\ck\wi\model\dto\dailyReport\DrEquipmentDto.class
 com\ck\wi\model\dto\EmployeeDto$EmployeeDtoBuilder.class
 com\ck\wi\service\impl\maintenance\MaintenanceHistoryImpl.class
+com\ck\wi\model\dto\dailyReport\DailyReportGralDto.class
 com\ck\wi\model\dto\odometer\OdometerSaveDto$OdometerSaveDtoBuilder.class
 com\ck\wi\model\entity\assignment\AssignmentEmployee$AssignmentEmployeeBuilder.class
 com\ck\wi\service\hazard\IPretasksCheckboxOption.class
