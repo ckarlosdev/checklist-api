@@ -39,11 +39,13 @@ public class EquipmentController {
 
     @GetMapping("equipment/{id}")
     public Equipment showById(@PathVariable Integer id){
+
         return equipmentService.findById(id);
     }
 
     @GetMapping("equipments")
-    public List<Equipment> showById(){
+    public List<Equipment> showAll(){
+
         return equipmentService.findAll();
     }
 }

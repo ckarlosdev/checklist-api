@@ -45,6 +45,7 @@ com\ck\wi\model\entity\maintenance\Maintenance$MaintenanceBuilder.class
 com\ck\wi\service\assigment\IAssignmentEmployee.class
 com\ck\wi\controller\maintenance\MaintenanceController.class
 com\ck\wi\model\dto\silica\ControlDto.class
+com\ck\wi\model\entity\Attachment.class
 com\ck\wi\service\issue\IEquipmentIssue.class
 com\ck\wi\service\impl\silica\SilicaImpl.class
 com\ck\wi\model\entity\demoChecklist\DemoChecklistsItem.class
@@ -117,6 +118,7 @@ com\ck\wi\service\impl\googleChecklist\GoogleChecklistImpl.class
 com\ck\wi\model\entity\dailyReport\Photo$PhotoBuilder.class
 com\ck\wi\service\impl\silica\SilicaControlImpl.class
 com\ck\wi\controller\dailyReport\ProblemController.class
+com\ck\wi\controller\AttachmentController.class
 com\ck\wi\model\dao\odometer\OdometersHistoryDao.class
 com\ck\wi\model\dto\issue\EquipmentIssueRequestDto$EquipmentIssueRequestDtoBuilder.class
 com\ck\wi\model\entity\googleChecklist\EquipmentsGoogleChecklist$EquipmentsGoogleChecklistBuilder.class
@@ -174,6 +176,7 @@ com\ck\wi\controller\hazard\PretasksCheckboxOptionController.class
 com\ck\wi\model\dto\EmployeeDto.class
 com\ck\wi\model\dao\ChecklistDao.class
 com\ck\wi\model\entity\dailyReport\Dumpster$DumpsterBuilder.class
+com\ck\wi\model\dao\AttachmentDao.class
 com\ck\wi\model\dto\assignment\AssignmentJobDto.class
 com\ck\wi\model\dto\googleChecklist\EquipmentsGoogleChecklistDto$EquipmentsGoogleChecklistDtoBuilder.class
 com\ck\wi\model\entity\Job.class
@@ -206,6 +209,7 @@ com\ck\wi\model\dao\hazard\ActivityDao.class
 com\ck\wi\model\dao\dailyReport\DrEquipmentDao.class
 com\ck\wi\controller\demoChecklist\DemoChecklistController.class
 com\ck\wi\model\dto\dailyReport\DrEmployeeDto$DrEmployeeDtoBuilder.class
+com\ck\wi\service\impl\AttachmentImpl.class
 com\ck\wi\model\entity\silica\SilicaControl$SilicaControlBuilder.class
 com\ck\wi\service\IEquipment.class
 com\ck\wi\model\dao\odometer\OdometerDao.class
@@ -224,6 +228,7 @@ com\ck\wi\model\entity\demoChecklist\DemoItem$DemoItemBuilder.class
 com\ck\wi\model\entity\maintenance\Maintenance.class
 com\ck\wi\model\entity\silica\Control$ControlBuilder.class
 com\ck\wi\model\entity\silica\Control.class
+com\ck\wi\service\IAttachment.class
 com\ck\wi\controller\issue\IssuesHistoryController.class
 com\ck\wi\model\dao\maintenance\MaintenanceHistoryDao.class
 com\ck\wi\service\impl\silica\ControlDescriptionImpl.class
