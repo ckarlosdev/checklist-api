@@ -44,5 +44,6 @@ public class AssignmentJob implements Serializable {
     @OneToMany(mappedBy = "assignmentJob", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @Where(clause = "ae_status = '1'")
+    @Builder.Default
     private Set<AssignmentEmployee> assignmentEmployees = new HashSet<>();
 }

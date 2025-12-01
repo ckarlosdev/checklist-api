@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 
@@ -44,7 +43,9 @@ public class Assignment implements Serializable {
     @Column(name = "assignment_status")
     private String assignmentStatus;
 
-    @OneToMany(mappedBy = "assignment", fetch = FetchType.LAZY)
+//    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonBackReference
+    @Builder.Default
     private Set<AssignmentJob> assignmentJobs = new HashSet<>();
 }

@@ -72,6 +72,7 @@ public class AssignmentImpl implements IAssignment {
                 // Procesar la Entidad AssignmentEmployee (Hijos)
                 if (jobDto.getAssignedEmployeeIds() != null) {
                     processAssignmentEmployees(
+//                            currentJobEntity,
                             assignmentJobSaved,
                             jobDto.getAssignedEmployeeIds()
                     );
@@ -83,12 +84,6 @@ public class AssignmentImpl implements IAssignment {
 
         Assignment assignmentFinal = assignmentDao.findFullAssignmentById(newAssignmentId)
                 .orElseThrow(() -> new RuntimeException("No se pudo recargar la asignación después de guardar."));
-
-//        System.out.println("Jobs: " + assignmentFinal.getAssignmentJobs().size());
-//        assignmentFinal.getAssignmentJobs().forEach(job ->
-//                System.out.println("  Employees: " + job.getAssignmentEmployees().size())
-//        );
-
         return mapper.toDto(assignmentFinal);
     }
 
@@ -200,7 +195,7 @@ public class AssignmentImpl implements IAssignment {
         Assignment assignmentFinal = assignmentDao.findFullAssignmentById(assignmentsId)
                 .orElseThrow(() -> new EntityNotFoundException("Assignment with ID " + assignmentsId + " not found."));
 
-        System.out.println("Jobs: " + assignmentFinal.getAssignmentJobs().size());
+//        System.out.println("Jobs: " + assignmentFinal.getAssignmentJobs().size());
         assignmentFinal.getAssignmentJobs().forEach(job ->
                 System.out.println("  Employees: " + job.getAssignmentEmployees().size())
         );

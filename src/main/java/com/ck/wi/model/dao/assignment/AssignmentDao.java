@@ -15,7 +15,7 @@ public interface AssignmentDao extends CrudRepository<Assignment, Integer> {
     @Query("SELECT DISTINCT a FROM Assignment a " +
             "LEFT JOIN FETCH a.assignmentJobs aj " +
             "LEFT JOIN FETCH aj.assignmentEmployees ae " +
-            "WHERE a.assignmentsId = :id AND a.assignmentStatus = '1'")
+            "WHERE a.assignmentsId = :id AND a.assignmentStatus = '1' AND aj.ajStatus = '1' AND ae.aeStatus = '1'")
     Optional<Assignment> findFullAssignmentById(@Param("id") Integer id);
 
     List<Assignment> findByAssignmentStatus(String status);

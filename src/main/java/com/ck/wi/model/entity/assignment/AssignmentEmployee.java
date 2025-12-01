@@ -30,7 +30,7 @@ public class AssignmentEmployee implements Serializable {
     private String aeStatus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "assignment_job_id")
+    @JoinColumn(name = "assignment_job_id", nullable = false)
     @JsonBackReference
     private AssignmentJob assignmentJob;
 }
