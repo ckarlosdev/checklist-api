@@ -20,7 +20,7 @@ public class Attachment implements Serializable {
     @Id
     @Column(name = "attachments_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer attachments_id;
+    private Integer attachmentsId;
 
     @Column(name = "family")
     private String family;
