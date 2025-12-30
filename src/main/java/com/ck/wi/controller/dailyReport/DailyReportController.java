@@ -259,17 +259,34 @@ public class DailyReportController {
     }
 
     @GetMapping("/dailyReport/resources/{jobNumber}")
-    public DrResourcesDto getResourcesToCopy(@PathVariable String jobNumber){
-        List<DrEmployeeCreateDto> employees = drEmployeeService.getLastReportEmployees(jobNumber);
-        List<DrEquipmentCreateDto> equipments = drEquipmentService.getLastReportEquipments(jobNumber);
-        List<DrRentalCreateDto> rentals = drRentalService.getLastReportRentals(jobNumber);
-        List<DrToolCreateDto> tools = toolService.getLastReportTools(jobNumber);
+    public ResponseEntity<?> getResourcesToCopy(@PathVariable String jobNumber){
 
-        return DrResourcesDto.builder()
-                .employees(employees)
-                .equipments(equipments)
-                .rentals(rentals)
-                .tools(tools)
-                .build();
+        try {
+            // Forzamos un log para ver si llega aquí
+            System.out.println("API llamada con jobNumber: " + jobNumber);
+
+            DrResourcesDto dto = DrResourcesDto.builder()
+                    .employees(drEmployeeService.getLastReportEmployees(jobNumber))
+                    .equipments(drEquipmentService.getLastReportEquipments(jobNumber))
+                    .rentals(drRentalService.getLastReportRentals(jobNumber))
+                    .tools(toolService.getLastReportTools(jobNumber))
+                    .build();
+            return ResponseEntity.ok(dto);
+        } catch (Exception e) {
+            // Si hay un error de base de datos o nulo, lo veremos aquí en lugar del 404
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+
+//        List<DrEmployeeCreateDto> employees = drEmployeeService.getLastReportEmployees(jobNumber);
+//        List<DrEquipmentCreateDto> equipments = drEquipmentService.getLastReportEquipments(jobNumber);
+//        List<DrRentalCreateDto> rentals = drRentalService.getLastReportRentals(jobNumber);
+//        List<DrToolCreateDto> tools = toolService.getLastReportTools(jobNumber);
+//
+//        return DrResourcesDto.builder()
+//                .employees(employees)
+//                .equipments(equipments)
+//                .rentals(rentals)
+//                .tools(tools)
+//                .build();
     }
 }
