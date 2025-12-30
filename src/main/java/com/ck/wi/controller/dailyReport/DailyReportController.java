@@ -47,12 +47,12 @@ public class DailyReportController {
     @Autowired
     private ITool toolService;
 
-    @PutMapping("dailyReport")
+    @PutMapping("/dailyReport")
     public DailyReportCreateDto updateDailyReport(@RequestBody DailyReportCreateDto dailyReportCreateDto){
         return dailyReportService.update(dailyReportCreateDto);
     }
 
-    @PostMapping("dailyReport/{jobId}")
+    @PostMapping("/dailyReport/{jobId}")
     public DailyReportCreateDto createDailyReport(
             @RequestBody DailyReportCreateDto dailyReportCreateDto,
             @PathVariable Integer jobId
@@ -60,12 +60,12 @@ public class DailyReportController {
         return dailyReportService.save(dailyReportCreateDto, jobId);
     }
 
-    @GetMapping("dailyReport/dto/{dailyReportId}")
+    @GetMapping("/dailyReport/dto/{dailyReportId}")
     public DailyReportCreateDto getDailyReportByDailyReportId(@PathVariable Integer dailyReportId){
         return dailyReportService.findByDailyReportID(dailyReportId);
     }
 
-    @GetMapping("dailyReport")
+    @GetMapping("/dailyReport")
     public List<DailyReportDto> showAll(){
         List<DailyReport> dailyReports = dailyReportService.findAll();
 
@@ -97,7 +97,7 @@ public class DailyReportController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("dailyReport/job/{jobNumber}")
+    @GetMapping("/dailyReport/job/{jobNumber}")
     public List<DailyReportDto> getDailyReportsByJobNumber(@PathVariable String jobNumber){
         List<DailyReport> dailyReports = dailyReportService.findByNumber(jobNumber);
 
@@ -129,19 +129,19 @@ public class DailyReportController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("dailyReport/totalDays/{jobNumber}")
+    @GetMapping("/dailyReport/totalDays/{jobNumber}")
     public Integer getDaysByJobNumber(@PathVariable String jobNumber){
         List<DailyReport> dailyReports = dailyReportService.findByNumber(jobNumber);
         return dailyReports.size();
     }
 
-    @GetMapping("dailyReport/summary/{jobNumber}")
+    @GetMapping("/dailyReport/summary/{jobNumber}")
     public List<DailyReportSummaryDto> getSummaryByJobNumber(@PathVariable String jobNumber){
         List<DailyReportSummaryDto> dailyReports = dailyReportService.findSummaryByJobNumber(jobNumber);
         return dailyReports;
     }
 
-    @GetMapping("dailyReport/jobs")
+    @GetMapping("/dailyReport/jobs")
     public List<DailyReportDto> getDailyReportByNumbers(@RequestBody DailyReportRequest request){
         List<DailyReport> dailyReports = dailyReportService.findByNumbers(request.getJobNumbers());
 
@@ -173,7 +173,7 @@ public class DailyReportController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("dailyReport/{id}")
+    @GetMapping("/dailyReport/{id}")
     public DailyReportDto getDailyReportByID(@PathVariable Integer id){
         DailyReport dailyReport = dailyReportService.findById(id);
 
@@ -202,7 +202,7 @@ public class DailyReportController {
                 .build();
     }
 
-    @GetMapping("dailyReport/{number}/by-date")
+    @GetMapping("/dailyReport/{number}/by-date")
     public DailyReportDto getDailyReportByIdAndDate(
             @PathVariable String number,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
@@ -237,14 +237,14 @@ public class DailyReportController {
                 .build();
     }
 
-    @GetMapping("dailyReport/gral/{reportNumber}")
+    @GetMapping("/dailyReport/gral/{reportNumber}")
     public ResponseEntity<List<DailyReportGralDto>> getReportSummary(
             @PathVariable String reportNumber)
     {
         return ResponseEntity.ok(dailyReportService.getDrGral(reportNumber));
     }
 
-    @GetMapping("dailyReport/totals/{jobNumber}/by-date")
+    @GetMapping("/dailyReport/totals/{jobNumber}/by-date")
     public DrTotalsDto getDrTotals(
             @PathVariable String jobNumber,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
@@ -258,7 +258,7 @@ public class DailyReportController {
 
     }
 
-    @GetMapping("dailyReport/resources/{jobNumber}")
+    @GetMapping("/dailyReport/resources/{jobNumber}")
     public DrResourcesDto getResourcesToCopy(@PathVariable String jobNumber){
         List<DrEmployeeCreateDto> employees = drEmployeeService.getLastReportEmployees(jobNumber);
         List<DrEquipmentCreateDto> equipments = drEquipmentService.getLastReportEquipments(jobNumber);
