@@ -20,4 +20,18 @@ public interface DrEquipmentDao extends CrudRepository<DrEquipment, Integer> {
             nativeQuery = true
     )
     List<Integer> findDrEquipmentIdsByDR(@Param("drId") Integer drId);
+
+    @Query(value = "SELECT e.* " +
+            "FROM dr_equipments e " +
+            "WHERE e.status='1' " +
+            "AND e.daily_report_id = ( " +
+            "    SELECT dr.daily_report_id " +
+            "    FROM daily_reports dr " +
+            "    INNER JOIN dr_equipments e2 ON dr.daily_report_id = e2.daily_report_id " +
+            "    WHERE dr.number = :jobNumber " +
+            "      AND e2.status = '1' " +
+            "    ORDER BY dr.date DESC, dr.daily_report_id DESC " +
+            "    LIMIT 1 " +
+            ");", nativeQuery = true)
+    List<DrEquipment> findEquipmentsFromLastReport(@Param("jobNumber") String jobNumber);
 }

@@ -14,7 +14,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**") // Aplica la configuración a todas las rutas bajo /api/
-                        .allowedOrigins("http://127.0.0.1:5500", "https://oleo-soft.com") // Permite peticiones desde tu frontend de desarrollo
+                        .allowedOrigins("http://127.0.0.1:5500", "https://oleo-soft.com", "http://localhost:5173", "https://ckarlosdev.github.io") // Permite peticiones desde tu frontend de desarrollo
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos HTTP permitidos
                         .allowedHeaders("*") // Permite todos los encabezados
                         .allowCredentials(true) // Si necesitas manejar cookies o encabezados de autenticación

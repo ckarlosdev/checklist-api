@@ -38,4 +38,16 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
     List<DailyReportGralDto> getSummaryByNumberAndStatus(
             @Param("report_number") String reportNumber
     );
+
+    @Query(value = "select count(1) " +
+            " from (select date, count(1) " +
+            " from daily_reports " +
+            " where status='1' and number='2408' and date!='2025-09-27' " +
+            " group by date " +
+            " order by date desc) as T;", nativeQuery = true)
+    Integer getTotalDaysByJobNumber(
+            @Param("jobNumber") String jobNumber,
+            @Param("excludeDate") LocalDate excludeDate
+    );
+
 }

@@ -3,6 +3,8 @@ package com.ck.wi.model.dto.dailyReport;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -16,7 +18,7 @@ public class DailyReportDto implements Serializable {
     private String address;
     private String name;
     private String workingFor;
-    private Date date;
+    private LocalDate date;
     private String foreman;
     private String crew;
     private String description;
@@ -28,8 +30,8 @@ public class DailyReportDto implements Serializable {
     private String equipmentOther;
     private String issues;
     private String createdBy;
-    private Date createdDate;
+    private LocalDateTime createdDate;
     private String updatedBy;
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
     private String status;
 }

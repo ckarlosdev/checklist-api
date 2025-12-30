@@ -4,9 +4,12 @@ import com.ck.wi.model.dao.dailyReport.DailyReportDao;
 import com.ck.wi.model.dto.dailyReport.DailyReportDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
+import com.ck.wi.model.dto.dailyReport.creation.*;
 import com.ck.wi.model.dto.request.DailyReportRequest;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
-import com.ck.wi.service.dailyReport.IDailyReport;
+import com.ck.wi.service.IEmployee;
+import com.ck.wi.service.dailyReport.*;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +34,36 @@ public class DailyReportController {
 
     @Autowired
     private IDailyReport dailyReportService;
+
+    @Autowired
+    private IDrEmployee drEmployeeService;
+
+    @Autowired
+    private IDrEquipment drEquipmentService;
+
+    @Autowired
+    private IDrRental drRentalService;
+
+    @Autowired
+    private ITool toolService;
+
+    @PutMapping("dailyReport")
+    public DailyReportCreateDto updateDailyReport(@RequestBody DailyReportCreateDto dailyReportCreateDto){
+        return dailyReportService.update(dailyReportCreateDto);
+    }
+
+    @PostMapping("dailyReport/{jobId}")
+    public DailyReportCreateDto createDailyReport(
+            @RequestBody DailyReportCreateDto dailyReportCreateDto,
+            @PathVariable Integer jobId
+    ){
+        return dailyReportService.save(dailyReportCreateDto, jobId);
+    }
+
+    @GetMapping("dailyReport/dto/{dailyReportId}")
+    public DailyReportCreateDto getDailyReportByDailyReportId(@PathVariable Integer dailyReportId){
+        return dailyReportService.findByDailyReportID(dailyReportId);
+    }
 
     @GetMapping("dailyReport")
     public List<DailyReportDto> showAll(){
@@ -209,5 +242,34 @@ public class DailyReportController {
             @PathVariable String reportNumber)
     {
         return ResponseEntity.ok(dailyReportService.getDrGral(reportNumber));
+    }
+
+    @GetMapping("dailyReport/totals/{jobNumber}/by-date")
+    public DrTotalsDto getDrTotals(
+            @PathVariable String jobNumber,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+        Integer days = dailyReportService.findTotalDaysByJobNumber(jobNumber, date);
+        Double hours = drEmployeeService.findTotalHours(jobNumber, date);
+
+        return DrTotalsDto.builder()
+                .days(days)
+                .hours(hours)
+                .build();
+
+    }
+
+    @GetMapping("dailyReport/resources/{jobNumber}")
+    public DrResourcesDto getResourcesToCopy(@PathVariable String jobNumber){
+        List<DrEmployeeCreateDto> employees = drEmployeeService.getLastReportEmployees(jobNumber);
+        List<DrEquipmentCreateDto> equipments = drEquipmentService.getLastReportEquipments(jobNumber);
+        List<DrRentalCreateDto> rentals = drRentalService.getLastReportRentals(jobNumber);
+        List<DrToolCreateDto> tools = toolService.getLastReportTools(jobNumber);
+
+        return DrResourcesDto.builder()
+                .employees(employees)
+                .equipments(equipments)
+                .rentals(rentals)
+                .tools(tools)
+                .build();
     }
 }

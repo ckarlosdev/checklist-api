@@ -1,8 +1,10 @@
 package com.ck.wi.service.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DrEmployeeHoursDto;
+import com.ck.wi.model.dto.dailyReport.creation.DrEmployeeCreateDto;
 import com.ck.wi.model.entity.dailyReport.DrEmployee;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IDrEmployee {
@@ -11,4 +13,8 @@ public interface IDrEmployee {
     List<DrEmployee> findByDailyReportIds(List<Integer> dailyReportId);
 
     List<DrEmployeeHoursDto> findHoursByJobNumber(String jobNumber);
+
+    Double findTotalHours(String jobNumber, LocalDate date);
+
+    List<DrEmployeeCreateDto> getLastReportEmployees(String jobNum);
 }
