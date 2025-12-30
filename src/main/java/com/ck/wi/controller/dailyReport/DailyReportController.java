@@ -259,7 +259,7 @@ public class DailyReportController {
     }
 
     @GetMapping("/dailyReport/resources/{jobNumber}")
-    public ResponseEntity<?> getResourcesToCopy(@PathVariable String jobNumber){
+    public ResponseEntity<?> getResourcesToCopy(@PathVariable("jobNumber") String jobNumber){
 
         try {
             // Forzamos un log para ver si llega aquí
@@ -276,17 +276,5 @@ public class DailyReportController {
             // Si hay un error de base de datos o nulo, lo veremos aquí en lugar del 404
             return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
         }
-
-//        List<DrEmployeeCreateDto> employees = drEmployeeService.getLastReportEmployees(jobNumber);
-//        List<DrEquipmentCreateDto> equipments = drEquipmentService.getLastReportEquipments(jobNumber);
-//        List<DrRentalCreateDto> rentals = drRentalService.getLastReportRentals(jobNumber);
-//        List<DrToolCreateDto> tools = toolService.getLastReportTools(jobNumber);
-//
-//        return DrResourcesDto.builder()
-//                .employees(employees)
-//                .equipments(equipments)
-//                .rentals(rentals)
-//                .tools(tools)
-//                .build();
     }
 }
