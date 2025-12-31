@@ -258,7 +258,7 @@ public class DailyReportController {
 
     }
 
-    @GetMapping("/drDetails/resources/{jobNumber}")
+    @GetMapping("/drDetails/copy/{jobNumber}")
     public ResponseEntity<?> getResourcesToCopy(@PathVariable("jobNumber") String jobNumber){
 
         try {
