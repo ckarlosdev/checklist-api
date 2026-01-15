@@ -1,5 +1,6 @@
 package com.ck.wi.model.dao.hazard;
 
+import com.ck.wi.model.dto.hazard.create.PretaskViewDto;
 import com.ck.wi.model.entity.hazard.PreTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,7 +33,7 @@ public interface PreTaskDao extends JpaRepository<PreTask, Integer> {
 
     @Query(value = " select * from pre_tasks where jobs_id = :id order by date desc "
     , nativeQuery = true)
-    List<PreTask> findPretaskById(Integer id);
+    List<PretaskViewDto> findPretaskById(Integer id);
 
 
 }

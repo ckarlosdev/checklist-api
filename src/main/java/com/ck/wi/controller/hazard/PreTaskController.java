@@ -3,6 +3,7 @@ package com.ck.wi.controller.hazard;
 import com.ck.wi.model.dto.hazard.PreTaskDto;
 import com.ck.wi.model.dto.hazard.create.PreTaskCreateDto;
 import com.ck.wi.model.dto.hazard.create.PreTaskOptionCreateDto;
+import com.ck.wi.model.dto.hazard.create.PretaskViewDto;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.model.entity.hazard.PreTask;
 import com.ck.wi.service.IJob;
@@ -50,7 +51,7 @@ public class PreTaskController {
     }
 
     @GetMapping("pretask/job/{jobId}")
-    public List<PreTask> getPretasksByJob(@PathVariable Integer jobId){
+    public List<PretaskViewDto> getPretasksByJob(@PathVariable Integer jobId){
         return preTaskService.getPretasksByJobId(jobId);
     }
 

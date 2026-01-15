@@ -252,6 +252,7 @@ com\ck\wi\model\entity\assignment\AssignmentEmployee$AssignmentEmployeeBuilder.c
 com\ck\wi\service\hazard\IPretasksCheckboxOption.class
 com\ck\wi\model\entity\assignment\AssignmentJob.class
 com\ck\wi\service\impl\demoChecklist\DemoChecklistsItemImpl.class
+com\ck\wi\model\dto\hazard\create\PretaskViewDto.class
 com\ck\wi\model\dao\dailyReport\DrDumpsterDao.class
 com\ck\wi\controller\dailyReport\DrEquipmentController.class
 com\ck\wi\model\entity\dailyReport\Problem.class
