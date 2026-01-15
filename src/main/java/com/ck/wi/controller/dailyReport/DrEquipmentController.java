@@ -1,9 +1,15 @@
 package com.ck.wi.controller.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DrEquipmentDto;
+import com.ck.wi.model.dto.dailyReport.creation.DrEquipmentCreateDto;
+import com.ck.wi.model.dto.dailyReport.creation.DrRentalCreateDto;
+import com.ck.wi.model.dto.dailyReport.creation.DrToolCreateDto;
 import com.ck.wi.model.dto.request.DrEquipmentRequest;
 import com.ck.wi.model.entity.dailyReport.DrEquipment;
+import com.ck.wi.model.entity.dailyReport.DrRental;
 import com.ck.wi.service.dailyReport.IDrEquipment;
+import com.ck.wi.service.dailyReport.IDrRental;
+import com.ck.wi.service.dailyReport.ITool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +28,27 @@ public class DrEquipmentController {
 
     @Autowired
     private IDrEquipment drEquipmentService;
+
+    @Autowired
+    private IDrRental drRentalService;
+
+    @Autowired
+    private ITool toolService;
+
+    @GetMapping("drEquipment/copy/{jobNumber}")
+    public List<DrEquipmentCreateDto> getLastEquipments(@PathVariable String jobNumber){
+        return drEquipmentService.getLastReportEquipments(jobNumber);
+    }
+
+    @GetMapping("drRental/copy/{jobNumber}")
+    public List<DrRentalCreateDto> getLastRentals(@PathVariable String jobNumber){
+        return drRentalService.getLastReportRentals(jobNumber);
+    }
+
+    @GetMapping("drTool/copy/{jobNumber}")
+    public  List<DrToolCreateDto> getLastTools(@PathVariable String jobNumber){
+        return  toolService.getLastReportTools(jobNumber);
+    }
 
     @GetMapping("drEquipment/dailyReport/{dailyReportId}")
     public List<DrEquipmentDto> getDrEquipmentByDailyReportId(@PathVariable Integer dailyReportId){

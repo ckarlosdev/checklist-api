@@ -6,6 +6,8 @@ import lombok.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -34,10 +36,10 @@ public class DrEmployee implements Serializable {
     private String title;
 
     @Column(name = "in_hour")
-    private Time inHour;
+    private LocalTime inHour;
 
     @Column(name = "out_hour")
-    private Time outHour;
+    private LocalTime outHour;
 
     @Column(name = "lunch")
     private String lunch;
@@ -52,14 +54,15 @@ public class DrEmployee implements Serializable {
     private String createdBy;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(name = "status")
     private String status;
+
 }

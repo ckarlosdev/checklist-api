@@ -25,7 +25,8 @@ public class JobImpl implements IJob {
     @Transactional(readOnly = true)
     @Override
     public Job findById(Integer id) {
-        return jobDao.findById(id).orElse(null);
+        return jobDao.findById(id)
+                .orElse(null);
     }
 
     @Transactional(readOnly = true)

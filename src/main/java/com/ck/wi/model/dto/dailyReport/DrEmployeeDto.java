@@ -6,6 +6,8 @@ import lombok.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Data
 @AllArgsConstructor
@@ -18,8 +20,8 @@ public class DrEmployeeDto implements Serializable {
     private String employeesId;
     private String name;
     private String title;
-    private Time inHour;
-    private Time outHour;
+    private LocalTime inHour;
+    private LocalTime outHour;
     private String lunch;
     private String ppe;
     private String comment;

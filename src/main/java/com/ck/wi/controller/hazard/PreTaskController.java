@@ -1,6 +1,8 @@
 package com.ck.wi.controller.hazard;
 
 import com.ck.wi.model.dto.hazard.PreTaskDto;
+import com.ck.wi.model.dto.hazard.create.PreTaskCreateDto;
+import com.ck.wi.model.dto.hazard.create.PreTaskOptionCreateDto;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.model.entity.hazard.PreTask;
 import com.ck.wi.service.IJob;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = {
@@ -30,6 +33,26 @@ public class PreTaskController {
 
     @Autowired
     private IJob jobService;
+
+    @PostMapping("pretask")
+    public Integer saveHazardReport(@RequestBody PreTaskCreateDto preTaskCreateDto){
+        return preTaskService.savePretask(preTaskCreateDto);
+    }
+
+    @PutMapping("pretask")
+    public void updateHazardReport(@RequestBody PreTaskCreateDto preTaskCreateDto){
+        preTaskService.updatePretask(preTaskCreateDto);
+    }
+
+    @GetMapping("pretask/dto/{pretaskId}")
+    public PreTaskCreateDto getPretaskDto(@PathVariable Integer pretaskId){
+        return preTaskService.getReportById(pretaskId);
+    }
+
+    @GetMapping("pretask/job/{jobId}")
+    public List<PreTask> getPretasksByJob(@PathVariable Integer jobId){
+        return preTaskService.getPretasksByJobId(jobId);
+    }
 
     @GetMapping("pretask/{id}")
     public PreTaskDto getPreTaskById(@PathVariable Integer id){

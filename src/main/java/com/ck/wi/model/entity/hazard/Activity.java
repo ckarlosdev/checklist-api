@@ -1,16 +1,18 @@
 package com.ck.wi.model.entity.hazard;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "activities")
 public class Activity implements Serializable {
@@ -22,6 +24,7 @@ public class Activity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "pre_tasks_id")
+    @JsonIgnoreProperties("activities")
     private PreTask preTask;
 
     @Column(name = "activity")
@@ -37,13 +40,13 @@ public class Activity implements Serializable {
     private String createdBy;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(name = "status")
     private String status;

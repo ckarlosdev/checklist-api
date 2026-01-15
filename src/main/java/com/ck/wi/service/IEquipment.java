@@ -8,6 +8,8 @@ public interface IEquipment {
 
     Equipment save(Equipment equipment);
 
+    void updateOdometer(Integer equipmentId, float odometer);
+
     Equipment findById(Integer id);
 
     void delete(Equipment equipment);
