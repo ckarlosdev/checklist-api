@@ -137,8 +137,7 @@ public class DailyReportController {
 
     @GetMapping("/dailyReport/summary/{jobNumber}")
     public List<DailyReportSummaryDto> getSummaryByJobNumber(@PathVariable String jobNumber){
-        List<DailyReportSummaryDto> dailyReports = dailyReportService.findSummaryByJobNumber(jobNumber);
-        return dailyReports;
+        return dailyReportService.findSummaryByJobNumber(jobNumber);
     }
 
     @GetMapping("/dailyReport/jobs")

@@ -1,20 +1,21 @@
 package com.ck.wi.model.entity.hazard;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Builder
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "pre_tasks")
 public class PreTask implements Serializable {
@@ -40,13 +41,13 @@ public class PreTask implements Serializable {
     private String createdBy;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDateTime createdDate;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
 
     @Column(name = "status")
     private String status;

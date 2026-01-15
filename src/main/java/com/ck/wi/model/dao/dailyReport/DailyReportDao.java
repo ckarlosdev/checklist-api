@@ -42,7 +42,7 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
     @Query(value = "select count(1) " +
             " from (select date, count(1) " +
             " from daily_reports " +
-            " where status='1' and number='2408' and date!='2025-09-27' " +
+            " where status='1' and number= :jobNumber and date!= :excludeDate " +
             " group by date " +
             " order by date desc) as T;", nativeQuery = true)
     Integer getTotalDaysByJobNumber(

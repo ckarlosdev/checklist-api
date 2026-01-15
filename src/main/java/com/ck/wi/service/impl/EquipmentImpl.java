@@ -21,6 +21,18 @@ public class EquipmentImpl implements IEquipment {
         return equipmentDao.save(equipment);
     }
 
+    @Transactional
+    @Override
+    public void updateOdometer(Integer equipmentId, float odometer){
+        Equipment equipment = equipmentDao.findById(equipmentId)
+                .orElse(null);
+
+        if(equipment != null && equipment.getHour() > odometer){
+            equipment.setHour(odometer);
+            equipmentDao.save(equipment);
+        }
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Equipment findById(Integer id) {

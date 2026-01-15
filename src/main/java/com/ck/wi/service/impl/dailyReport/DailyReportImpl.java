@@ -99,8 +99,6 @@ public class DailyReportImpl implements IDailyReport {
         updateTools(dailyReportCreateDto.getTools(), dailyReportUpdated);
         updateDumpsters(dailyReportCreateDto.getDumpsters(), dailyReportUpdated);
 
-
-
         DailyReportCreateDto response = toDto(dailyReportUpdated);
         return allDto(response, dailyReportCreateDto.getDailyReportId());
     }
@@ -700,6 +698,10 @@ public class DailyReportImpl implements IDailyReport {
                         .build();
 
                 savedEquipments.add(drEquipmentDao.save(drEquipment));
+
+                // save odometer
+                    // in equipment table
+                    // in odometer history table
             }
         }
 
