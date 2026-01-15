@@ -2,6 +2,7 @@ package com.ck.wi.service.hazard;
 
 import com.ck.wi.model.dto.hazard.PreTaskDto;
 import com.ck.wi.model.dto.hazard.create.PreTaskCreateDto;
+import com.ck.wi.model.dto.hazard.create.PretaskViewDto;
 import com.ck.wi.model.entity.hazard.PreTask;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ public interface IPreTask {
 
     PreTaskCreateDto getReportById(Integer pretaskId);
 
-    List<PreTask> getPretasksByJobId(Integer jobId);
+    List<PretaskViewDto> getPretasksByJobId(Integer jobId);
 
     PreTask findById(Integer pretaskId);
 

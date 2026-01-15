@@ -4,10 +4,7 @@ import com.ck.wi.model.dao.hazard.*;
 import com.ck.wi.model.dto.hazard.ActivityDto;
 import com.ck.wi.model.dto.hazard.PreTaskDto;
 import com.ck.wi.model.dto.hazard.PretasksOptionDto;
-import com.ck.wi.model.dto.hazard.create.ActivityCreateDto;
-import com.ck.wi.model.dto.hazard.create.PreTaskCreateDto;
-import com.ck.wi.model.dto.hazard.create.PreTaskOptionCreateDto;
-import com.ck.wi.model.dto.hazard.create.PtSignatureDto;
+import com.ck.wi.model.dto.hazard.create.*;
 import com.ck.wi.model.entity.hazard.*;
 import com.ck.wi.service.hazard.IPreTask;
 import jakarta.transaction.Transactional;
@@ -470,7 +467,7 @@ public class PreTaskImpl implements IPreTask {
 
     @Transactional
     @Override
-    public List<PreTask> getPretasksByJobId(Integer jobId){
+    public List<PretaskViewDto> getPretasksByJobId(Integer jobId){
         return preTaskDao.findPretaskById(jobId);
     }
 

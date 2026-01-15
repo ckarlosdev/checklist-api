@@ -103,6 +103,7 @@ C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\create\ActivityCreateDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\create\PreTaskCreateDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\create\PreTaskOptionCreateDto.java
+C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\create\PretaskViewDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\create\PtSignatureDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\PreTaskDto.java
 C:\Users\ckarlos\OneDrive\Escritorio\equip-dailyReport-api\src\main\java\com\ck\wi\model\dto\hazard\PretasksCheckboxOptionDto.java
