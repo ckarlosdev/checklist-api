@@ -112,7 +112,6 @@ com\ck\wi\mapper\AssignmentMapper.class
 com\ck\wi\model\dto\demoChecklist\DemoChecklistCreateDto$DemoChecklistCreateDtoBuilder.class
 com\ck\wi\model\dto\hazard\ActivityDto$ActivityDtoBuilder.class
 com\ck\wi\service\impl\dailyReport\DumpsterImpl.class
-com\ck\wi\WebConfig.class
 com\ck\wi\model\dto\silica\SilicaWithControlsDto.class
 com\ck\wi\service\hazard\IPreTask.class
 com\ck\wi\model\dto\silica\SilicaControlDto.class
@@ -190,7 +189,6 @@ com\ck\wi\service\odometer\IOdometersHistory.class
 com\ck\wi\model\entity\dailyReport\DrRental.class
 com\ck\wi\model\dto\hazard\create\PtSignatureDto$PtSignatureDtoBuilder.class
 com\ck\wi\model\dao\hazard\PretasksCheckboxOptionDao.class
-com\ck\wi\SecurityConfig.class
 com\ck\wi\model\dto\request\DailyReportRequest.class
 com\ck\wi\model\dto\dailyReport\DumpsterSummaryDto.class
 com\ck\wi\service\impl\EquipmentImpl.class
