@@ -3,6 +3,7 @@ package com.ck.wi.service.silica;
 import com.ck.wi.model.dto.silica.SilicaControlCreateDto;
 import com.ck.wi.model.dto.silica.SilicaCreateDto;
 import com.ck.wi.model.dto.silica.SilicaDto;
+import com.ck.wi.model.dto.silica.SilicaShortViewDto;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.model.entity.silica.Silica;
 
@@ -16,6 +17,8 @@ public interface ISilica {
     List<Silica> findByJobAndEventDate(Job job, LocalDate eventDate);
 
     List<Silica> findByJob(Job job);
+
+    List<SilicaShortViewDto> getReportsByJobId(Integer jobId);
 
     Silica processAndSaveSilica(SilicaCreateDto silicaCreateDto);
 

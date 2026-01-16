@@ -1,9 +1,6 @@
 package com.ck.wi.controller.silica;
 
-import com.ck.wi.model.dto.silica.SilicaControlCreateDto;
-import com.ck.wi.model.dto.silica.SilicaControlDto;
-import com.ck.wi.model.dto.silica.SilicaCreateDto;
-import com.ck.wi.model.dto.silica.SilicaDto;
+import com.ck.wi.model.dto.silica.*;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.model.entity.silica.Silica;
 import com.ck.wi.model.entity.silica.SilicaControl;
@@ -107,6 +104,11 @@ public class SilicaController {
                 .silicaControls(silicaControlDtos)
                 .diagramData(silica.getDiagramData())
                 .build();
+    }
+
+    @GetMapping("silica/reports/{jobId}")
+    public List<SilicaShortViewDto> findReportsByJobId(@PathVariable Integer jobId){
+        return silicaService.getReportsByJobId(jobId);
     }
 
     @GetMapping("silica/{number}/by-date")
