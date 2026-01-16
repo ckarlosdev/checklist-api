@@ -228,6 +228,7 @@ com\ck\wi\model\dto\assignment\AssignmentEmployeeDto$AssignmentEmployeeDtoBuilde
 com\ck\wi\model\dto\assignment\AssignmentDto$AssignmentDtoBuilder.class
 com\ck\wi\service\hazard\IPretasksOption.class
 com\ck\wi\model\entity\dailyReport\Tool.class
+com\ck\wi\model\dto\silica\SilicaShortViewDto.class
 com\ck\wi\controller\demoChecklist\DemoItemController.class
 com\ck\wi\model\dto\hazard\PretasksSignatureDto.class
 com\ck\wi\model\dto\dailyReport\DrEmployeeDto.class

@@ -50,6 +50,11 @@ public class SilicaImpl implements ISilica {
         return (List<Silica>) silicaDao.findByJobOrderByEventDateDesc(job);
     }
 
+    @Transactional
+    @Override
+    public List<SilicaShortViewDto> getReportsByJobId(Integer jobId){
+        return silicaDao.findSilicaByJobId(jobId);
+    }
 
     @Transactional
     @Override
