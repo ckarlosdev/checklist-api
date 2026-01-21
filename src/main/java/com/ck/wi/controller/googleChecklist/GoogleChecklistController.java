@@ -1,5 +1,6 @@
 package com.ck.wi.controller.googleChecklist;
 
+import com.ck.wi.model.dto.googleChecklist.EquipmentsGoogleChecklistCreateDto;
 import com.ck.wi.model.dto.googleChecklist.GoogleChecklistDto;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.model.entity.googleChecklist.EquipmentsGoogleChecklist;
@@ -33,6 +34,21 @@ public class GoogleChecklistController {
 
     @Autowired
     private IEquipmentsGoogleChecklist equipmentsGoogleChecklistService;
+
+    @PostMapping("/checkLists")
+    public Integer saveChecklistReport(@RequestBody EquipmentsGoogleChecklistCreateDto checklists){
+        return equipmentsGoogleChecklistService.save(checklists);
+    }
+
+    @PutMapping("/checkLists")
+    public void updateChecklistReport(@RequestBody EquipmentsGoogleChecklistCreateDto checklists){
+        equipmentsGoogleChecklistService.update(checklists);
+    }
+
+    @GetMapping("cl/job/{jobId}")
+    public List<EquipmentsGoogleChecklist> findAllByJobId(@PathVariable Integer jobId){
+        return equipmentsGoogleChecklistService.getAllChecklist(jobId);
+    }
 
     @GetMapping("cl/{number}/by-date")
     public List<GoogleChecklistDto> getGoogleChecklistByJobNumberAndDate(
