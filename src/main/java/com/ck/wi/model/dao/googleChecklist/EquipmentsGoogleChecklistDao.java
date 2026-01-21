@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface EquipmentsGoogleChecklistDao extends CrudRepository<EquipmentsGoogleChecklist, Integer> {
@@ -18,4 +19,11 @@ public interface EquipmentsGoogleChecklistDao extends CrudRepository<EquipmentsG
     EquipmentsGoogleChecklist findByJobsIdAndDate(
             @Param("jobsId") Integer jobsId,
             @Param("date") LocalDate date);
+
+    @Query(
+            value = "SELECT * FROM equipments_google_checklists WHERE jobs_id = :jobsId AND status='1' ",
+            nativeQuery = true
+    )
+    List<EquipmentsGoogleChecklist> findAllByJobId(
+            @Param("jobsId") Integer jobsId);
 }

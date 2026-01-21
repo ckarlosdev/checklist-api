@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -29,9 +30,9 @@ public class GoogleChecklistDto implements Serializable {
     private String clean;
     private String comment;
     private String createdBy;
-    private Date createdDate;
+    private LocalDateTime createdDate;
     private String updatedBy;
-    private Date updatedDate;
+    private LocalDateTime updatedDate;
     private String status;
     private String otherType;
 }
