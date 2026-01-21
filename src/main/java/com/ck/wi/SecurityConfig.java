@@ -22,12 +22,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 1. AÑADE ESTO: Activa el soporte de CORS
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll()
-                );
+        // Usar Customizer.withDefaults() obliga a Spring a buscar un bean llamado corsConfigurationSource
+        .cors(Customizer.withDefaults()) 
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permite explícitamente los Preflight
+            .anyRequest().permitAll()
+        );
         return http.build();
     }
 
