@@ -22,38 +22,45 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-        // 1. Forzar a que el filtro de CORS se ejecute antes que cualquier otra cosa
-        .cors(Customizer.withDefaults())
-        .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-            // 2. Permitir explícitamente el método OPTIONS (Preflight)
-            .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-            .anyRequest().permitAll()
-        );
+            .csrf(csrf -> csrf.disable())
+            .cors(Customizer.withDefaults())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .anyRequest().permitAll()
+            );
         return http.build();
     }
 
-    // 2. AÑADE ESTO: El "permiso" explícito para tu frontend
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
+    public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-    
-        // 3. Usa setAllowedOriginPatterns en lugar de setAllowedOrigins si usas allowCredentials
-        config.setAllowedOriginPatterns(Arrays.asList(
-            "https://ckarlosdev.github.io", 
+
+        config.setAllowedOriginPatterns(List.of(
             "https://oleo-soft.com",
+            "https://ckarlosdev.github.io",
             "http://localhost:5173"
         ));
-        
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
-        config.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-        // config.setAllowCredentials(true);
-        config.setMaxAge(3600L); // Cache de la respuesta OPTIONS por 1 hora
-    
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
+        config.setAllowedMethods(List.of(
+            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
+        ));
+
+        config.setAllowedHeaders(List.of(
+            "Authorization",
+            "Content-Type",
+            "X-Requested-With",
+            "Accept",
+            "Origin"
+        ));
+
+        config.setAllowCredentials(false); 
+        config.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return source;
+
+        return new CorsFilter(source);
     }
 
     @Bean
