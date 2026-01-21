@@ -48,7 +48,7 @@ public class SecurityConfig {
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
         config.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-        config.setAllowCredentials(true);
+        // config.setAllowCredentials(true);
         config.setMaxAge(3600L); // Cache de la respuesta OPTIONS por 1 hora
     
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
