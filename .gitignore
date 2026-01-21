@@ -1,8 +1,11 @@
 HELP.md
 #target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Ignorar TODA la carpeta target (donde están los .class y el .jar)
+target/
+**/target/
+
+# Ignorar archivos compilados sueltos
+*.class
 
 ### STS ###
 .apt_generated
