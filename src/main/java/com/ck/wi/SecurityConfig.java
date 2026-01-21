@@ -22,11 +22,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-        // Usar Customizer.withDefaults() obliga a Spring a buscar un bean llamado corsConfigurationSource
-        .cors(Customizer.withDefaults()) 
+        // 1. Forzar a que el filtro de CORS se ejecute antes que cualquier otra cosa
+        .cors(Customizer.withDefaults())
         .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permite explícitamente los Preflight
+            // 2. Permitir explícitamente el método OPTIONS (Preflight)
+            .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
             .anyRequest().permitAll()
         );
         return http.build();
@@ -36,11 +37,20 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("https://ckarlosdev.github.io", "https://oleo-soft.com"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("*"));
+    
+        // 3. Usa setAllowedOriginPatterns en lugar de setAllowedOrigins si usas allowCredentials
+        config.setAllowedOriginPatterns(Arrays.asList(
+            "https://ckarlosdev.github.io", 
+            "https://oleo-soft.com",
+            "http://localhost:5173"
+        ));
+        
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With", "Accept", "Origin"));
+        config.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
         config.setAllowCredentials(true);
-
+        config.setMaxAge(3600L); // Cache de la respuesta OPTIONS por 1 hora
+    
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
