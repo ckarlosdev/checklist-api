@@ -1,5 +1,6 @@
 package com.ck.wi.controller;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.ck.wi.model.dto.ChecklistDto;
 import com.ck.wi.model.dto.JobDto;
 import com.ck.wi.model.entity.Checklist;
@@ -7,8 +8,10 @@ import com.ck.wi.model.entity.Job;
 import com.ck.wi.service.IChecklist;
 import com.ck.wi.service.IJob;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -95,6 +98,40 @@ public class ChecklistController {
     public List<ChecklistDto> getChecklistsByJobNumber(@PathVariable String jobNumber) {
         Job job = jobService.findByNumber(jobNumber);
         List<Checklist> checklists = checklistService.findByJob(job);
+
+        return checklists.stream()
+                .map( checklist ->
+                        ChecklistDto.builder()
+                                .checklistsId(checklist.getChecklistsId())
+                                .employeesId(checklist.getEmployee().getEmployeesId())
+                                .jobsId(checklist.getJob().getJobsId())
+                                .equipmentsId(checklist.getEquipment().getEquipmentsId())
+                                .type(checklist.getType())
+                                .date(checklist.getDate())
+                                .odometer(checklist.getOdometer())
+                                .oil(checklist.getOil())
+                                .hydraulic(checklist.getHydraulic())
+                                .filter(checklist.getFilter())
+                                .radiator(checklist.getRadiator())
+                                .track(checklist.getTrack())
+                                .attachment(checklist.getAttachment())
+                                .leaking(checklist.getLeaking())
+                                .diesel(checklist.getDiesel())
+                                .clean(checklist.getClean())
+                                .comment(checklist.getComment())
+                                .status(checklist.getStatus())
+                                .build())
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("qrChecklists/{jobId}/by-date")
+    public List<ChecklistDto> getChecklistsByJobNumber(
+            @PathVariable Integer jobId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+    ) {
+        List<Checklist> checklists = checklistService.findByJobAndDate(jobId, date);
+
+        System.out.println( checklists);
 
         return checklists.stream()
                 .map( checklist ->
