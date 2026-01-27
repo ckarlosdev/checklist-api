@@ -215,4 +215,58 @@ public class EquipmentsGoogleChecklistImpl implements IEquipmentsGoogleChecklist
         return  equipmentsGoogleChecklistDao.findAllByJobId(jobId);
     }
 
+    @Override
+    public EquipmentsGoogleChecklistCreateDto getClReportById(Integer checklistId){
+
+        EquipmentsGoogleChecklist equipmentsChecklist = equipmentsGoogleChecklistDao.findById(checklistId)
+                .orElseThrow(() -> new IllegalArgumentException("Checklist report not found"));
+
+        List<GoogleChecklist> googleChecklists = googleChecklistDao
+                .findByEquipmentsGoogleChecklistsIdAndStatus(checklistId, "1");
+
+        EquipmentsGoogleChecklistCreateDto checklistDto =
+                clToDto(equipmentsChecklist);
+
+        List<GoogleCheckListCreateDto> listDto =
+                googleChecklists.stream()
+                        .map(this::checklistsToDto)
+                        .toList();
+
+        checklistDto.setChecklists(listDto);
+
+        return checklistDto;
+    }
+
+    private GoogleCheckListCreateDto checklistsToDto(GoogleChecklist checklist){
+        return GoogleCheckListCreateDto
+                .builder()
+                .googleChecklistsId(checklist.getGoogleChecklistsId())
+                .equipmentNumber(checklist.getEquipmentNumber())
+                .equipmentName(checklist.getEquipmentName())
+                .operator(checklist.getOperator())
+                .odometer(checklist.getOdometer())
+                .oil(checklist.getOil())
+                .hydraulic(checklist.getHydraulic())
+                .filter(checklist.getFilter())
+                .radiator(checklist.getRadiator())
+                .track(checklist.getTrack())
+                .attachment(checklist.getAttachment())
+                .leaking(checklist.getLeaking())
+                .diesel(checklist.getDiesel())
+                .clean(checklist.getClean())
+                .comment(checklist.getComment())
+                .otherType(checklist.getOtherType())
+                .build();
+    }
+
+    private EquipmentsGoogleChecklistCreateDto clToDto(EquipmentsGoogleChecklist equipmentsChecklist){
+        return EquipmentsGoogleChecklistCreateDto
+                .builder()
+                .equipmentsGoogleChecklistsId(equipmentsChecklist.getEquipmentsGoogleChecklistsId())
+                .jobsId(equipmentsChecklist.getJobsId())
+                .userName(equipmentsChecklist.getUpdatedBy())
+                .date(equipmentsChecklist.getDate())
+                .build();
+    }
+
 }
