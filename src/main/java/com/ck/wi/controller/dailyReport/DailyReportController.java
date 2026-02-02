@@ -204,7 +204,8 @@ public class DailyReportController {
     @GetMapping("/dailyReport/{number}/by-date")
     public DailyReportDto getDailyReportByIdAndDate(
             @PathVariable String number,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date)
+    {
         DailyReport dailyReport = dailyReportService.findByNumberAndDate(number, date);
 
         if (dailyReport == null) {

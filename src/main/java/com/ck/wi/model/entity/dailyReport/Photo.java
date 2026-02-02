@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class Photo implements Serializable {
     private Integer dailyReportId;
 
     @Column(name = "dr_date")
-    private Date drDate;
+    private LocalDate drDate;
 
     @Column(name = "path_id")
     private String pathId;
@@ -41,13 +42,13 @@ public class Photo implements Serializable {
     private String createdBy;
 
     @Column(name = "created_date")
-    private Date createdDate;
+    private LocalDate createdDate;
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "updated_date")
-    private Date updatedDate;
+    private LocalDate updatedDate;
 
     @Column(name = "status")
     private String status;
