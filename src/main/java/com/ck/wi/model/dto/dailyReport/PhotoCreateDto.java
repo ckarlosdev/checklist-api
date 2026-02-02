@@ -1,6 +1,5 @@
 package com.ck.wi.model.dto.dailyReport;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -12,13 +11,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @ToString
 @Builder
-public class PhotoDto implements Serializable {
+public class PhotoCreateDto implements Serializable {
     private Integer photosId;
-    private Integer dailyReportId;
     private LocalDate drDate;
     private String pathId;
     private String folderId;
     private String name;
     private String type;
-    private String status;
+    private String userName;
 }

@@ -1,5 +1,6 @@
 package com.ck.wi.controller.dailyReport;
 
+import com.ck.wi.model.dto.dailyReport.PhotoCreateDto;
 import com.ck.wi.model.dto.dailyReport.PhotoDto;
 import com.ck.wi.model.dto.request.PhotoRequest;
 import com.ck.wi.model.entity.dailyReport.Photo;
@@ -23,6 +24,23 @@ public class PhotoController {
     @Autowired
     private IPhoto photoService;
 
+    @PostMapping("photo/{dailyReportId}")
+    public void savePhotos(
+            @RequestBody List<PhotoCreateDto> photos,
+            @PathVariable Integer dailyReportId
+    ){
+        photoService.savePhotos(photos, dailyReportId);
+    }
+
+    @PutMapping("photo/{dailyReportId}")
+    public void updatePhotos(
+            @RequestBody List<PhotoCreateDto> photos,
+            @PathVariable Integer dailyReportId
+    ){
+        photoService.updatePhotos(photos, dailyReportId);
+    }
+
+
     @GetMapping("photo/dailyReport/{dailyReportId}")
     public List<PhotoDto> getPhotosByDailyReportId(@PathVariable Integer dailyReportId){
         List<Photo> photos = photoService.findByDailyReportId(dailyReportId);
@@ -31,7 +49,7 @@ public class PhotoController {
                 .map(photo ->
                         PhotoDto.builder()
                                 .photosId(photo.getPhotosId())
-                                .dailyReportId(photo.getPhotosId())
+                                .dailyReportId(photo.getDailyReportId())
                                 .drDate(photo.getDrDate())
                                 .pathId(photo.getPathId())
                                 .folderId(photo.getFolderId())

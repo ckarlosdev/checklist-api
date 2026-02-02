@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -94,5 +95,12 @@ public class ChecklistImpl implements IChecklist {
     @Override
     public void delete(Checklist checklist) {
         checklistDao.delete(checklist);
+    }
+
+    @Override
+    public List<Checklist> findByJobAndDate(Integer jobsId, LocalDate date){
+
+        return checklistDao.findAllByJobIdAndDate(jobsId, date);
+
     }
 }

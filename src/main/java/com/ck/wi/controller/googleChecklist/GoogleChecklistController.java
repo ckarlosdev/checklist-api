@@ -50,6 +50,11 @@ public class GoogleChecklistController {
         return equipmentsGoogleChecklistService.getAllChecklist(jobId);
     }
 
+    @GetMapping("cl/{checklistId}")
+    public EquipmentsGoogleChecklistCreateDto  getReportById(@PathVariable Integer checklistId){
+    return equipmentsGoogleChecklistService.getClReportById(checklistId);
+    }
+
     @GetMapping("cl/{number}/by-date")
     public List<GoogleChecklistDto> getGoogleChecklistByJobNumberAndDate(
             @PathVariable String number,

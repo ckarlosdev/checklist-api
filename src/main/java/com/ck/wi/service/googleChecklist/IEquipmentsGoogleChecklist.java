@@ -17,4 +17,6 @@ public interface IEquipmentsGoogleChecklist {
 
     List<EquipmentsGoogleChecklist> getAllChecklist(Integer jobId);
 
+    EquipmentsGoogleChecklistCreateDto getClReportById(Integer checklistId);
+
 }

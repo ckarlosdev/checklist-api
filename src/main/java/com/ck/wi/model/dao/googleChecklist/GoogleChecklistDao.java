@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface GoogleChecklistDao extends CrudRepository<GoogleChecklist, Integer> {
     List<GoogleChecklist> findByEquipmentsGoogleChecklistsId(Integer equipmentsGoogleChecklistsId);
+    List<GoogleChecklist> findByEquipmentsGoogleChecklistsIdAndStatus(Integer equipmentsGoogleChecklistsId, String status);
 }
