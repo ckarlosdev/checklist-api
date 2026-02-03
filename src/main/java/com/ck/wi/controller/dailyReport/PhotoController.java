@@ -6,6 +6,7 @@ import com.ck.wi.model.dto.request.PhotoRequest;
 import com.ck.wi.model.entity.dailyReport.Photo;
 import com.ck.wi.service.dailyReport.IPhoto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,28 @@ public class PhotoController {
         photoService.updatePhotos(photos, dailyReportId);
     }
 
+    @GetMapping("photo/type/{dailyReportId}")
+    public List<PhotoDto> getPhotosByType(
+            @PathVariable Integer dailyReportId,
+            @RequestParam(required = false) String typeReport)
+    {
+
+        List<Photo> photos = photoService.findByTypeAndReport(typeReport, dailyReportId);
+
+        return photos.stream()
+                .map(photo ->
+                        PhotoDto.builder()
+                                .photosId(photo.getPhotosId())
+                                .dailyReportId(photo.getDailyReportId())
+                                .drDate(photo.getDrDate())
+                                .pathId(photo.getPathId())
+                                .folderId(photo.getFolderId())
+                                .name(photo.getName())
+                                .type(photo.getType())
+                                .status(photo.getStatus())
+                                .build())
+                .collect(Collectors.toList());
+    }
 
     @GetMapping("photo/dailyReport/{dailyReportId}")
     public List<PhotoDto> getPhotosByDailyReportId(@PathVariable Integer dailyReportId){
