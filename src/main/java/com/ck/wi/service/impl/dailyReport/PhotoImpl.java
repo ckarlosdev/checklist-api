@@ -68,9 +68,13 @@ public class PhotoImpl implements IPhoto {
     @Override
     public void updatePhotos(List<PhotoCreateDto> photosDtos, Integer dailyReportId){
         LocalDate now = LocalDate.now();
+        String reportType = "";
+        if(!photosDtos.isEmpty()){
+            reportType = photosDtos.get(0).getType();
+        }
 
         List<Photo> actualPhotos = photoDao
-                .findByDailyReportIdAndStatus(dailyReportId, "1");
+                .findByTypeAndId(reportType, dailyReportId);
         Map<Integer, Photo> actualPhotosMap = actualPhotos.stream()
                 .collect(Collectors.toMap(Photo::getPhotosId, Function.identity()));
         List<Photo> photosToSave = new ArrayList<>();
