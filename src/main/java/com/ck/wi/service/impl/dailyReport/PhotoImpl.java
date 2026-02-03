@@ -35,6 +35,11 @@ public class PhotoImpl implements IPhoto {
         return (List<Photo>) photoDao.findByDailyReportIdIn(dailyReportIds);
     }
 
+    @Override
+    public List<Photo> findByTypeAndReport(String type, Integer dailyReportId){
+        return (List<Photo>) photoDao.findByTypeAndId(type, dailyReportId);
+    }
+
     @Transactional
     @Override
     public void savePhotos(List<PhotoCreateDto> photosDto, Integer dailyReportId){
