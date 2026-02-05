@@ -26,4 +26,13 @@ public class DemoItem implements Serializable {
 
     @Column(name = "item_type")
     private String itemType;
+
+    @Column(name = "card_position")
+    private String cardPosition;
+
+    @Column(name = "item_position")
+    private String itemPosition;
+
+    @Column(name = "item_status")
+    private String itemStatus;
 }

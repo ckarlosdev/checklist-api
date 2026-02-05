@@ -26,4 +26,9 @@ public class DemoItemController {
     public List<DemoItem> getAllItems(){
         return (List<DemoItem>) demoItemService.findAll();
     }
+
+    @GetMapping("/demoItems/actives")
+    public List<DemoItem> getItemsActives(){
+        return (List<DemoItem>) demoItemService.findActives();
+    }
 }

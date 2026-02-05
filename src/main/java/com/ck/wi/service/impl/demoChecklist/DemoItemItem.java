@@ -18,4 +18,9 @@ public class DemoItemItem implements IDemoItem {
     public List<DemoItem> findAll(){
         return (List<DemoItem>) demoItemDao.findAll();
    }
+
+   @Override
+   public List<DemoItem> findActives(){
+        return (List<DemoItem>) demoItemDao.findItemsActives();
+   }
 }
