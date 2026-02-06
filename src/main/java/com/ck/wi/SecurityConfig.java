@@ -29,10 +29,8 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                // Permitir pre-flight de CORS (necesario para navegadores)
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
-                // Cualquier otra petición REQUIERE autenticación
-                .anyRequest().authenticated() 
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .anyRequest().permitAll()
             );
         return http.build();
     }
