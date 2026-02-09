@@ -29,9 +29,12 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .anyRequest().permitAll()
-            );
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
+                // .anyRequest().permitAll() <-- ELIMINA O COMENTA ESTO
+                .anyRequest().authenticated() // <-- TODAS LAS PETICIONES REQUIEREN ESTAR AUTENTICADO
+            )
+            // Necesitas configurar el soporte para JWT (Resource Server)
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
 
