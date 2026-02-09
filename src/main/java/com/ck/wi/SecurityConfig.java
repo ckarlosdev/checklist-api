@@ -29,12 +29,20 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() 
-                // .anyRequest().permitAll() <-- ELIMINA O COMENTA ESTO
-                .anyRequest().authenticated() // <-- TODAS LAS PETICIONES REQUIEREN ESTAR AUTENTICADO
-            )
+                // 1. Endpoints de "Assignment" permitidos sin token
+                .requestMatchers(HttpMethod.POST, "/api/v1/assignment").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/v1/assignment").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/assignment/{id}").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/assignments").permitAll()
+    
+                // 2. Permitir siempre OPTIONS para evitar problemas de CORS en el navegador
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+    
+                // 3. CUALQUIER OTRA RUTA requiere autenticación
+                .anyRequest().authenticated()
+            );
             // Necesitas configurar el soporte para JWT (Resource Server)
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+            // .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
 
