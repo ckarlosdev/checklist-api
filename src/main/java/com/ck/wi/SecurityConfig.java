@@ -39,7 +39,7 @@ public class SecurityConfig {
                             "/api/v1/checklist/**", 
                             "/api/v1/equipment/**", 
                             "/api/v1/equipments",
-                            "/api/v1/photo/type/"
+                            "/api/v1/photo/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -81,64 +81,4 @@ public class SecurityConfig {
         return NimbusJwtDecoder.withSecretKey(key).build();
     }
 
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//            .csrf(csrf -> csrf.disable())
-//            .cors(Customizer.withDefaults())
-//            .authorizeHttpRequests(auth -> auth
-//                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .anyRequest().permitAll()
-//            );
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        CorsConfiguration config = new CorsConfiguration();
-//
-//        config.setAllowedOriginPatterns(List.of(
-//            "https://oleo-soft.com",
-//            "https://ckarlosdev.github.io",
-//            "http://localhost:5173"
-//        ));
-//
-//        config.setAllowedMethods(List.of(
-//            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-//        ));
-//
-//        config.setAllowedHeaders(List.of(
-//            "Authorization",
-//            "Content-Type",
-//            "X-Requested-With",
-//            "Accept",
-//            "Origin"
-//        ));
-//
-//        config.setAllowCredentials(false);
-//        config.setMaxAge(3600L);
-//
-//        UrlBasedCorsConfigurationSource source =
-//                new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//
-//        return new CorsFilter(source);
-//    }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        // Tu configuración actual de usuarios (está bien para pruebas)
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("admin")
-//                .roles("ADMIN", "USER")
-//                .build();
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
 }
