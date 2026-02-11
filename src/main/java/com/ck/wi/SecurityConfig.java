@@ -41,6 +41,10 @@ public class SecurityConfig {
                             "/api/v1/equipments",
                             "/api/v1/photo/**"
                         ).permitAll()
+                        .requestMatchers(
+                            "/api/v1/pretask/**", 
+                            "/api/v1/pt/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 // Stateless: no usamos sesiones
