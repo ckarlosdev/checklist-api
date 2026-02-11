@@ -88,6 +88,8 @@ public class DailyReportImpl implements IDailyReport {
         dailyReportToUpdate.setDate(dailyReportCreateDto.getDate());
         dailyReportToUpdate.setForeman(dailyReportCreateDto.getForeman());
         dailyReportToUpdate.setDescription(dailyReportCreateDto.getDescription());
+        dailyReportToUpdate.setManTotal(String.valueOf(dailyReportCreateDto.getEmployees().size()));
+        dailyReportToUpdate.setEquipmentTotal(String.valueOf(dailyReportCreateDto.getEquipments().size()));
         dailyReportToUpdate.setManOther(dailyReportCreateDto.getManOther());
         dailyReportToUpdate.setEquipmentOther(dailyReportCreateDto.getEquipmentOther());
         dailyReportToUpdate.setIssues(dailyReportCreateDto.getIssues());
@@ -796,6 +798,8 @@ public class DailyReportImpl implements IDailyReport {
                 .date(dailyReportCreateDto.getDate())
                 .foreman(dailyReportCreateDto.getForeman())
                 .description(dailyReportCreateDto.getDescription())
+                .manTotal(String.valueOf(dailyReportCreateDto.getEmployees().size()))
+                .equipmentTotal(String.valueOf(dailyReportCreateDto.getEquipments().size()))
                 .manOther(dailyReportCreateDto.getManOther())
                 .equipmentOther(dailyReportCreateDto.getEquipmentOther())
                 .issues(dailyReportCreateDto.getIssues())
