@@ -62,6 +62,8 @@ public class DailyReportImpl implements IDailyReport {
 
     @Autowired
     private DrDumpsterDao drDumpsterDao;
+    
+
 
     private static final String ACTIVE = "1";
     private static final String INACTIVE = "0";
@@ -698,6 +700,15 @@ public class DailyReportImpl implements IDailyReport {
                         .build();
 
                 savedEquipments.add(drEquipmentDao.save(drEquipment));
+
+                Equipment equipment = equipmentDao.findById(dto.getEquipmentsId())
+                        .orElse(null);
+
+                if(equipment != null){
+                    equipment.setHour(Float.parseFloat(dto.getNewHour()));
+                    equipmentDao.save(equipment);
+                }
+
 
                 // save odometer
                     // in equipment table

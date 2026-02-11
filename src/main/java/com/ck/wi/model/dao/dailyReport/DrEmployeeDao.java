@@ -30,16 +30,18 @@ public interface DrEmployeeDao extends CrudRepository<DrEmployee, Integer> {
     )
     List<DrEmployeeHoursDto> findHoursByNumber(@Param("jobNumber") String jobNumber);
 
-    @Query(value = " SELECT ( " +
-            " SUM(TIME_TO_SEC(TIMEDIFF(E.out_hour, E.in_hour))) - " +
-            " SUM(CASE WHEN E.lunch = 'true' OR E.lunch = 'TRUE' OR E.lunch = '1' " +
-            "        THEN 1800 ELSE 0 END)) / 3600 AS grandTotalHours " +
+    @Query(value = " SELECT " +
+            " COALESCE( " +
+            " (SUM(TIME_TO_SEC(TIMEDIFF(E.out_hour, E.in_hour))) - " +
+            " SUM(CASE WHEN E.lunch IN ('true', 'TRUE', '1') " +
+            " THEN 1800 ELSE 0 END)) / 3600, 0" +
+            " ) AS grandTotalHours " +
             " FROM daily_reports DR " +
             " INNER JOIN dr_employees E ON DR.daily_report_id = E.daily_report_id " +
             " WHERE E.status = '1' " +
-            "  AND DR.status = '1' " +
-            "  AND DR.number = :jobNumber " +
-            "  AND DR.date != :excludeDate; ", nativeQuery = true)
+            " AND DR.status = '1' " +
+            " AND DR.number = :jobNumber " +
+            " AND DR.date != :excludeDate ; ", nativeQuery = true)
     double findTotalHourLessADate(
             @Param("jobNumber") String jobNumber,
             @Param("excludeDate") LocalDate excludeDate);

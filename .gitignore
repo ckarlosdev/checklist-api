@@ -23,7 +23,7 @@ target/
 *.ipr
 
 ### IGNORA CONECTION FILE ###
-#src/main/resources/application.properties
+src/main/resources/application.properties
 
 ### NetBeans ###
 /nbproject/private/
