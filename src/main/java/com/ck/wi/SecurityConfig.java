@@ -31,7 +31,16 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/v1/assignment/**", "/api/v1/assignments", "/api/v1/job", "/api/v1/employee", "/api/v1/checklist/**", "/api/v1/equipment/**", "/api/v1/equipments").permitAll()
+                        .requestMatchers(
+                            "/api/v1/assignment/**", 
+                            "/api/v1/assignments", 
+                            "/api/v1/job/**",
+                            "/api/v1/employee", 
+                            "/api/v1/checklist/**", 
+                            "/api/v1/equipment/**", 
+                            "/api/v1/equipments",
+                            "/api/v1/photo/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 // Stateless: no usamos sesiones
