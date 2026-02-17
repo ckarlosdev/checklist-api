@@ -22,9 +22,6 @@ target/
 *.iml
 *.ipr
 
-### IGNORA CONECTION FILE ###
-src/main/resources/application.properties
-src/main/java/com/ck/wi/SecurityConfig.java
 
 ### NetBeans ###
 /nbproject/private/
