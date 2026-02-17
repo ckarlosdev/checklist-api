@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +53,7 @@ public class GoogleChecklistController {
 
     @GetMapping("cl/{checklistId}")
     public EquipmentsGoogleChecklistCreateDto  getReportById(@PathVariable Integer checklistId){
-    return equipmentsGoogleChecklistService.getClReportById(checklistId);
+        return equipmentsGoogleChecklistService.getClReportById(checklistId);
     }
 
     @GetMapping("cl/{number}/by-date")
@@ -61,8 +62,13 @@ public class GoogleChecklistController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date){
 
         Job job = jobService.findByNumber(number);
+        if (job == null) return Collections.emptyList();
 
         EquipmentsGoogleChecklist equipmentsGoogleChecklist = equipmentsGoogleChecklistService.findByJobsIdAndDate(job.getJobsId(), date);
+
+        if (equipmentsGoogleChecklist == null) {
+            return Collections.emptyList();
+        }
 
         List<GoogleChecklist> googleChecklists = googleChecklistService.findByEquipmentsGoogleChecklistsId(equipmentsGoogleChecklist.getEquipmentsGoogleChecklistsId());
 
