@@ -3,6 +3,7 @@ package com.ck.wi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -25,30 +26,44 @@ public class SecurityConfig {
     private String secretKey;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
-        http
+    @Profile("dev")
+    public SecurityFilterChain devFilterChain(HttpSecurity http) throws Exception {
+        return http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(
-                            "/api/v1/assignment/**", 
-                            "/api/v1/assignments", 
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .build();
+    }
+
+    @Bean
+    @Profile("prod")
+    public SecurityFilterChain prodFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
+        http
+            .csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                    .requestMatchers(
+                            "/api/v1/assignment/**",
+                            "/api/v1/assignments",
                             "/api/v1/job/**",
-                            "/api/v1/employee", 
-                            "/api/v1/checklist/**", 
-                            "/api/v1/equipment/**", 
+                            "/api/v1/employee",
+                            "/api/v1/checklist/**",
+                            "/api/v1/equipment/**",
                             "/api/v1/equipments",
                             "/api/v1/photo/**"
-                        ).permitAll()
-                        .anyRequest().authenticated()
-                )
-                // Stateless: no usamos sesiones
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Configura Resource Server con JWT
-                .oauth2ResourceServer(rs -> rs
-                        .jwt(jwt -> jwt.decoder(jwtDecoder))
-                );
+                    ).permitAll()
+                    .requestMatchers(
+                            "/api/v1/pretask/**",
+                            "/api/v1/pt/**"
+                    ).permitAll()
+                    .anyRequest().authenticated()
+            )
+            // Stateless: no usamos sesiones
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Configura Resource Server con JWT
+            .oauth2ResourceServer(rs -> rs
+                    .jwt(jwt -> jwt.decoder(jwtDecoder))
+            );
 
         return http.build();
     }
@@ -80,65 +95,4 @@ public class SecurityConfig {
         SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(key).build();
     }
-
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//            .csrf(csrf -> csrf.disable())
-//            .cors(Customizer.withDefaults())
-//            .authorizeHttpRequests(auth -> auth
-//                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .anyRequest().permitAll()
-//            );
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public CorsFilter corsFilter() {
-//        CorsConfiguration config = new CorsConfiguration();
-//
-//        config.setAllowedOriginPatterns(List.of(
-//            "https://oleo-soft.com",
-//            "https://ckarlosdev.github.io",
-//            "http://localhost:5173"
-//        ));
-//
-//        config.setAllowedMethods(List.of(
-//            "GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"
-//        ));
-//
-//        config.setAllowedHeaders(List.of(
-//            "Authorization",
-//            "Content-Type",
-//            "X-Requested-With",
-//            "Accept",
-//            "Origin"
-//        ));
-//
-//        config.setAllowCredentials(false);
-//        config.setMaxAge(3600L);
-//
-//        UrlBasedCorsConfigurationSource source =
-//                new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", config);
-//
-//        return new CorsFilter(source);
-//    }
-//
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        // Tu configuración actual de usuarios (está bien para pruebas)
-//        UserDetails user = User.withDefaultPasswordEncoder()
-//                .username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = User.withDefaultPasswordEncoder()
-//                .username("admin")
-//                .password("admin")
-//                .roles("ADMIN", "USER")
-//                .build();
-//        return new InMemoryUserDetailsManager(user, admin);
-//    }
 }
