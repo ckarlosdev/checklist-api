@@ -30,44 +30,35 @@ public class SecurityConfig {
     public SecurityFilterChain devFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .build();
-    }
-
-    @Bean
-    @Profile("prod")
-    public SecurityFilterChain prodFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers(
-                        "/api/v1/assignment/**", 
-                        "/api/v1/assignments", 
-                        "/api/v1/job/**",
-                        "/api/v1/employee", 
-                        "/api/v1/checklist/**", 
-                        "/api/v1/equipment/**", 
-                        "/api/v1/equipments",
-                        "/api/v1/photo/**"
-                    ).permitAll()
-                    .requestMatchers(
-                        "/api/v1/pretask/**", 
-                        "/api/v1/pt/**"
-                    ).permitAll()
-                    .requestMatchers(
-                        "/api/v1/issues/**", 
-                        "/api/v1/issue/**"
-                    ).permitAll()
-                    .anyRequest().authenticated()
-            )
-            // Stateless: no usamos sesiones
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // Configura Resource Server con JWT
-            .oauth2ResourceServer(rs -> rs
-                    .jwt(jwt -> jwt.decoder(jwtDecoder))
-            );
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(
+                            "/api/v1/assignment/**", 
+                            "/api/v1/assignments", 
+                            "/api/v1/job/**",
+                            "/api/v1/employee", 
+                            "/api/v1/checklist/**", 
+                            "/api/v1/equipment/**", 
+                            "/api/v1/equipments",
+                            "/api/v1/photo/**"
+                        ).permitAll()
+                        .requestMatchers(
+                            "/api/v1/pretask/**", 
+                            "/api/v1/pt/**"
+                        ).permitAll()
+                        .requestMatchers(
+                            "/api/v1/issues/**", 
+                            "/api/v1/issue/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                // Stateless: no usamos sesiones
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Configura Resource Server con JWT
+                .oauth2ResourceServer(rs -> rs
+                        .jwt(jwt -> jwt.decoder(jwtDecoder))
+                );
 
         return http.build();
     }
@@ -99,4 +90,5 @@ public class SecurityConfig {
         SecretKey key = new SecretKeySpec(keyBytes, "HmacSHA256");
         return NimbusJwtDecoder.withSecretKey(key).build();
     }
+
 }
