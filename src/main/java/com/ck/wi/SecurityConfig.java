@@ -43,18 +43,22 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .requestMatchers(
-                            "/api/v1/assignment/**",
-                            "/api/v1/assignments",
-                            "/api/v1/job/**",
-                            "/api/v1/employee",
-                            "/api/v1/checklist/**",
-                            "/api/v1/equipment/**",
-                            "/api/v1/equipments",
-                            "/api/v1/photo/**"
+                        "/api/v1/assignment/**", 
+                        "/api/v1/assignments", 
+                        "/api/v1/job/**",
+                        "/api/v1/employee", 
+                        "/api/v1/checklist/**", 
+                        "/api/v1/equipment/**", 
+                        "/api/v1/equipments",
+                        "/api/v1/photo/**"
                     ).permitAll()
                     .requestMatchers(
-                            "/api/v1/pretask/**",
-                            "/api/v1/pt/**"
+                        "/api/v1/pretask/**", 
+                        "/api/v1/pt/**"
+                    ).permitAll()
+                    .requestMatchers(
+                        "/api/v1/issues/**", 
+                        "/api/v1/issue/**"
                     ).permitAll()
                     .anyRequest().authenticated()
             )
