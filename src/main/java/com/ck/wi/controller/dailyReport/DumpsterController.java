@@ -32,6 +32,10 @@ public class DumpsterController {
     public DumpsterDto getDumpstersByDailyReportId(@PathVariable Integer dailyReportId){
         Dumpster dumpster = dumpsterService.findByDailyReportId(dailyReportId);
 
+        if (dumpster == null) {
+            return null; // O puedes devolver new DumpsterDto()
+        }
+
         return DumpsterDto.builder()
                 .drDumpstersId(dumpster.getDrDumpstersId())
                 .dailyReportId(dumpster.getDailyReportId())
