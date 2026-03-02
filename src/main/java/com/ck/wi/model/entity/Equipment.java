@@ -39,16 +39,16 @@ public class Equipment implements Serializable {
     @Column(name = "model")
     private String model;
 
-    @Column(name = "year")
+    @Column(name = "`year`")
     private String year;
 
     @Column(name = "purchaseDate")
     private String purchaseDate;
 
-    @Column(name = "status")
+    @Column(name = "`status`")
     private String status;
 
-    @Column(name = "condition")
+    @Column(name = "`condition`")
     private String condition;
 
     @Column(name = "serialNumber")
