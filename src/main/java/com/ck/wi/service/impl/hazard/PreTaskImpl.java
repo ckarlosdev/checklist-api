@@ -106,7 +106,7 @@ public class PreTaskImpl implements IPreTask {
 
         LocalDateTime today = LocalDateTime.now();
 
-        System.out.println("DTO Completo: " + preTaskCreateDto.toString());
+//        System.out.println("DTO Completo: " + preTaskCreateDto.toString());
         PreTask preTask = toEntity(preTaskCreateDto, today);
         PreTask preTaskSaved = preTaskDao.save(preTask);
 
