@@ -13,6 +13,7 @@ import java.io.Serializable;
 public class EmployeeDto implements Serializable {
 
     private Integer employeesId;
+    private String legalName;
     private String employeeNumber;
     private String firstName;
     private String lastName;

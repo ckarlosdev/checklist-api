@@ -43,7 +43,7 @@ public class DailyReport implements Serializable {
     @Column(name = "crew")
     private String crew;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "man_total")
@@ -64,7 +64,7 @@ public class DailyReport implements Serializable {
     @Column(name = "equipment_other")
     private String equipmentOther;
 
-    @Column(name = "issues")
+    @Column(name = "issues", columnDefinition = "TEXT")
     private String issues;
 
     @Column(name = "created_by")

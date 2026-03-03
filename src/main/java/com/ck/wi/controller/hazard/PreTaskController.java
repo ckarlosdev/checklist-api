@@ -75,7 +75,17 @@ public class PreTaskController {
             ){
         Job job = jobService.findByNumber(jobNumber);
 
-        PreTask preTask = preTaskService.findByJobsIdAndDate(job.getJobsId(), date);
+        if (job == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "job number: " + jobNumber + " doesn't exist.");
+        }
+
+        Optional<PreTask> preTaskOptional = preTaskService.findByJobsIdAndDate(job.getJobsId(), date);
+
+        if (preTaskOptional.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "PreTask not found");
+        }
+
+        PreTask preTask = preTaskOptional.get();
 
         Optional<PreTaskDto> pretaskDetailDto = preTaskService.getPretaskWithActivities(preTask.getPreTasksId());
 

@@ -32,14 +32,18 @@ public class AssignmentJob implements Serializable {
     @JsonBackReference
     private Assignment assignment;
 
-//    @Column(name = "assignments_id")
-//    private Integer assignmentsId;
 
     @Column(name = "jobs_id")
     private Integer jobsId;
 
     @Column(name = "aj_status")
     private String ajStatus;
+
+    @Column(name = "start_time")
+    private String startTime;
+
+    @Column(name = "assignment_comment")
+    private String assignmenComment;
 
     @OneToMany(mappedBy = "assignmentJob", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference

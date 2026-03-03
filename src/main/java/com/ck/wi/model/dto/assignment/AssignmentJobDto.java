@@ -13,5 +13,7 @@ import java.util.List;
 @Builder
 public class AssignmentJobDto implements Serializable {
     private Integer jobsId;
+    private String startTime;
+    private String assignmentComment;
     private List<AssignmentEmployeeDto> assignmentEmployeeDtos = new ArrayList<>();
 }

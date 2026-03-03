@@ -47,8 +47,8 @@ public class PreTaskImpl implements IPreTask {
     }
 
     @Override
-    public PreTask findByJobsIdAndDate(Integer jobId, LocalDate date){
-        return preTaskDao.findByJobsIdAndDate(jobId, date);
+    public Optional<PreTask> findByJobsIdAndDate(Integer jobId, LocalDate date){
+        return Optional.ofNullable(preTaskDao.findByJobsIdAndDate(jobId, date));
     }
 
     @Transactional
@@ -295,9 +295,9 @@ public class PreTaskImpl implements IPreTask {
 
     private void updateOptions(List<PreTaskOptionCreateDto> options, LocalDateTime now, PreTask preTask){
         String updater = preTask.getUpdatedBy();
-        System.out.println("updations actual for  ***********************************************************************");
+//        System.out.println("updations actual for  ***********************************************************************");
         List<PretasksOption> actualOptions = pretasksOptionDao.findByPreTaskIdAndStatus(preTask.getPreTasksId(), "1");
-        System.out.println("updations actual for updates" + actualOptions.toString());
+//        System.out.println("updations actual for updates" + actualOptions.toString());
         Map<Integer, PretasksOption> actualOptionsMap =
                 actualOptions.stream()
                         .collect(Collectors.toMap(PretasksOption::getPretasksOptionsId, Function.identity()));

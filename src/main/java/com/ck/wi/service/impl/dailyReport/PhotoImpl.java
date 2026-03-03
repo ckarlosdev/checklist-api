@@ -81,11 +81,8 @@ public class PhotoImpl implements IPhoto {
 
         for(PhotoCreateDto dto : photosDtos){
             Integer dtoId = dto.getPhotosId();
-            System.out.println("if division: ");
-            System.out.println(actualPhotos);
             if(dtoId != null && actualPhotosMap.containsKey(dtoId)){
                 Photo photoUpdate = actualPhotosMap.get(dtoId);
-                System.out.println("if create ");
                 photoUpdate.setPhotosId(dtoId);
                 photoUpdate.setDrDate(dto.getDrDate());
                 photoUpdate.setPathId(dto.getPathId());
@@ -98,7 +95,6 @@ public class PhotoImpl implements IPhoto {
                 photosToSave.add(photoUpdate);
                 actualPhotosMap.remove(dtoId);
             }else{
-                System.out.println("update ");
                 Photo newPhoto = Photo.builder()
                         .dailyReportId(dailyReportId)
                         .drDate(dto.getDrDate())

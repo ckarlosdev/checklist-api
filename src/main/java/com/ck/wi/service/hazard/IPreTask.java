@@ -20,7 +20,7 @@ public interface IPreTask {
 
     PreTask findById(Integer pretaskId);
 
-    PreTask findByJobsIdAndDate(Integer jobId, LocalDate date);
+    Optional<PreTask> findByJobsIdAndDate(Integer jobId, LocalDate date);
 
     Optional<PreTaskDto> getPretaskWithActivities(Integer id);
 }

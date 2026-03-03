@@ -21,6 +21,8 @@ public class EmployeeImpl implements IEmployee {
     public Employee save(EmployeeDto employeeDto) {
         Employee employee = Employee.builder()
                 .employeesId(employeeDto.getEmployeesId())
+                .legalName(employeeDto.getLegalName())
+                .payGroup("Weekly")
                 .employeeNumber(employeeDto.getEmployeeNumber())
                 .firstName(employeeDto.getFirstName())
                 .lastName(employeeDto.getLastName())

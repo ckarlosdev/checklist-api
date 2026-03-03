@@ -25,6 +25,11 @@ public class AttachmentController {
         return attachmentService.save(attachment);
     }
 
+    @PutMapping("attachment")
+    public Attachment update (@RequestBody Attachment attachment) {
+        return attachmentService.save(attachment);
+    }
+
     @GetMapping("attachment/{id}")
     public Attachment showById(@PathVariable Integer id){
         return attachmentService.findById(id);
