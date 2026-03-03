@@ -33,7 +33,7 @@ public class Activity implements Serializable {
     @Column(name = "hazards")
     private String hazards;
 
-    @Column(name = "controls")
+    @Column(name = "controls", columnDefinition = "TEXT")
     private String controls;
 
     @Column(name = "created_by")

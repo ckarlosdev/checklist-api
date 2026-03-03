@@ -124,6 +124,8 @@ public class AssignmentImpl implements IAssignment {
                     .assignment(assignment)
                     .jobsId(jobDto.getId())
                     .ajStatus("1")
+                    .startTime(jobDto.getStartTime())
+                    .assignmenComment(jobDto.getAssignmentComment())
                     .build();
         }
         return currentJobEntity;
@@ -196,9 +198,9 @@ public class AssignmentImpl implements IAssignment {
                 .orElseThrow(() -> new EntityNotFoundException("Assignment with ID " + assignmentsId + " not found."));
 
 //        System.out.println("Jobs: " + assignmentFinal.getAssignmentJobs().size());
-        assignmentFinal.getAssignmentJobs().forEach(job ->
-                System.out.println("  Employees: " + job.getAssignmentEmployees().size())
-        );
+//        assignmentFinal.getAssignmentJobs().forEach(job ->
+//                System.out.println("  Employees: " + job.getAssignmentEmployees().size())
+//        );
 
         return mapper.toDto(assignmentFinal);
     }

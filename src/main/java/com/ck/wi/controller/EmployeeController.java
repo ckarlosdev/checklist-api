@@ -29,6 +29,7 @@ public class EmployeeController {
 
         return EmployeeDto.builder()
                 .employeesId(employeeSave.getEmployeesId())
+                .legalName(employeeSave.getLegalName())
                 .employeeNumber(employeeSave.getEmployeeNumber())
                 .firstName(employeeSave.getFirstName())
                 .lastName(employeeSave.getLastName())
@@ -77,6 +78,7 @@ public class EmployeeController {
         return employees.stream()
                 .map(employee -> EmployeeDto.builder()
                         .employeesId(employee.getEmployeesId())
+                        .legalName(employee.getLegalName())
                         .employeeNumber(employee.getEmployeeNumber())
                         .firstName(employee.getFirstName())
                         .lastName(employee.getLastName())

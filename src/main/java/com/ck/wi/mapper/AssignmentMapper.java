@@ -46,6 +46,8 @@ public interface AssignmentMapper {
 
         AssignmentJobDto dto = new AssignmentJobDto();
         dto.setJobsId(job.getJobsId());
+        dto.setStartTime(job.getStartTime());
+        dto.setAssignmentComment(job.getAssignmenComment());
 
         // Mapear empleados del job
         dto.setAssignmentEmployeeDtos(

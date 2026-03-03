@@ -11,5 +11,7 @@ public class AssignmentJobCreateDto {
     private Integer id;
     private String title;
     private String number;
+    private String startTime;
+    private String assignmentComment;
     private Integer[] assignedEmployeeIds;
 }
