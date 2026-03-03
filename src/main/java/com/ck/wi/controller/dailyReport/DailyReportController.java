@@ -262,9 +262,6 @@ public class DailyReportController {
     public ResponseEntity<?> getResourcesToCopy(@PathVariable("jobNumber") String jobNumber){
 
         try {
-            // Forzamos un log para ver si llega aquí
-            System.out.println("API llamada con jobNumber: " + jobNumber);
-
             DrResourcesDto dto = DrResourcesDto.builder()
                     .employees(drEmployeeService.getLastReportEmployees(jobNumber))
                     .equipments(drEquipmentService.getLastReportEquipments(jobNumber))

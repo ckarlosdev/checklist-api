@@ -117,7 +117,9 @@ public class AssignmentImpl implements IAssignment {
         if (existingJobsMap.containsKey(jobDto.getId())) {
             // ACT (Actualizar/Reactivar)
             currentJobEntity = existingJobsMap.get(jobDto.getId());
-            currentJobEntity.setAjStatus("1"); // Asegurar que está activo
+            currentJobEntity.setAjStatus("1");
+            currentJobEntity.setStartTime(jobDto.getStartTime());
+            currentJobEntity.setAssignmenComment(jobDto.getAssignmentComment());
         } else {
             // CREAR
             currentJobEntity = AssignmentJob.builder()
