@@ -20,4 +20,5 @@ public class JobDto implements Serializable {
     private String contractor;
     private String contact;
     private String status;
+    private String user;
 }

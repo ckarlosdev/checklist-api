@@ -2,6 +2,7 @@ package com.ck.wi.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.util.List;
@@ -44,5 +45,21 @@ public class Employee implements Serializable {
 
     @Column(name = "title")
     private String title;
+
+    @Column(name = "employee_status")
+    private String employeeStatus;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_date", insertable = false, updatable = false)
+    private String createdDate;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_date", insertable = false)
+    @UpdateTimestamp
+    private String updatedDate;
 
 }

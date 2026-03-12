@@ -1,12 +1,13 @@
 package com.ck.wi.service;
 
+import com.ck.wi.model.dto.EquipmentDto;
 import com.ck.wi.model.entity.Equipment;
 
 import java.util.List;
 
 public interface IEquipment {
 
-    Equipment save(Equipment equipment);
+    Equipment save(EquipmentDto equipmentDto);
 
     void updateOdometer(Integer equipmentId, float odometer);
 

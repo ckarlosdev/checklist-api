@@ -11,7 +11,6 @@ import java.io.Serializable;
 @ToString
 @Builder
 public class EmployeeDto implements Serializable {
-
     private Integer employeesId;
     private String legalName;
     private String employeeNumber;
@@ -19,4 +18,5 @@ public class EmployeeDto implements Serializable {
     private String lastName;
     private String status;
     private String title;
+    private String user;
 }

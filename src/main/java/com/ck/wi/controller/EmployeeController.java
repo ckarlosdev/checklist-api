@@ -35,6 +35,7 @@ public class EmployeeController {
                 .lastName(employeeSave.getLastName())
                 .status(employeeSave.getStatus())
                 .title(employeeSave.getTitle())
+                .user(employeeSave.getUpdatedBy())
                 .build();
     }
 
@@ -49,6 +50,7 @@ public class EmployeeController {
                 .lastName(employeeUpdate.getLastName())
                 .status(employeeUpdate.getStatus())
                 .title(employeeUpdate.getTitle())
+                .user(employeeUpdate.getUpdatedBy())
                 .build();
     }
 
@@ -69,6 +71,7 @@ public class EmployeeController {
                 .lastName(employee.getLastName())
                 .status(employee.getStatus())
                 .title(employee.getTitle())
+                .user(employee.getUpdatedBy())
                 .build();
     }
 
@@ -84,6 +87,7 @@ public class EmployeeController {
                         .lastName(employee.getLastName())
                         .status(employee.getStatus())
                         .title(employee.getTitle())
+                        .user(employee.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 
@@ -51,4 +52,20 @@ public class Attachment implements Serializable {
 
     @Column(name = "serial_number")
     private String serialNumber;
+
+    @Column(name = "attachment_status")
+    private String attachmentStatus;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_date", insertable = false, updatable = false)
+    private String createdDate;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_date", insertable = false)
+    @UpdateTimestamp
+    private String updatedDate;
 }

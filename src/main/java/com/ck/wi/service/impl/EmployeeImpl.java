@@ -19,16 +19,27 @@ public class EmployeeImpl implements IEmployee {
     @Transactional
     @Override
     public Employee save(EmployeeDto employeeDto) {
-        Employee employee = Employee.builder()
-                .employeesId(employeeDto.getEmployeesId())
-                .legalName(employeeDto.getLegalName())
-                .payGroup("Weekly")
-                .employeeNumber(employeeDto.getEmployeeNumber())
-                .firstName(employeeDto.getFirstName())
-                .lastName(employeeDto.getLastName())
-                .status(employeeDto.getStatus())
-                .title(employeeDto.getTitle())
-                .build();
+
+        Employee employee;
+
+        if (employeeDto.getEmployeesId() != null) {
+            employee = employeeDao.findById(employeeDto.getEmployeesId())
+                    .orElseThrow(() -> new RuntimeException("Employee not found"));
+        } else {
+            employee = new Employee();
+            employee.setCreatedBy(employeeDto.getUser());
+        }
+
+        employee.setLegalName(employeeDto.getLegalName());
+        employee.setEmployeeNumber(employeeDto.getEmployeeNumber());
+        employee.setFirstName(employeeDto.getFirstName());
+        employee.setLastName(employeeDto.getLastName());
+        employee.setStatus(employeeDto.getStatus());
+        employee.setTitle(employeeDto.getTitle());
+        employee.setPayGroup("Weekly");
+        employee.setEmployeeStatus("1");
+        employee.setUpdatedBy(employeeDto.getUser());
+
         return employeeDao.save(employee);
     }
 
