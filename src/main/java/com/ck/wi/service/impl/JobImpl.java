@@ -1,6 +1,7 @@
 package com.ck.wi.service.impl;
 
 import com.ck.wi.model.dao.JobDao;
+import com.ck.wi.model.dto.JobDto;
 import com.ck.wi.model.entity.Employee;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.service.IJob;
@@ -18,7 +19,27 @@ public class JobImpl implements IJob {
 
     @Transactional
     @Override
-    public Job save(Job job) {
+    public Job save(JobDto jobDto) {
+        Job job;
+
+        if(jobDto.getJobsId() != null){
+            job = jobDao.findById(jobDto.getJobsId())
+                    .orElseThrow(() -> new RuntimeException("Job not found"));
+        }else{
+            job = new Job();
+            job.setCreatedBy(jobDto.getUser());
+        }
+
+        job.setNumber(jobDto.getNumber());
+        job.setType(jobDto.getType());
+        job.setName(jobDto.getName());
+        job.setAddress(jobDto.getAddress());
+        job.setContractor(jobDto.getContractor());
+        job.setContact(jobDto.getContact());
+        job.setStatus(jobDto.getStatus());
+        job.setJobStatus("1");
+        job.setUpdatedBy(jobDto.getUser());
+
         return jobDao.save(job);
     }
 

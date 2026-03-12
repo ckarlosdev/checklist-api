@@ -1,5 +1,7 @@
 package com.ck.wi.controller;
 
+import com.ck.wi.model.dto.AttachmentDto;
+import com.ck.wi.model.dto.EquipmentDto;
 import com.ck.wi.model.entity.Attachment;
 import com.ck.wi.service.IAttachment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,43 @@ public class AttachmentController {
     private IAttachment attachmentService;
 
     @PostMapping("attachment")
-    public Attachment create (@RequestBody Attachment attachment) {
-        return attachmentService.save(attachment);
+    public AttachmentDto create (@RequestBody AttachmentDto attachmentDto) {
+        Attachment attachmentSaved = attachmentService.save(attachmentDto);
+
+        return AttachmentDto.builder()
+                .attachmentsId(attachmentSaved.getAttachmentsId())
+                .family(attachmentSaved.getFamily())
+                .number(attachmentSaved.getNumber())
+                .name(attachmentSaved.getName())
+                .manufacturing(attachmentSaved.getManufacturing())
+                .model(attachmentSaved.getModel())
+                .year(attachmentSaved.getYear())
+                .purchaseDate(attachmentSaved.getPurchaseDate())
+                .status(attachmentSaved.getStatus())
+                .conditions(attachmentSaved.getConditions())
+                .serialNumber(attachmentSaved.getSerialNumber())
+                .user(attachmentSaved.getUpdatedBy())
+                .build();
     }
 
     @PutMapping("attachment")
-    public Attachment update (@RequestBody Attachment attachment) {
-        return attachmentService.save(attachment);
+    public AttachmentDto update (@RequestBody AttachmentDto attachmentDto) {
+        Attachment attachmentSaved = attachmentService.save(attachmentDto);
+
+        return AttachmentDto.builder()
+                .attachmentsId(attachmentSaved.getAttachmentsId())
+                .family(attachmentSaved.getFamily())
+                .number(attachmentSaved.getNumber())
+                .name(attachmentSaved.getName())
+                .manufacturing(attachmentSaved.getManufacturing())
+                .model(attachmentSaved.getModel())
+                .year(attachmentSaved.getYear())
+                .purchaseDate(attachmentSaved.getPurchaseDate())
+                .status(attachmentSaved.getStatus())
+                .conditions(attachmentSaved.getConditions())
+                .serialNumber(attachmentSaved.getSerialNumber())
+                .user(attachmentSaved.getUpdatedBy())
+                .build();
     }
 
     @GetMapping("attachment/{id}")

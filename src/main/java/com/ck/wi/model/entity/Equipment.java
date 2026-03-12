@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
 import java.util.List;
@@ -57,7 +58,19 @@ public class Equipment implements Serializable {
     @Column(name = "hour")
     private float hour;
 
-//    @OneToMany(mappedBy = "equipment")
-//    @JsonManagedReference
-//    private List<Checklist> checklist;
+    @Column(name = "equipment_status")
+    private String equipmentStatus;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
+    @Column(name = "created_date", insertable = false, updatable = false)
+    private String createdDate;
+
+    @Column(name = "updated_by")
+    private String updatedBy;
+
+    @Column(name = "updated_date", insertable = false)
+    @UpdateTimestamp
+    private String updatedDate;
 }
