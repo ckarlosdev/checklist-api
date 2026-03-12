@@ -1,6 +1,7 @@
 package com.ck.wi.service.impl;
 
 import com.ck.wi.model.dao.EquipmentDao;
+import com.ck.wi.model.dto.EquipmentDto;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.service.IEquipment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,33 @@ public class EquipmentImpl implements IEquipment {
 
     @Transactional
     @Override
-    public Equipment save(Equipment equipment) {
+    public Equipment save(EquipmentDto equipmentDto) {
+        Equipment equipment;
+
+        if(equipmentDto.getEquipmentsId() != null){
+            equipment = equipmentDao.findById(equipmentDto.getEquipmentsId())
+                    .orElseThrow(() -> new RuntimeException("Equipment not found"));
+        }else{
+            equipment = new Equipment();
+            equipment.setCreatedBy(equipmentDto.getUser());
+        }
+
+        equipment.setFamily(equipmentDto.getFamily());
+        equipment.setNumber(equipmentDto.getNumber());
+        equipment.setName(equipmentDto.getName());
+        equipment.setManufacturing(equipmentDto.getManufacturing());
+        equipment.setModel(equipmentDto.getModel());
+        equipment.setYear(equipmentDto.getYear());
+        equipment.setPurchaseDate(equipmentDto.getPurchaseDate());
+        equipment.setStatus(equipmentDto.getStatus());
+        equipment.setCondition(equipmentDto.getCondition());
+        equipment.setSerialNumber(equipmentDto.getSerialNumber());
+        equipment.setHour(equipmentDto.getHour());
+        equipment.setEquipmentStatus("1");
+        equipment.setUpdatedBy(equipmentDto.getUser());
+
         return equipmentDao.save(equipment);
+
     }
 
     @Transactional

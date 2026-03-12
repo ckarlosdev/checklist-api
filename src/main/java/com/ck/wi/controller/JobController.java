@@ -24,13 +24,37 @@ public class JobController {
     private IJob jobService;
 
     @PostMapping("job")
-    public Job create(@RequestBody Job job){
-        return jobService.save(job);
+    public JobDto create(@RequestBody JobDto jobDto){
+        Job jobSaved = jobService.save(jobDto);
+
+        return JobDto.builder()
+                .jobsId(jobSaved.getJobsId())
+                .number(jobSaved.getNumber())
+                .type(jobSaved.getType())
+                .name(jobSaved.getName())
+                .address(jobSaved.getAddress())
+                .contractor(jobSaved.getContractor())
+                .contact(jobSaved.getContact())
+                .status(jobSaved.getStatus())
+                .user(jobSaved.getUpdatedBy())
+                .build();
     }
 
     @PutMapping("job")
-    public Job update(@RequestBody Job job){
-        return jobService.save(job);
+    public JobDto update(@RequestBody JobDto jobDto){
+        Job jobUpdated = jobService.save(jobDto);
+
+        return JobDto.builder()
+                .jobsId(jobUpdated.getJobsId())
+                .number(jobUpdated.getNumber())
+                .type(jobUpdated.getType())
+                .name(jobUpdated.getName())
+                .address(jobUpdated.getAddress())
+                .contractor(jobUpdated.getContractor())
+                .contact(jobUpdated.getContact())
+                .status(jobUpdated.getStatus())
+                .user(jobUpdated.getUpdatedBy())
+                .build();
     }
 
     @DeleteMapping("job/{id}")
@@ -62,6 +86,7 @@ public class JobController {
                         .contractor(job.getContractor())
                         .contact(job.getContact())
                         .status(job.getStatus())
+                        .user(job.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }
