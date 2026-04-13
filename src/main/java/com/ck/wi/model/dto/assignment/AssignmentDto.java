@@ -18,4 +18,5 @@ public class AssignmentDto implements Serializable {
     private LocalDate endDate;
     private String createdBy;
     private List<AssignmentJobDto> assignmentJobDtos = new ArrayList<>();
+    private List<AbsenceDto> absences;
 }

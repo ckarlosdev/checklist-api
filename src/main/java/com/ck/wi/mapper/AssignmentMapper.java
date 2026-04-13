@@ -1,8 +1,12 @@
 package com.ck.wi.mapper;
+import com.ck.wi.model.dao.assignment.AssignmentAbsenceDao;
+import com.ck.wi.model.dto.assignment.AbsenceDto;
 import com.ck.wi.model.dto.assignment.AssignmentEmployeeDto;
 import com.ck.wi.model.dto.assignment.AssignmentJobDto;
+import com.ck.wi.model.entity.assignment.AssignmentAbsence;
 import com.ck.wi.model.entity.assignment.AssignmentEmployee;
 import com.ck.wi.model.entity.assignment.AssignmentJob;
+import org.hibernate.Hibernate;
 import org.mapstruct.Mapper;
 
 import com.ck.wi.model.dto.assignment.AssignmentDto;
@@ -26,6 +30,7 @@ public interface AssignmentMapper {
         dto.setCreatedBy(assignment.getCreatedBy());
 
         dto.setAssignmentJobDtos(toAssignmentJobDtos(assignment.getAssignmentJobs()));
+        dto.setAbsences(toAbsenceDtos(assignment.getAssignmentAbsences()));
 
         return dto;
     }
@@ -38,6 +43,29 @@ public interface AssignmentMapper {
         return assignmentJobs.stream()
                 .map(this::toAssignmentJobDto) // llama al método implementado abajo
                 .collect(Collectors.toList());
+    }
+
+    default List<AbsenceDto> toAbsenceDtos(Set<AssignmentAbsence> assignmentAbsences){
+        if (assignmentAbsences == null || !Hibernate.isInitialized(assignmentAbsences)) {
+            return Collections.emptyList();
+        }
+
+        return assignmentAbsences.stream()
+                .filter(a -> "1".equals(a.getAbsenceStatus())) // Filtra aquí los activos!
+                .map(this::toAssignmentAbsenceDto)
+                .collect(Collectors.toList());
+    }
+
+    default AbsenceDto toAssignmentAbsenceDto(AssignmentAbsence absence){
+        if( absence == null ) return null;
+
+        AbsenceDto dto = new AbsenceDto();
+        dto.setAssignmentsAbsencesId(absence.getAssignmentsAbsencesId());
+        dto.setEmployeesId(absence.getEmployeesId());
+        dto.setAbsenceType(absence.getAbsenceType());
+        dto.setComments(absence.getComments());
+
+        return dto;
     }
 
     // Implementación real del mapeo de un Job

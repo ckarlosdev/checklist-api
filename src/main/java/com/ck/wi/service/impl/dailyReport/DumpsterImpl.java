@@ -25,10 +25,8 @@ public class DumpsterImpl implements IDumpster {
         return (List<Dumpster>) dumpsterDao.findByDailyReportIdIn(dailyReportIds);
     }
 
-
     @Override
     public DumpsterSummaryDto findSummaryByJobNumber(String jobNumber){
         return dumpsterDao.findSummaryByJobNumber(jobNumber);
     }
-
 }

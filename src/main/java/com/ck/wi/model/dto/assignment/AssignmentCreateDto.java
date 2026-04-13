@@ -16,4 +16,5 @@ public class AssignmentCreateDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private List<AssignmentJobCreateDto> assignmentJobCreateDtoList;
+    private List<AbsenceCreateDto> absenceCreateDtoList;
 }
