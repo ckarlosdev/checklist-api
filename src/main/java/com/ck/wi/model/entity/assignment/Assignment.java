@@ -48,4 +48,19 @@ public class Assignment implements Serializable {
     @JsonBackReference
     @Builder.Default
     private Set<AssignmentJob> assignmentJobs = new HashSet<>();
+
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonBackReference
+    @Builder.Default
+    private Set<AssignmentAbsence> assignmentAbsences = new HashSet<>();
+
+    public void addAbsence(AssignmentAbsence absence) {
+        assignmentAbsences.add(absence);
+        absence.setAssignment(this);
+    }
+
+    public void removeAbsence(AssignmentAbsence absence) {
+        assignmentAbsences.remove(absence);
+        absence.setAssignment(null);
+    }
 }

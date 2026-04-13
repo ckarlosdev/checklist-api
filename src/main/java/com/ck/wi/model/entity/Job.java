@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -49,13 +50,18 @@ public class Job implements Serializable {
     @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "created_date", insertable = false, updatable = false)
-    private String createdDate;
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdDate = LocalDateTime.now();
+    }
 
     @Column(name = "updated_by")
     private String updatedBy;
 
     @Column(name = "updated_date", insertable = false)
     @UpdateTimestamp
-    private String updatedDate;
+    private LocalDateTime updatedDate;
 }
