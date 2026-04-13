@@ -2,20 +2,20 @@ package com.ck.wi.service.impl.assignment;
 
 import com.ck.wi.mapper.AssignmentMapper;
 import com.ck.wi.model.dao.JobDao;
+import com.ck.wi.model.dao.assignment.AssignmentAbsenceDao;
 import com.ck.wi.model.dao.assignment.AssignmentDao;
 import com.ck.wi.model.dao.assignment.AssignmentEmployeeDao;
 import com.ck.wi.model.dao.assignment.AssignmentJobDao;
 import com.ck.wi.model.dto.assignment.*;
 import com.ck.wi.model.entity.assignment.Assignment;
+import com.ck.wi.model.entity.assignment.AssignmentAbsence;
 import com.ck.wi.model.entity.assignment.AssignmentEmployee;
 import com.ck.wi.model.entity.assignment.AssignmentJob;
 import com.ck.wi.service.assigment.IAssignment;
-import com.ck.wi.service.assigment.IAssignmentJob;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
@@ -35,6 +35,9 @@ public class AssignmentImpl implements IAssignment {
 
     @Autowired
     private JobDao jobDao;
+
+    @Autowired
+    private AssignmentAbsenceDao assignmentAbsenceDao;
 
     @Autowired
     private AssignmentMapper mapper;
@@ -57,18 +60,19 @@ public class AssignmentImpl implements IAssignment {
 
         Set<Integer> jobsInDto = new HashSet<>();
 
+        if(assignmentCreateDto.getAbsenceCreateDtoList() != null){
+            saveAbsences(assignmentCreateDto.getAbsenceCreateDtoList(), assignmentSaved);
+        }
+
+
         if (assignmentCreateDto.getAssignmentJobCreateDtoList() != null) {
             for (AssignmentJobCreateDto jobDto : assignmentCreateDto.getAssignmentJobCreateDtoList()) {
-
                 jobsInDto.add(jobDto.getId());
-
                 AssignmentJob currentJobEntity = saveOrUpdateAssignmentJob(
                         assignmentSaved, jobDto, existingJobsMap
                 );
-
                 // El Job se guarda aquí para asegurar que tenemos un 'assignmentJobId' si es nuevo.
                 AssignmentJob assignmentJobSaved = assignmentJobDao.save(currentJobEntity);
-
                 // Procesar la Entidad AssignmentEmployee (Hijos)
                 if (jobDto.getAssignedEmployeeIds() != null) {
                     processAssignmentEmployees(
@@ -85,6 +89,61 @@ public class AssignmentImpl implements IAssignment {
         Assignment assignmentFinal = assignmentDao.findFullAssignmentById(newAssignmentId)
                 .orElseThrow(() -> new RuntimeException("No se pudo recargar la asignación después de guardar."));
         return mapper.toDto(assignmentFinal);
+    }
+
+    private void saveAbsences(
+            List<AbsenceCreateDto> absencesDtos,
+            Assignment assignment
+        ){
+        LocalDateTime now = LocalDateTime.now();
+        String updater = "system";
+        Integer assignmentId = assignment.getAssignmentsId();
+
+        List<AssignmentAbsence> actualAbsences =
+                assignmentAbsenceDao.findByAssignment_AssignmentsIdAndAbsenceStatus(assignmentId, "1");
+        Map<Integer, AssignmentAbsence> actualAbsencesMap = actualAbsences.stream()
+                .collect((Collectors.toMap(AssignmentAbsence::getAssignmentsAbsencesId, Function.identity())));
+        List<AssignmentAbsence> absencesToSave = new ArrayList<>();
+
+        for(AbsenceCreateDto dto: absencesDtos){
+            Integer dtoId = dto.getAssignmentsId();
+
+            if(dtoId != null && actualAbsencesMap.containsKey(dtoId)){
+                AssignmentAbsence assignmentAbsence = actualAbsencesMap.get(dtoId);
+                assignmentAbsence.setAbsenceType(dto.getAbsenceType());
+                assignmentAbsence.setComments(dto.getComments());
+                assignmentAbsence.setUpdatedBy(updater);
+                assignmentAbsence.setUpdatedDate(now);
+                assignmentAbsence.setAbsenceStatus("1");
+
+                absencesToSave.add(assignmentAbsence);
+                actualAbsencesMap.remove(dtoId);
+            }else {
+                AssignmentAbsence newAbsence = AssignmentAbsence.builder()
+                        .assignment(assignment)
+                        .employeesId(dto.getEmployeesId())
+                        .absenceType(dto.getAbsenceType())
+                        .comments(dto.getComments())
+                        .createdBy(updater)
+                        .createdDate(now)
+                        .updatedBy(updater)
+                        .updatedDate(now)
+                        .absenceStatus("1")
+                        .build();
+                absencesToSave.add(newAbsence);
+            }
+        }
+
+        assignmentAbsenceDao.saveAll(absencesToSave);
+        List<AssignmentAbsence> absencesToDelete = new ArrayList<>(actualAbsencesMap.values());
+        if(!absencesToDelete.isEmpty()){
+            absencesToDelete.forEach(abs -> {
+                abs.setAbsenceStatus("0");
+                abs.setUpdatedBy(updater);
+                abs.setUpdatedDate(now);
+            });
+            assignmentAbsenceDao.saveAll(absencesToDelete);
+        }
     }
 
     private Assignment saveOrUpdateAssignment(AssignmentCreateDto dto) {
@@ -212,4 +271,8 @@ public class AssignmentImpl implements IAssignment {
     public List<Assignment> getAssignments(){
         return (List<Assignment>) assignmentDao.findByAssignmentStatus("1");
     }
+
+    // Dashboard
+
+
 }

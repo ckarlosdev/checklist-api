@@ -28,7 +28,7 @@ public class AssignmentController {
     }
 
     @PutMapping("assignment")
-    public AssignmentDto updateAssigmnet(@RequestBody AssignmentCreateDto assignmentCreateDto){
+    public AssignmentDto updateAssignmet(@RequestBody AssignmentCreateDto assignmentCreateDto){
         return assignmentService.save(assignmentCreateDto);
     }
 
@@ -37,10 +37,8 @@ public class AssignmentController {
         return assignmentService.getById(assigmentsId);
     }
 
-
     @GetMapping("assignments")
     public List<Assignment> getAllAssigmnets(){
         return assignmentService.getAssignments();
     }
-
 }
