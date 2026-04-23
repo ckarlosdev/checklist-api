@@ -724,9 +724,12 @@ public class DailyReportImpl implements IDailyReport {
     private DrEmployeeCreateDto toEmployeeDto(DrEmployee emp) {
         Employee employee = employeeDao.findByEmployeeNumber(emp.getEmployeesId());
 
+        // 1. Manejo preventivo
+        Integer employeeIdToSet = (employee != null) ? employee.getEmployeesId() : null;
+
         return DrEmployeeCreateDto.builder()
                 .drEmployeesId(emp.getDrEmployeesId())
-                .employeesId(employee.getEmployeesId())
+                .employeesId(employeeIdToSet) // Evitas el NullPointerException
                 .inHour(emp.getInHour())
                 .outHour(emp.getOutHour())
                 .lunch(emp.getLunch())
@@ -772,8 +775,11 @@ public class DailyReportImpl implements IDailyReport {
     }
 
     private DailyReportCreateDto toDto(DailyReport report) {
+        Job job = jobDao.findByNumber(report.getNumber())
+                .orElseThrow(() -> new IllegalArgumentException("Job not found"));
         return DailyReportCreateDto.builder()
                 .dailyReportId(report.getDailyReportId())
+                .jobsId(job.getJobsId())
                 .foreman(report.getForeman())
                 .userName(report.getUpdatedBy())
                 .date(report.getDate())

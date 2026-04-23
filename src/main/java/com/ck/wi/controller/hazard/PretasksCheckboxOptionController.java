@@ -2,7 +2,6 @@ package com.ck.wi.controller.hazard;
 
 import com.ck.wi.model.entity.hazard.PretasksCheckboxOption;
 import com.ck.wi.service.hazard.IPretasksCheckboxOption;
-import com.ck.wi.service.hazard.IPretasksOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

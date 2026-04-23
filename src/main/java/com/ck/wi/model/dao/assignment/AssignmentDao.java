@@ -79,6 +79,68 @@ public interface AssignmentDao extends CrudRepository<Assignment, Integer> {
     );
 
 
+    @Query(value = "WITH RawData AS ( " +
+            "               SELECT  " +
+            "                   D.daily_report_id, " +
+            "                   D.date, " +
+            "                   J.jobs_id, " +
+            "                   E.in_hour, " +
+            "                   E.out_hour, " +
+            "                   SUM(IF(E.title = 'Labor', 10, 1)) OVER(PARTITION BY D.daily_report_id, E.in_hour, E.out_hour) as puntos, " +
+            "                   COUNT(*) OVER(PARTITION BY D.daily_report_id, E.in_hour, E.out_hour) as total_personas, " +
+            "                   (TIME_TO_SEC(E.out_hour) - TIME_TO_SEC(E.in_hour)) as dur " +
+            "               FROM ( " +
+            "                   SELECT MIN(daily_report_id) as daily_report_id, number, date, status " +
+            "                   FROM daily_reports " +
+            "                   GROUP BY number, date " +
+            "               ) D " +
+            "               INNER JOIN jobs J ON D.number = J.number " +
+            "               INNER JOIN dr_employees E ON E.daily_report_id = D.daily_report_id " +
+            "               WHERE J.jobs_id = :jobId AND D.status = '1' AND E.status = '1' " +
+            "            ), " +
+            "            MainEvents AS ( " +
+            "               SELECT daily_report_id, date, jobs_id, in_hour, out_hour " +
+            "               FROM ( " +
+            "                   SELECT *, ROW_NUMBER() OVER( " +
+            "                       PARTITION BY jobs_id, date ORDER BY puntos DESC, total_personas DESC, dur DESC " +
+            "                   ) as ranking " +
+            "                   FROM RawData " +
+            "               ) AS Sub " +
+            "               WHERE ranking = 1 " +
+            "            ) " +
+            "            SELECT  " +
+            "               M.jobs_id, " +
+            "               M.date, " +
+            "               M.in_hour AS start, " +
+            "               M.out_hour AS end, " +
+            "               M.daily_report_id AS daily, " +
+            "               P.min_id AS pretask, " +
+            "               CL.min_id AS checklist, " +
+            "               S.min_id AS silica, " +
+            "               D.min_id AS demo " +
+            "            FROM MainEvents M " +
+            "            LEFT JOIN ( " +
+            "               SELECT jobs_id, date, MIN(pre_tasks_id) as min_id  " +
+            "               FROM pre_tasks GROUP BY jobs_id, date " +
+            "            ) P ON M.jobs_id = P.jobs_id AND M.date = P.date " +
+            "            LEFT JOIN ( " +
+            "               SELECT jobs_id, date, MIN(equipments_google_checklists_id) as min_id  " +
+            "               FROM equipments_google_checklists GROUP BY jobs_id, date " +
+            "            ) CL ON M.jobs_id = CL.jobs_id AND M.date = CL.date " +
+            "            LEFT JOIN ( " +
+            "               SELECT jobs_id, event_date, MIN(silica_id) as min_id  " +
+            "               FROM silica GROUP BY jobs_id, event_date " +
+            "            ) S ON M.jobs_id = S.jobs_id AND M.date = S.event_date " +
+            "            LEFT JOIN ( " +
+            "               SELECT jobs_id, checklist_date, MIN(demo_checklists_id) as min_id  " +
+            "               FROM demo_checklists GROUP BY jobs_id, checklist_date " +
+            "            ) D ON M.jobs_id = D.jobs_id AND M.date = D.checklist_date " +
+            "            ORDER BY M.date ASC, M.in_hour ASC; ", nativeQuery = true)
+    List<Object[]> findRawCalendarDataById(
+            @Param("jobId") Integer jobId
+    );
+
+
 //    @Query("SELECT DISTINCT a FROM Assignment a " +
 //            "LEFT JOIN FETCH a.assignmentJobs aj " +
 //            "LEFT JOIN FETCH aj.assignmentEmployees ae " +
