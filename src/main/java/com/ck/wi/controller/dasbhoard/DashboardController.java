@@ -4,11 +4,9 @@ import com.ck.wi.model.dto.dashboard.CalendarEventDTO;
 import com.ck.wi.service.assigment.IAssignment;
 import com.ck.wi.service.impl.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins = {
@@ -40,6 +38,20 @@ public class DashboardController {
         return ResponseEntity.ok(events);
     }
     // http://localhost:8080/assigned?start=2026-04-01&end=2026-04-30
+
+
+    @GetMapping("/events/{jobId}")
+    public ResponseEntity<List<CalendarEventDTO>> getCalendarEventsById(
+            @PathVariable Integer jobId
+    ){
+        List<CalendarEventDTO> events = dashboardService.getEventsById(jobId);
+
+        if (events.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(events);
+    }
 
 
 }

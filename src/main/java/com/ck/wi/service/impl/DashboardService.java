@@ -25,8 +25,30 @@ public class DashboardService {
         List<Object[]> results = assignmentDao.findRawCalendarData(start, end);
 
         return results.stream().map(row -> {
-            // Para depurar, si vuelve a fallar, descomenta esta línea para ver qué hay en cada posición:
-            // System.out.println("Col 0: " + row[0].getClass().getName() + " Valor: " + row[0]);
+
+            return new CalendarEventDTO(
+                    ((Number) row[4]).longValue(),           // daily_report_id (Es la col 4 en tu SQL)
+                    ((Number) row[0]).longValue(),           // jobs_id (Es la col 0)
+                    ((java.sql.Date) row[1]).toLocalDate(),  // date (Es la col 1)
+                    ((java.sql.Time) row[2]).toLocalTime(),  // start (Es la col 2)
+                    ((java.sql.Time) row[3]).toLocalTime(),  // end (Es la col 3)
+                    new CalendarEventDTO.ReportStatusDTO(
+                            ((Number) row[4]).longValue(),       // daily
+                            row[5] != null ? ((Number) row[5]).longValue() : null, // pretask (H)
+                            row[7] != null ? ((Number) row[7]).longValue() : null, // silica (S)
+                            row[6] != null ? ((Number) row[6]).longValue() : null, // checklist (C)
+                            row[8] != null ? ((Number) row[8]).longValue() : null  // demo (M)
+                    )
+            );
+        }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<CalendarEventDTO> getEventsById(Integer jobId){
+
+        List<Object[]> results = assignmentDao.findRawCalendarDataById(jobId);
+
+        return results.stream().map(row -> {
 
             return new CalendarEventDTO(
                     ((Number) row[4]).longValue(),           // daily_report_id (Es la col 4 en tu SQL)
