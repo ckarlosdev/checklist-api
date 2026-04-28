@@ -258,6 +258,7 @@ public class DailyReportController {
 
     }
 
+    // use by copy event in DR
     @GetMapping("/dailyReport/resources/{jobNumber}")
     public ResponseEntity<?> getResourcesToCopy(@PathVariable("jobNumber") String jobNumber){
 

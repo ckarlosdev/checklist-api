@@ -2,6 +2,7 @@ package com.ck.wi.model.dao.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
+import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -48,6 +49,24 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
     Integer getTotalDaysByJobNumber(
             @Param("jobNumber") String jobNumber,
             @Param("excludeDate") LocalDate excludeDate
+    );
+
+    @Query(value = """
+        SELECT 
+            E.employees_id AS employeesId, 
+            DE.name AS name,
+            CAST(SUM((TIME_TO_SEC(DE.out_hour) - TIME_TO_SEC(DE.in_hour)) / 3600) AS DECIMAL(10,2)) AS totalHrs
+        FROM daily_reports D
+        INNER JOIN dr_employees DE ON D.daily_report_id = DE.daily_report_id
+        INNER JOIN employees E ON DE.employees_id = E.employee_number
+        WHERE D.date BETWEEN :startDate AND :endDate 
+            AND D.status = '1' 
+            AND DE.status = '1'
+        GROUP BY E.employees_id, DE.name
+    """, nativeQuery = true)
+    List<EmployeeHoursDTO> findEmployeeHoursSummary(
+            @Param("startDate") String startDate,
+            @Param("endDate") String endDate
     );
 
 }

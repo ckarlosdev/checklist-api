@@ -2,13 +2,18 @@ package com.ck.wi.controller.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DrEmployeeDto;
 import com.ck.wi.model.dto.dailyReport.DrEmployeeHoursDto;
+import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.dto.dailyReport.creation.DrEmployeeCreateDto;
 import com.ck.wi.model.dto.request.DrEmployeeRequest;
 import com.ck.wi.model.entity.dailyReport.DrEmployee;
+import com.ck.wi.service.dailyReport.IDailyReport;
 import com.ck.wi.service.dailyReport.IDrEmployee;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +29,9 @@ public class DrEmployeeController {
 
     @Autowired
     private IDrEmployee drEmployeeService;
+
+    @Autowired
+    private IDailyReport dailyReportService;
 
     @GetMapping("drEmployee/copy/{jobNumber}")
     public List<DrEmployeeCreateDto> getLastEmployees(@PathVariable String jobNumber){
@@ -79,5 +87,24 @@ public class DrEmployeeController {
     public List<DrEmployeeHoursDto> getDrEmployeeHours(@PathVariable String jobNumber){
         List<DrEmployeeHoursDto> drEmployeeHours = drEmployeeService.findHoursByJobNumber(jobNumber);
         return drEmployeeHours;
+    }
+
+    @GetMapping("drEmployee/hours-summary")
+    public ResponseEntity<List<EmployeeHoursDTO>> getHoursWeekly(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
+    ){
+        if (startDate.isAfter(endDate)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<EmployeeHoursDTO> summary = dailyReportService.getHoursByDate(startDate, endDate);
+        System.out.println(summary);
+
+        if (summary.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(summary);
     }
 }

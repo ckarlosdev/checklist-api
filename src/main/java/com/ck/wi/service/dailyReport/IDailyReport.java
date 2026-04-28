@@ -2,6 +2,7 @@ package com.ck.wi.service.dailyReport;
 
 import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
+import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.dto.dailyReport.creation.DailyReportCreateDto;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,4 +33,6 @@ public interface IDailyReport {
 
     @Transactional
     List<DailyReportGralDto> getDrGral(String jobNumber);
+
+    List<EmployeeHoursDTO> getHoursByDate(LocalDate start, LocalDate end);
 }
