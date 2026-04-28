@@ -8,6 +8,7 @@ import com.ck.wi.model.dao.dailyReport.*;
 import com.ck.wi.model.dto.dailyReport.DailyReportDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
+import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.dto.dailyReport.creation.*;
 import com.ck.wi.model.entity.Attachment;
 import com.ck.wi.model.entity.Employee;
@@ -880,5 +881,10 @@ public class DailyReportImpl implements IDailyReport {
 
                 ))
                 .toList();
+    }
+
+    @Override
+    public List<EmployeeHoursDTO> getHoursByDate(LocalDate start, LocalDate end) {
+        return dailyReportDao.findEmployeeHoursSummary(start.toString(), end.toString());
     }
 }

@@ -41,7 +41,8 @@ public class SecurityProdConfig {
                                 "/api/v1/checklist/**",
                                 "/api/v1/equipment/**",
                                 "/api/v1/equipments",
-                                "/api/v1/photo/**"
+                                "/api/v1/photo/**",
+                                "/api/v1/drEmployee/hours-summary"
                         ).permitAll()
                         .requestMatchers(
                                 "/api/v1/pretask/**",
