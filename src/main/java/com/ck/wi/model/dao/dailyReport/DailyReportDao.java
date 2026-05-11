@@ -53,9 +53,16 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
 
     @Query(value = """
         SELECT 
-            E.employees_id AS employeesId, 
+            E.employees_id AS employeesId,
             DE.name AS name,
-            CAST(SUM((TIME_TO_SEC(DE.out_hour) - TIME_TO_SEC(DE.in_hour)) / 3600) AS DECIMAL(10,2)) AS totalHrs
+            SUM(
+                (
+                    (
+                        TIME_TO_SEC(DE.out_hour) - TIME_TO_SEC(DE.in_hour) +
+                        IF(TIME_TO_SEC(DE.out_hour) < TIME_TO_SEC(DE.in_hour), 86400, 0)
+                    ) / 3600
+                ) - IF(DE.lunch = 'true', 0.5, 0)
+            ) AS totalHrs
         FROM daily_reports D
         INNER JOIN dr_employees DE ON D.daily_report_id = DE.daily_report_id
         INNER JOIN employees E ON DE.employees_id = E.employee_number
