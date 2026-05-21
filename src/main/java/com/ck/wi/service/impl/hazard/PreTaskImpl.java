@@ -361,6 +361,7 @@ public class PreTaskImpl implements IPreTask {
             if(dtoId != null && actualActivitiesMap.containsKey(dtoId)){
                 Activity activity = actualActivitiesMap.get(dtoId);
 
+                activity.setActivity(dto.getActivity());
                 activity.setHazards(dto.getHazards());
                 activity.setControls(dto.getControls());
                 activity.setUpdatedBy(updater);
