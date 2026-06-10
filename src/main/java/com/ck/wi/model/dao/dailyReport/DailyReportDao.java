@@ -3,6 +3,7 @@ package com.ck.wi.model.dao.dailyReport;
 import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
+import com.ck.wi.model.dto.dashboard.TimelineDataDto;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
@@ -75,5 +76,14 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
             @Param("startDate") String startDate,
             @Param("endDate") String endDate
     );
+
+    @Query(
+            value = " select date as drDate, foreman " +
+                    " from daily_reports " +
+                    " where number= :jobNumber and status='1' " +
+                    " order by date desc; ",
+            nativeQuery = true
+    )
+    List<TimelineDataDto> findDateByJobNumber(@Param("jobNumber") String jobNumber);
 
 }

@@ -1,7 +1,9 @@
 package com.ck.wi.service.impl;
 
 import com.ck.wi.model.dao.assignment.AssignmentDao;
+import com.ck.wi.model.dao.dailyReport.DailyReportDao;
 import com.ck.wi.model.dto.dashboard.CalendarEventDTO;
+import com.ck.wi.model.dto.dashboard.TimelineDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,9 @@ public class DashboardService {
 
     @Autowired
     private AssignmentDao assignmentDao;
+
+    @Autowired
+    private DailyReportDao dailyReportDao;
 
     @Transactional(readOnly = true)
     public List<CalendarEventDTO> getEvents(String startStr, String endStr){
@@ -41,6 +46,11 @@ public class DashboardService {
                     )
             );
         }).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<TimelineDataDto> getTimelineDate(String jobNumber){
+        return dailyReportDao.findDateByJobNumber(jobNumber);
     }
 
     @Transactional(readOnly = true)
