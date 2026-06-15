@@ -1,6 +1,7 @@
 package com.ck.wi.controller.dasbhoard;
 
 import com.ck.wi.model.dto.dashboard.CalendarEventDTO;
+import com.ck.wi.model.dto.dashboard.TimelineDataDto;
 import com.ck.wi.service.assigment.IAssignment;
 import com.ck.wi.service.impl.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,17 @@ public class DashboardController {
         return ResponseEntity.ok(events);
     }
 
+    @GetMapping("/timeline/{jobNumber}")
+    public ResponseEntity<List<TimelineDataDto>> getTimeDate(
+            @PathVariable String jobNumber
+    ) {
+        List<TimelineDataDto> events = dashboardService.getTimelineDate(jobNumber);
+
+        if (events.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.ok(events);
+    }
 
 }
