@@ -57,7 +57,7 @@ public class DashboardController {
     @GetMapping("/timeline/{jobNumber}")
     public ResponseEntity<List<TimelineDataDto>> getTimeDate(
             @PathVariable String jobNumber
-    ){
+    ) {
         List<TimelineDataDto> events = dashboardService.getTimelineDate(jobNumber);
 
         if (events.isEmpty()) {
@@ -66,6 +66,5 @@ public class DashboardController {
 
         return ResponseEntity.ok(events);
     }
-
 
 }

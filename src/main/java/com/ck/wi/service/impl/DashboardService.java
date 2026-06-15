@@ -50,7 +50,15 @@ public class DashboardService {
 
     @Transactional(readOnly = true)
     public List<TimelineDataDto> getTimelineDate(String jobNumber){
-        return dailyReportDao.findDateByJobNumber(jobNumber);
+        List<Object[]> results = dailyReportDao.findDateByJobNumber(jobNumber);
+
+        return results.stream().map(row -> {
+            return new TimelineDataDto(
+                    row[0] != null ? ((Number) row[0]).intValue() : null, // drId
+                    row[1] != null ? row[1].toString() : null,             // drDate
+                    row[2] != null ? (String) row[2] : null                // foreman
+            );
+        }).collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

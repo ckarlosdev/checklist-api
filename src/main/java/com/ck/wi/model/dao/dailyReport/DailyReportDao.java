@@ -78,12 +78,12 @@ public interface DailyReportDao extends CrudRepository<DailyReport, Integer> {
     );
 
     @Query(
-            value = " select date as drDate, foreman " +
+            value = " select daily_report_id as drId,  date as drDate, foreman " +
                     " from daily_reports " +
                     " where number= :jobNumber and status='1' " +
-                    " order by date desc; ",
+                    "order by date desc; " ,
             nativeQuery = true
     )
-    List<TimelineDataDto> findDateByJobNumber(@Param("jobNumber") String jobNumber);
+    List<Object[]> findDateByJobNumber(@Param("jobNumber") String jobNumber);
 
 }
