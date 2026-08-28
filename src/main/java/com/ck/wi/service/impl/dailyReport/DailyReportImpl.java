@@ -153,6 +153,9 @@ public class DailyReportImpl implements IDailyReport {
     }
 
     private DrEmployeeCreateDto toEmployeeDto(DrEmployee emp) {
+        Employee employee = employeeDao.findByEmployeeNumber(emp.getEmployeesId());
+        Integer employeeIdToSet = (employee != null) ? employee.getEmployeesId() : null;
+
         return DrEmployeeCreateDto.builder()
                 .drEmployeesId(emp.getDrEmployeesId())
                 .inHour(emp.getInHour())
@@ -164,9 +167,12 @@ public class DailyReportImpl implements IDailyReport {
     }
 
     private DrEquipmentCreateDto toEquipmentDto(DrEquipment equipment) {
+        Employee employee = employeeDao.findByEmployeeNumber(equipment.getEmployeesId());
+
         return DrEquipmentCreateDto.builder()
                 .drEquipmentsId(equipment.getDrEquipmentsId())
                 .equipmentsId(equipment.getEquipmentsId())
+                .employeesId(employee != null ? employee.getEmployeesId() : null)
                 .type(equipment.getType())
                 .initialHour(equipment.getInitialHour())
                 .newHour(equipment.getNewHour())
