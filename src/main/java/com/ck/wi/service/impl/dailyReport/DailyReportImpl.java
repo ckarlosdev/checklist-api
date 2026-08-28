@@ -158,6 +158,7 @@ public class DailyReportImpl implements IDailyReport {
 
         return DrEmployeeCreateDto.builder()
                 .drEmployeesId(emp.getDrEmployeesId())
+                .employeesId(employeeIdToSet)
                 .inHour(emp.getInHour())
                 .outHour(emp.getOutHour())
                 .lunch(emp.getLunch())
