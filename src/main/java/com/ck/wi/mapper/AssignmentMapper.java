@@ -28,6 +28,7 @@ public interface AssignmentMapper {
         dto.setStartDate(assignment.getStartDate());
         dto.setEndDate(assignment.getEndDate());
         dto.setCreatedBy(assignment.getCreatedBy());
+        dto.setCreateDate(assignment.getCreatedDate().toLocalDate());
 
         dto.setAssignmentJobDtos(toAssignmentJobDtos(assignment.getAssignmentJobs()));
         dto.setAbsences(toAbsenceDtos(assignment.getAssignmentAbsences()));
