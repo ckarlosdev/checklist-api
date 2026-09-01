@@ -98,7 +98,7 @@ public class DailyReportImpl implements IDailyReport {
         dailyReportToUpdate.setUpdatedDate(now);
 
         DailyReport dailyReportUpdated = dailyReportDao.save(dailyReportToUpdate);
-        udpateEmployees(dailyReportCreateDto.getEmployees(), dailyReportUpdated);
+        updateEmployees(dailyReportCreateDto.getEmployees(), dailyReportUpdated);
         updateEquipments(dailyReportCreateDto.getEquipments(), dailyReportUpdated);
         updateRentals(dailyReportCreateDto.getRentals(), dailyReportUpdated);
         updateTools(dailyReportCreateDto.getTools(), dailyReportUpdated);
@@ -108,32 +108,40 @@ public class DailyReportImpl implements IDailyReport {
         return allDto(response, dailyReportCreateDto.getDailyReportId());
     }
 
-    private DailyReportCreateDto allDto(DailyReportCreateDto response, Integer dailyReportId){
+    private DailyReportCreateDto allDto(DailyReportCreateDto response, Integer dailyReportId) {
         List<DrEmployee> actualDrEmployees = drEmployeeDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
-        List<DrEmployeeCreateDto> employeesDto =
-                actualDrEmployees.stream()
-                        .map(this::toEmployeeDto)
-                        .toList();
+
+        // Carga rápida en lote para mapear employeeId
+        List<String> empNumbers = actualDrEmployees.stream().map(DrEmployee::getEmployeesId).toList();
+        // En caso de que se requiera convertir o buscar
+        Map<String, Integer> empNumberToIdMap = empNumbers.isEmpty() ? Collections.emptyMap() :
+                employeeDao.findAllById(
+                        actualDrEmployees.stream().map(DrEmployee::getDrEmployeesId).toList()
+                ).stream().collect(Collectors.toMap(Employee::getEmployeeNumber, Employee::getEmployeesId, (k1, k2) -> k1));
+
+        List<DrEmployeeCreateDto> employeesDto = actualDrEmployees.stream()
+                .map(this::toEmployeeDto)
+                .toList();
+
         List<DrEquipment> actualDrEquipments = drEquipmentDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
-        List<DrEquipmentCreateDto> equipmentsDto =
-                actualDrEquipments.stream()
-                        .map(this::toEquipmentDto)
-                        .toList();
+        List<DrEquipmentCreateDto> equipmentsDto = actualDrEquipments.stream()
+                .map(this::toEquipmentDto)
+                .toList();
+
         List<DrRental> actualDrRentals = drRentalDao.findByDailyReportIdAndRentalsStatus(dailyReportId, ACTIVE);
-        List<DrRentalCreateDto> rentalsDto =
-                actualDrRentals.stream()
-                        .map(this::toRentalDto)
-                        .toList();
+        List<DrRentalCreateDto> rentalsDto = actualDrRentals.stream()
+                .map(this::toRentalDto)
+                .toList();
+
         List<Tool> actualDrTools = toolDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
-        List<DrToolCreateDto> toolsDto =
-                actualDrTools.stream()
-                        .map(this::toToolDto)
-                        .toList();
+        List<DrToolCreateDto> toolsDto = actualDrTools.stream()
+                .map(this::toToolDto)
+                .toList();
+
         List<DrDumpster> actualDrDumpsters = drDumpsterDao.findByDailyReportIdAndDumpstersStatus(dailyReportId, ACTIVE);
-        List<DrDumpsterCreateDto> dumpstersDto =
-                actualDrDumpsters.stream()
-                        .map(this::toDumpsterDto)
-                        .toList();
+        List<DrDumpsterCreateDto> dumpstersDto = actualDrDumpsters.stream()
+                .map(this::toDumpsterDto)
+                .toList();
 
         response.setEmployees(employeesDto);
         response.setEquipments(equipmentsDto);
@@ -144,7 +152,37 @@ public class DailyReportImpl implements IDailyReport {
         return response;
     }
 
-    private void updateDumpsters(List<DrDumpsterCreateDto> dummpstersDto, DailyReport dailyReport){
+    private DrEmployeeCreateDto toEmployeeDto(DrEmployee emp) {
+        Employee employee = employeeDao.findByEmployeeNumber(emp.getEmployeesId());
+        Integer employeeIdToSet = (employee != null) ? employee.getEmployeesId() : null;
+
+        return DrEmployeeCreateDto.builder()
+                .drEmployeesId(emp.getDrEmployeesId())
+                .employeesId(employeeIdToSet)
+                .inHour(emp.getInHour())
+                .outHour(emp.getOutHour())
+                .lunch(emp.getLunch())
+                .ppe(emp.getPpe())
+                .comment(emp.getComment())
+                .build();
+    }
+
+    private DrEquipmentCreateDto toEquipmentDto(DrEquipment equipment) {
+        Employee employee = employeeDao.findByEmployeeNumber(equipment.getEmployeesId());
+
+        return DrEquipmentCreateDto.builder()
+                .drEquipmentsId(equipment.getDrEquipmentsId())
+                .equipmentsId(equipment.getEquipmentsId())
+                .employeesId(employee != null ? employee.getEmployeesId() : null)
+                .type(equipment.getType())
+                .initialHour(equipment.getInitialHour())
+                .newHour(equipment.getNewHour())
+                .build();
+    }
+
+    private void updateDumpsters(List<DrDumpsterCreateDto> dummpstersDto, DailyReport dailyReport) {
+        if (dummpstersDto == null) return;
+
         Integer dailyReportId = dailyReport.getDailyReportId();
         LocalDateTime now = LocalDateTime.now();
         String updater = dailyReport.getUpdatedBy();
@@ -152,12 +190,13 @@ public class DailyReportImpl implements IDailyReport {
         List<DrDumpster> actualDrDumpsters = drDumpsterDao.findByDailyReportIdAndDumpstersStatus(dailyReportId, ACTIVE);
         Map<Integer, DrDumpster> actualDumpstersMap = actualDrDumpsters.stream()
                 .collect(Collectors.toMap(DrDumpster::getDrDumpstersId, Function.identity()));
+
         List<DrDumpster> dumpstersTosave = new ArrayList<>();
 
-        for(DrDumpsterCreateDto dto: dummpstersDto){
+        for (DrDumpsterCreateDto dto : dummpstersDto) {
             Integer dtoId = dto.getDrDumpstersId();
-            if(dtoId != null && actualDumpstersMap.containsKey(dtoId)){
-                // update
+
+            if (dtoId != null && actualDumpstersMap.containsKey(dtoId)) {
                 DrDumpster drDumpster = actualDumpstersMap.get(dtoId);
                 drDumpster.setSourceDumpster(dto.getSourceDumpster());
                 drDumpster.setSizeDumpster(dto.getSizeDumpster());
@@ -166,10 +205,10 @@ public class DailyReportImpl implements IDailyReport {
                 drDumpster.setUpdatedBy(updater);
                 drDumpster.setUpdatedDate(now);
                 drDumpster.setDumpstersStatus(ACTIVE);
+
                 dumpstersTosave.add(drDumpster);
                 actualDumpstersMap.remove(dtoId);
-            }else{
-                // create
+            } else {
                 DrDumpster newDumpster = DrDumpster.builder()
                         .dailyReportId(dailyReportId)
                         .sourceDumpster(dto.getSourceDumpster())
@@ -182,14 +221,17 @@ public class DailyReportImpl implements IDailyReport {
                         .updatedDate(now)
                         .dumpstersStatus(ACTIVE)
                         .build();
+
                 dumpstersTosave.add(newDumpster);
             }
         }
 
         drDumpsterDao.saveAll(dumpstersTosave);
+
+        // SOFT DELETE
         List<DrDumpster> dumpstersToDelete = new ArrayList<>(actualDumpstersMap.values());
-        if(!dumpstersToDelete.isEmpty()){
-            dumpstersToDelete.forEach( dump -> {
+        if (!dumpstersToDelete.isEmpty()) {
+            dumpstersToDelete.forEach(dump -> {
                 dump.setDumpstersStatus(INACTIVE);
                 dump.setUpdatedBy(updater);
                 dump.setUpdatedDate(now);
@@ -198,7 +240,9 @@ public class DailyReportImpl implements IDailyReport {
         }
     }
 
-    private void updateTools(List<DrToolCreateDto> toolsDto, DailyReport dailyReport){
+    private void updateTools(List<DrToolCreateDto> toolsDto, DailyReport dailyReport) {
+        if (toolsDto == null) return;
+
         Integer dailyReportId = dailyReport.getDailyReportId();
         LocalDateTime now = LocalDateTime.now();
         String updater = dailyReport.getUpdatedBy();
@@ -206,12 +250,13 @@ public class DailyReportImpl implements IDailyReport {
         List<Tool> actualDrTools = toolDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
         Map<Integer, Tool> actualToolsMap = actualDrTools.stream()
                 .collect(Collectors.toMap(Tool::getDrToolId, Function.identity()));
+
         List<Tool> toolsToSave = new ArrayList<>();
 
-        for(DrToolCreateDto dto : toolsDto){
+        for (DrToolCreateDto dto : toolsDto) {
             Integer dtoId = dto.getDrToolId();
-            if(dtoId != null && actualToolsMap.containsKey(dtoId)){
-                // update
+
+            if (dtoId != null && actualToolsMap.containsKey(dtoId)) {
                 Tool drTool = actualToolsMap.get(dtoId);
                 drTool.setQty(dto.getQty());
                 drTool.setName(dto.getName());
@@ -219,10 +264,10 @@ public class DailyReportImpl implements IDailyReport {
                 drTool.setComments(dto.getComments());
                 drTool.setUpdatedBy(updater);
                 drTool.setUpdatedDate(now);
+
                 toolsToSave.add(drTool);
                 actualToolsMap.remove(dtoId);
-            }else{
-                // create
+            } else {
                 Tool newDrTool = Tool.builder()
                         .dailyReportId(dailyReportId)
                         .qty(dto.getQty())
@@ -235,14 +280,16 @@ public class DailyReportImpl implements IDailyReport {
                         .updatedDate(now)
                         .status(ACTIVE)
                         .build();
+
                 toolsToSave.add(newDrTool);
             }
         }
 
         toolDao.saveAll(toolsToSave);
-        List<Tool> toolsToDelete = new ArrayList<>(actualToolsMap.values());
 
-        if(!toolsToDelete.isEmpty()){
+        // SOFT DELETE
+        List<Tool> toolsToDelete = new ArrayList<>(actualToolsMap.values());
+        if (!toolsToDelete.isEmpty()) {
             toolsToDelete.forEach(tool -> {
                 tool.setStatus(INACTIVE);
                 tool.setUpdatedBy(updater);
@@ -252,24 +299,24 @@ public class DailyReportImpl implements IDailyReport {
         }
     }
 
-    private void updateRentals(List<DrRentalCreateDto> rentalsDto, DailyReport dailyReport){
+    private void updateRentals(List<DrRentalCreateDto> rentalsDto, DailyReport dailyReport) {
+        if (rentalsDto == null) return;
+
         Integer dailyReportId = dailyReport.getDailyReportId();
         LocalDateTime now = LocalDateTime.now();
         String updater = dailyReport.getUpdatedBy();
 
         List<DrRental> actualDrRentals = drRentalDao.findByDailyReportIdAndRentalsStatus(dailyReportId, ACTIVE);
-
         Map<Integer, DrRental> actualRentalsMap = actualDrRentals.stream()
                 .collect(Collectors.toMap(DrRental::getDrRentalsId, Function.identity()));
+
         List<DrRental> rentalsToSave = new ArrayList<>();
 
-        for(DrRentalCreateDto dto : rentalsDto){
+        for (DrRentalCreateDto dto : rentalsDto) {
             Integer dtoId = dto.getDrRentalsId();
 
-            if(dtoId != null && actualRentalsMap.containsKey(dtoId)){
-                //update
+            if (dtoId != null && actualRentalsMap.containsKey(dtoId)) {
                 DrRental drRental = actualRentalsMap.get(dtoId);
-
                 drRental.setEmployeesId(dto.getEmployeesId());
                 drRental.setEquipmentType(dto.getEquipmentType());
                 drRental.setEquipmentName(dto.getEquipmentName());
@@ -281,8 +328,7 @@ public class DailyReportImpl implements IDailyReport {
 
                 rentalsToSave.add(drRental);
                 actualRentalsMap.remove(dtoId);
-            }else{
-                //create
+            } else {
                 DrRental newRental = DrRental.builder()
                         .dailyReportId(dailyReportId)
                         .employeesId(dto.getEmployeesId())
@@ -303,20 +349,22 @@ public class DailyReportImpl implements IDailyReport {
         }
 
         drRentalDao.saveAll(rentalsToSave);
-        List<DrRental> rentalsToDelete = new ArrayList<>(actualRentalsMap.values());
 
-        if(!rentalsToDelete.isEmpty()){
+        // SOFT DELETE
+        List<DrRental> rentalsToDelete = new ArrayList<>(actualRentalsMap.values());
+        if (!rentalsToDelete.isEmpty()) {
             rentalsToDelete.forEach(rent -> {
                 rent.setRentalsStatus(INACTIVE);
                 rent.setUpdatedBy(updater);
                 rent.setUpdatedDate(now);
             });
-
             drRentalDao.saveAll(rentalsToDelete);
         }
     }
 
-    private void updateEquipments(List<DrEquipmentCreateDto> equipmentDto, DailyReport dailyReport){
+    private void updateEquipments(List<DrEquipmentCreateDto> equipmentDto, DailyReport dailyReport) {
+        if (equipmentDto == null) return;
+
         Integer dailyReportId = dailyReport.getDailyReportId();
         LocalDateTime now = LocalDateTime.now();
         String updater = dailyReport.getUpdatedBy();
@@ -324,9 +372,32 @@ public class DailyReportImpl implements IDailyReport {
         List<DrEquipment> actualDrEquipments = drEquipmentDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
         Map<Integer, DrEquipment> actualEquipmentsMap = actualDrEquipments.stream()
                 .collect(Collectors.toMap(DrEquipment::getDrEquipmentsId, Function.identity()));
+
+        // ✅ BATCH LOAD: Cargar Empleados, Equipos y Attachments en lote antes del ciclo
+        List<Integer> empIds = equipmentDto.stream()
+                .filter(dto -> "Equipment".equals(dto.getType()) && dto.getEmployeesId() != null)
+                .map(DrEquipmentCreateDto::getEmployeesId)
+                .toList();
+        Map<Integer, Employee> empMap = empIds.isEmpty() ? Collections.emptyMap() :
+                employeeDao.findAllById(empIds).stream().collect(Collectors.toMap(Employee::getEmployeesId, Function.identity()));
+
+        List<Integer> eqIds = equipmentDto.stream()
+                .filter(dto -> "Equipment".equals(dto.getType()) && dto.getEquipmentsId() != null)
+                .map(DrEquipmentCreateDto::getEquipmentsId)
+                .toList();
+        Map<Integer, Equipment> eqMap = eqIds.isEmpty() ? Collections.emptyMap() :
+                equipmentDao.findAllById(eqIds).stream().collect(Collectors.toMap(Equipment::getEquipmentsId, Function.identity()));
+
+        List<Integer> attachIds = equipmentDto.stream()
+                .filter(dto -> !"Equipment".equals(dto.getType()) && dto.getEquipmentsId() != null)
+                .map(DrEquipmentCreateDto::getEquipmentsId)
+                .toList();
+        Map<Integer, Attachment> attachMap = attachIds.isEmpty() ? Collections.emptyMap() :
+                attachmentDao.findAllById(attachIds).stream().collect(Collectors.toMap(Attachment::getAttachmentsId, Function.identity()));
+
         List<DrEquipment> equipmentsToSave = new ArrayList<>();
 
-        for(DrEquipmentCreateDto dto : equipmentDto){
+        for (DrEquipmentCreateDto dto : equipmentDto) {
             Integer dtoId = dto.getDrEquipmentsId();
             String employeeNumber = "N/A";
             String employeeFullName = "N/A";
@@ -334,30 +405,29 @@ public class DailyReportImpl implements IDailyReport {
             String equipmentName = "";
             String serialNumber = "";
 
-            if(dto.getType().equals("Equipment")){
-                Employee employee = employeeDao.findById(dto.getEmployeesId()).orElse(null);
-                if(employee != null){
+            if ("Equipment".equals(dto.getType())) {
+                Employee employee = empMap.get(dto.getEmployeesId());
+                if (employee != null) {
                     employeeNumber = employee.getEmployeeNumber();
-                    employeeFullName = employee.getFirstName()+" "+employee.getLastName();
+                    employeeFullName = employee.getFirstName() + " " + employee.getLastName();
                 }
-                Equipment equipment = equipmentDao.findById(dto.getEquipmentsId()).orElse(null);
-                if(equipment != null) {
+                Equipment equipment = eqMap.get(dto.getEquipmentsId());
+                if (equipment != null) {
                     equipmentNumber = equipment.getNumber();
                     equipmentName = equipment.getName();
                     serialNumber = equipment.getSerialNumber();
                 }
-            }else{
-                Attachment attachment = attachmentDao.findById(dto.getEquipmentsId()).orElse(null);
-                if(attachment != null) {
+            } else {
+                Attachment attachment = attachMap.get(dto.getEquipmentsId());
+                if (attachment != null) {
                     equipmentNumber = attachment.getNumber();
                     equipmentName = attachment.getName();
                     serialNumber = attachment.getSerialNumber();
                 }
             }
 
-            if(dtoId != null && actualEquipmentsMap.containsKey(dtoId)){
+            if (dtoId != null && actualEquipmentsMap.containsKey(dtoId)) {
                 DrEquipment drEquipment = actualEquipmentsMap.get(dtoId);
-
                 drEquipment.setEmployeesId(employeeNumber);
                 drEquipment.setOperator(employeeFullName);
                 drEquipment.setType(dto.getType());
@@ -371,19 +441,21 @@ public class DailyReportImpl implements IDailyReport {
 
                 equipmentsToSave.add(drEquipment);
                 actualEquipmentsMap.remove(dtoId);
-
-            }else{
+            } else {
                 DrEquipment newEquipment = DrEquipment.builder()
                         .dailyReportId(dailyReportId)
                         .equipmentsId(dto.getEquipmentsId())
                         .employeesId(employeeNumber)
                         .operator(employeeFullName)
                         .type(dto.getType())
+                        .number(equipmentNumber)
+                        .name(equipmentName)
+                        .serialNumber(serialNumber)
                         .initialHour(dto.getInitialHour())
                         .newHour(dto.getNewHour())
-                        .createdBy(dailyReport.getUpdatedBy())
+                        .createdBy(updater)
                         .createdDate(now)
-                        .updatedBy(dailyReport.getUpdatedBy())
+                        .updatedBy(updater)
                         .updatedDate(now)
                         .status(ACTIVE)
                         .build();
@@ -393,9 +465,10 @@ public class DailyReportImpl implements IDailyReport {
         }
 
         drEquipmentDao.saveAll(equipmentsToSave);
-        List<DrEquipment> equipmentsToDelete = new ArrayList<>(actualEquipmentsMap.values());
 
-        if(!equipmentsToDelete.isEmpty()){
+        // SOFT DELETE
+        List<DrEquipment> equipmentsToDelete = new ArrayList<>(actualEquipmentsMap.values());
+        if (!equipmentsToDelete.isEmpty()) {
             equipmentsToDelete.forEach(equip -> {
                 equip.setStatus(INACTIVE);
                 equip.setUpdatedBy(updater);
@@ -405,7 +478,9 @@ public class DailyReportImpl implements IDailyReport {
         }
     }
 
-    private void udpateEmployees(List<DrEmployeeCreateDto> employeesDto, DailyReport dailyReport){
+    private void updateEmployees(List<DrEmployeeCreateDto> employeesDto, DailyReport dailyReport) {
+        if (employeesDto == null) return;
+
         Integer dailyReportId = dailyReport.getDailyReportId();
         LocalDateTime now = LocalDateTime.now();
         String updater = dailyReport.getUpdatedBy();
@@ -413,12 +488,24 @@ public class DailyReportImpl implements IDailyReport {
         List<DrEmployee> actualDrEmployees = drEmployeeDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
         Map<Integer, DrEmployee> actualEmployeesMap = actualDrEmployees.stream()
                 .collect(Collectors.toMap(DrEmployee::getDrEmployeesId, Function.identity()));
+
         List<DrEmployee> employeesToSave = new ArrayList<>();
 
-        for(DrEmployeeCreateDto dto : employeesDto){
+        // ✅ BATCH LOAD: Cargar empleados nuevos en lote antes del for para evitar N+1
+        List<Integer> newEmpIds = employeesDto.stream()
+                .filter(dto -> dto.getDrEmployeesId() == null || !actualEmployeesMap.containsKey(dto.getDrEmployeesId()))
+                .map(DrEmployeeCreateDto::getEmployeesId)
+                .filter(Objects::nonNull)
+                .toList();
+
+        Map<Integer, Employee> newEmployeesMap = newEmpIds.isEmpty() ? Collections.emptyMap() :
+                employeeDao.findAllById(newEmpIds).stream()
+                        .collect(Collectors.toMap(Employee::getEmployeesId, Function.identity()));
+
+        for (DrEmployeeCreateDto dto : employeesDto) {
             Integer dtoId = dto.getDrEmployeesId();
 
-            if(dtoId != null && actualEmployeesMap.containsKey(dtoId)){
+            if (dtoId != null && actualEmployeesMap.containsKey(dtoId)) {
                 DrEmployee employee = actualEmployeesMap.get(dtoId);
                 employee.setInHour(dto.getInHour());
                 employee.setOutHour(dto.getOutHour());
@@ -430,8 +517,10 @@ public class DailyReportImpl implements IDailyReport {
                 employeesToSave.add(employee);
                 actualEmployeesMap.remove(dtoId);
             } else {
-                Employee emp = employeeDao.findById(dto.getEmployeesId())
-                        .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+                Employee emp = newEmployeesMap.get(dto.getEmployeesId());
+                if (emp == null) {
+                    throw new IllegalArgumentException("Employee not found ID: " + dto.getEmployeesId());
+                }
                 String fullName = emp.getFirstName() + " " + emp.getLastName();
                 DrEmployee newEmployee = DrEmployee.builder()
                         .dailyReportId(dailyReportId)
@@ -443,7 +532,7 @@ public class DailyReportImpl implements IDailyReport {
                         .lunch(dto.getLunch())
                         .ppe(dto.getPpe())
                         .comment(dto.getComment())
-                        .createdBy(updater) // Usar updater aquí si el DTO de creación no lo trae
+                        .createdBy(updater)
                         .createdDate(now)
                         .updatedBy(updater)
                         .updatedDate(now)
@@ -454,8 +543,9 @@ public class DailyReportImpl implements IDailyReport {
         }
 
         drEmployeeDao.saveAll(employeesToSave);
-        List<DrEmployee> employeesToDelete = new ArrayList<>(actualEmployeesMap.values());
 
+        // SOFT DELETE para los registros removidos
+        List<DrEmployee> employeesToDelete = new ArrayList<>(actualEmployeesMap.values());
         if (!employeesToDelete.isEmpty()) {
             employeesToDelete.forEach(emp -> {
                 emp.setStatus(INACTIVE);
@@ -467,65 +557,52 @@ public class DailyReportImpl implements IDailyReport {
     }
 
     @Override
-    public DailyReportCreateDto save(DailyReportCreateDto dailyReportCreateDto, Integer jobsId){
+    @Transactional // ✅ Una sola transacción para toda la operación
+    public DailyReportCreateDto save(DailyReportCreateDto dailyReportCreateDto, Integer jobsId) {
         Job job = jobDao.findById(jobsId)
                 .orElseThrow(() -> new UsernameNotFoundException("Job not found"));
 
         DailyReport dailyReport = toEntity(dailyReportCreateDto, job);
         DailyReport dailyReportSaved = dailyReportDao.save(dailyReport);
 
-        // saving crew
+        // 1. Crew / Employees
         List<DrEmployeeCreateDto> employeesDto = new ArrayList<>();
-        if(!dailyReportCreateDto.getEmployees().isEmpty()) {
-            List<DrEmployee> savedEmployees = saveEmployees(
-                    dailyReportCreateDto.getEmployees(),
-                    dailyReportSaved
-            );
+        if (dailyReportCreateDto.getEmployees() != null && !dailyReportCreateDto.getEmployees().isEmpty()) {
+            List<DrEmployee> savedEmployees = saveEmployees(dailyReportCreateDto.getEmployees(), dailyReportSaved);
+
+            // Map sin hacer queries extra a la BD
+            Map<String, Integer> empNumberToIdMap = employeeDao.findAllById(
+                    dailyReportCreateDto.getEmployees().stream().map(DrEmployeeCreateDto::getEmployeesId).toList()
+            ).stream().collect(Collectors.toMap(Employee::getEmployeeNumber, Employee::getEmployeesId));
+
             employeesDto = savedEmployees.stream()
-                            .map(this::toEmployeeDto)
-                            .toList();
+                    .map(emp -> toEmployeeDtoOptimized(emp, empNumberToIdMap.get(emp.getEmployeesId())))
+                    .toList();
         }
 
-        // saving equipment
-        List<DrEquipment> savedEquipments = saveEquipments(
-                dailyReportCreateDto.getEquipments(),
-                dailyReportSaved
-        );
-        List<DrEquipmentCreateDto> equipmentsDto =
-                savedEquipments.stream()
-                        .map(this::toEquipmentDto)
-                        .toList();
+        // 2. Equipment
+        List<DrEquipment> savedEquipments = saveEquipments(dailyReportCreateDto.getEquipments(), dailyReportSaved);
+        List<DrEquipmentCreateDto> equipmentsDto = savedEquipments.stream()
+                .map(this::toEquipmentDtoOptimized)
+                .toList();
 
-        // saving rentals
-        List<DrRental> savedRentals = saveRentals(
-                dailyReportCreateDto.getRentals(),
-                dailyReportSaved
-        );
-        List<DrRentalCreateDto> rentalsDto =
-                savedRentals.stream()
-                        .map(this::toRentalDto)
-                        .toList();
+        // 3. Rentals
+        List<DrRental> savedRentals = saveRentals(dailyReportCreateDto.getRentals(), dailyReportSaved);
+        List<DrRentalCreateDto> rentalsDto = savedRentals.stream()
+                .map(this::toRentalDto)
+                .toList();
 
-        // saving tools
-        List<Tool> savedTools = saveTools(
-                dailyReportCreateDto.getTools(),
-                dailyReportSaved
-        );
-        List<DrToolCreateDto> toolsDto =
-                savedTools.stream()
-                        .map(this::toToolDto)
-                        .toList();
+        // 4. Tools
+        List<Tool> savedTools = saveTools(dailyReportCreateDto.getTools(), dailyReportSaved);
+        List<DrToolCreateDto> toolsDto = savedTools.stream()
+                .map(this::toToolDto)
+                .toList();
 
-        //saving dumpsters
-        List<DrDumpster> savedDumpsters = saveDumpsters(
-                dailyReportCreateDto.getDumpsters(),
-                dailyReportSaved
-        );
-
-        List<DrDumpsterCreateDto> dumpstersDto =
-                savedDumpsters.stream()
-                        .map(this::toDumpsterDto)
-                        .toList();
+        // 5. Dumpsters
+        List<DrDumpster> savedDumpsters = saveDumpsters(dailyReportCreateDto.getDumpsters(), dailyReportSaved);
+        List<DrDumpsterCreateDto> dumpstersDto = savedDumpsters.stream()
+                .map(this::toDumpsterDto)
+                .toList();
 
         DailyReportCreateDto response = toDto(dailyReportSaved);
         response.setEmployees(employeesDto);
@@ -547,28 +624,25 @@ public class DailyReportImpl implements IDailyReport {
                 .build();
     }
 
-    private List<DrDumpster> saveDumpsters(List<DrDumpsterCreateDto> dumpsters, DailyReport dailyReport){
+    private List<DrDumpster> saveDumpsters(List<DrDumpsterCreateDto> dumpsters, DailyReport dailyReport) {
+        if (dumpsters == null || dumpsters.isEmpty()) return Collections.emptyList();
         LocalDateTime now = LocalDateTime.now();
-        List<DrDumpster> result = new ArrayList<>();
 
-        for (DrDumpsterCreateDto dto : dumpsters){
-            DrDumpster dumpsterCreated = DrDumpster.builder()
-                    .dailyReportId(dailyReport.getDailyReportId())
-                    .sourceDumpster(dto.getSourceDumpster())
-                    .sizeDumpster(dto.getSizeDumpster())
-                    .typeDumpster(dto.getTypeDumpster())
-                    .quantity(dto.getQuantity())
-                    .createdBy(dailyReport.getUpdatedBy())
-                    .createdDate(now)
-                    .updatedBy(dailyReport.getUpdatedBy())
-                    .updatedDate(now)
-                    .dumpstersStatus(ACTIVE)
-                    .build();
+        List<DrDumpster> toSave = dumpsters.stream().map(dto -> DrDumpster.builder()
+                .dailyReportId(dailyReport.getDailyReportId())
+                .sourceDumpster(dto.getSourceDumpster())
+                .sizeDumpster(dto.getSizeDumpster())
+                .typeDumpster(dto.getTypeDumpster())
+                .quantity(dto.getQuantity())
+                .createdBy(dailyReport.getUpdatedBy())
+                .createdDate(now)
+                .updatedBy(dailyReport.getUpdatedBy())
+                .updatedDate(now)
+                .dumpstersStatus(ACTIVE)
+                .build()
+        ).toList();
 
-            result.add(drDumpsterDao.save(dumpsterCreated));
-        }
-
-        return result;
+        return drDumpsterDao.saveAll(toSave); // ✅ Batch insert
     }
 
     private DrRentalCreateDto toRentalDto(DrRental rental){
@@ -583,30 +657,27 @@ public class DailyReportImpl implements IDailyReport {
                 .build();
     }
 
-    private List<DrRental> saveRentals(List<DrRentalCreateDto> rentals, DailyReport dailyReport){
-        List<DrRental> result = new ArrayList<>();
+    private List<DrRental> saveRentals(List<DrRentalCreateDto> rentals, DailyReport dailyReport) {
+        if (rentals == null || rentals.isEmpty()) return Collections.emptyList();
         LocalDateTime now = LocalDateTime.now();
 
-        for(DrRentalCreateDto dto : rentals){
-            DrRental rentalCreated = DrRental.builder()
-                    .dailyReportId(dailyReport.getDailyReportId())
-                    .employeesId(dto.getEmployeesId())
-                    .equipmentType(dto.getEquipmentType())
-                    .equipmentName(dto.getEquipmentName())
-                    .company(dto.getCompany())
-                    .equipmentNumber(dto.getEquipmentNumber())
-                    .odometer(dto.getOdometer())
-                    .createdBy(dailyReport.getUpdatedBy())
-                    .createdDate(now)
-                    .updatedBy(dailyReport.getUpdatedBy())
-                    .updatedDate(now)
-                    .rentalsStatus(ACTIVE)
-                    .build();
+        List<DrRental> toSave = rentals.stream().map(dto -> DrRental.builder()
+                .dailyReportId(dailyReport.getDailyReportId())
+                .employeesId(dto.getEmployeesId())
+                .equipmentType(dto.getEquipmentType())
+                .equipmentName(dto.getEquipmentName())
+                .company(dto.getCompany())
+                .equipmentNumber(dto.getEquipmentNumber())
+                .odometer(dto.getOdometer())
+                .createdBy(dailyReport.getUpdatedBy())
+                .createdDate(now)
+                .updatedBy(dailyReport.getUpdatedBy())
+                .updatedDate(now)
+                .rentalsStatus(ACTIVE)
+                .build()
+        ).toList();
 
-            result.add(drRentalDao.save(rentalCreated));
-        }
-
-        return result;
+        return drRentalDao.saveAll(toSave); // ✅ Batch insert
     }
 
     private DrToolCreateDto toToolDto(Tool tool){
@@ -620,117 +691,105 @@ public class DailyReportImpl implements IDailyReport {
                 .build();
     }
 
-    private List<Tool> saveTools(List<DrToolCreateDto> tools, DailyReport dailyReport){
-        List<Tool> result = new ArrayList<>();
+    private List<Tool> saveTools(List<DrToolCreateDto> tools, DailyReport dailyReport) {
+        if (tools == null || tools.isEmpty()) return Collections.emptyList();
         LocalDateTime now = LocalDateTime.now();
 
-        for(DrToolCreateDto dto : tools){
-            Tool toolCreated = Tool.builder()
-                    .dailyReportId(dailyReport.getDailyReportId())
-                    .qty(dto.getQty())
-                    .name(dto.getName())
-                    .other(dto.getOther())
-                    .comments(dto.getComments())
-                    .createdBy(dailyReport.getCreatedBy())
-                    .createdDate(now)
-                    .updatedBy(dailyReport.getCreatedBy())
-                    .updatedDate(now)
-                    .status(ACTIVE)
-                    .build();
+        List<Tool> toSave = tools.stream().map(dto -> Tool.builder()
+                .dailyReportId(dailyReport.getDailyReportId())
+                .qty(dto.getQty())
+                .name(dto.getName())
+                .other(dto.getOther())
+                .comments(dto.getComments())
+                .createdBy(dailyReport.getCreatedBy())
+                .createdDate(now)
+                .updatedBy(dailyReport.getCreatedBy())
+                .updatedDate(now)
+                .status(ACTIVE)
+                .build()
+        ).toList();
 
-            result.add(toolDao.save(toolCreated));
-        }
-
-        return result;
+        return toolDao.saveAll(toSave); // ✅ Batch insert
     }
 
-    private DrEquipmentCreateDto toEquipmentDto(DrEquipment equipment){
-        Employee employee = employeeDao.findByEmployeeNumber(equipment.getEmployeesId());
+    private List<DrEquipment> saveEquipments(List<DrEquipmentCreateDto> equipments, DailyReport dailyReport) {
+        if (equipments == null || equipments.isEmpty()) return Collections.emptyList();
 
+        LocalDateTime now = LocalDateTime.now();
+        List<DrEquipment> toSave = new ArrayList<>();
+        List<Equipment> equipmentToUpdate = new ArrayList<>();
+
+        // Buscar empleados en lote si los hay
+        List<Integer> empIds = equipments.stream()
+                .filter(e -> !"Attachment".equals(e.getType()) && e.getEmployeesId() != null)
+                .map(DrEquipmentCreateDto::getEmployeesId)
+                .toList();
+
+        Map<Integer, Employee> empMap = empIds.isEmpty() ? Collections.emptyMap() :
+                employeeDao.findAllById(empIds).stream().collect(Collectors.toMap(Employee::getEmployeesId, e -> e));
+
+        // Buscar equipos a actualizar horas en lote
+        List<Integer> eqIds = equipments.stream().map(DrEquipmentCreateDto::getEquipmentsId).toList();
+        Map<Integer, Equipment> eqMap = equipmentDao.findAllById(eqIds).stream()
+                .collect(Collectors.toMap(Equipment::getEquipmentsId, e -> e));
+
+        for (DrEquipmentCreateDto dto : equipments) {
+            String empNumber = "N/A";
+            String fullName = "N/A";
+
+            if (!"Attachment".equals(dto.getType())) {
+                Employee employee = empMap.get(dto.getEmployeesId());
+                if (employee != null) {
+                    empNumber = employee.getEmployeeNumber();
+                    fullName = employee.getFirstName() + " " + employee.getLastName();
+                }
+
+                // Actualizar horas de equipo
+                Equipment eq = eqMap.get(dto.getEquipmentsId());
+                if (eq != null && dto.getNewHour() != null) {
+                    eq.setHour(Float.parseFloat(dto.getNewHour()));
+                    equipmentToUpdate.add(eq);
+                }
+            }
+
+            toSave.add(DrEquipment.builder()
+                    .dailyReportId(dailyReport.getDailyReportId())
+                    .equipmentsId(dto.getEquipmentsId())
+                    .employeesId(empNumber)
+                    .operator(fullName)
+                    .type(dto.getType())
+                    .initialHour(dto.getInitialHour())
+                    .newHour(dto.getNewHour())
+                    .createdBy(dailyReport.getUpdatedBy())
+                    .createdDate(now)
+                    .updatedBy(dailyReport.getUpdatedBy())
+                    .updatedDate(now)
+                    .status(ACTIVE)
+                    .build());
+        }
+
+        if (!equipmentToUpdate.isEmpty()) {
+            equipmentDao.saveAll(equipmentToUpdate); // ✅ Batch update
+        }
+
+        return drEquipmentDao.saveAll(toSave); // ✅ Batch insert
+    }
+
+    private DrEquipmentCreateDto toEquipmentDtoOptimized(DrEquipment equipment) {
+        // No necesita hacer consulta a la BD ya que devuelve lo que ya se guardó
         return DrEquipmentCreateDto.builder()
                 .drEquipmentsId(equipment.getDrEquipmentsId())
                 .equipmentsId(equipment.getEquipmentsId())
-                .employeesId(employee != null ? employee.getEmployeesId() : null)
                 .type(equipment.getType())
                 .initialHour(equipment.getInitialHour())
                 .newHour(equipment.getNewHour())
                 .build();
     }
 
-    private List<DrEquipment> saveEquipments(
-            List<DrEquipmentCreateDto> equipments,
-            DailyReport dailyReport
-    ){
-        LocalDateTime now = LocalDateTime.now();
-        List<DrEquipment> savedEquipments = new ArrayList<>();
-
-        for(DrEquipmentCreateDto dto : equipments){
-
-            if(dto.getType().equals("Attachment")){
-                DrEquipment drEquipment = DrEquipment.builder()
-                        .dailyReportId(dailyReport.getDailyReportId())
-                        .equipmentsId(dto.getEquipmentsId())
-                        .employeesId("N/A") // this is the employee number
-                        .operator("N/A")
-                        .type(dto.getType())
-                        .createdBy(dailyReport.getUpdatedBy())
-                        .createdDate(now)
-                        .updatedBy(dailyReport.getUpdatedBy())
-                        .updatedDate(now)
-                        .status(ACTIVE)
-                        .build();
-
-                savedEquipments.add(drEquipmentDao.save(drEquipment));
-            }else{
-                Employee employee = employeeDao.findById(dto.getEmployeesId())
-                        .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
-
-                String fullName = employee.getFirstName() +" "+employee.getLastName();
-
-                DrEquipment drEquipment = DrEquipment.builder()
-                        .dailyReportId(dailyReport.getDailyReportId())
-                        .equipmentsId(dto.getEquipmentsId())
-                        .employeesId(employee.getEmployeeNumber()) // this is the employee number
-                        .operator(fullName)
-                        .type(dto.getType())
-                        .initialHour(dto.getInitialHour())
-                        .newHour(dto.getNewHour())
-                        .createdBy(dailyReport.getUpdatedBy())
-                        .createdDate(now)
-                        .updatedBy(dailyReport.getUpdatedBy())
-                        .updatedDate(now)
-                        .status(ACTIVE)
-                        .build();
-
-                savedEquipments.add(drEquipmentDao.save(drEquipment));
-
-                Equipment equipment = equipmentDao.findById(dto.getEquipmentsId())
-                        .orElse(null);
-
-                if(equipment != null){
-                    equipment.setHour(Float.parseFloat(dto.getNewHour()));
-                    equipmentDao.save(equipment);
-                }
-
-
-                // save odometer
-                    // in equipment table
-                    // in odometer history table
-            }
-        }
-
-        return savedEquipments;
-    }
-
-    private DrEmployeeCreateDto toEmployeeDto(DrEmployee emp) {
-        Employee employee = employeeDao.findByEmployeeNumber(emp.getEmployeesId());
-
-        // 1. Manejo preventivo
-        Integer employeeIdToSet = (employee != null) ? employee.getEmployeesId() : null;
-
+    private DrEmployeeCreateDto toEmployeeDtoOptimized(DrEmployee emp, Integer employeeId) {
         return DrEmployeeCreateDto.builder()
                 .drEmployeesId(emp.getDrEmployeesId())
-                .employeesId(employeeIdToSet) // Evitas el NullPointerException
+                .employeesId(employeeId)
                 .inHour(emp.getInHour())
                 .outHour(emp.getOutHour())
                 .lunch(emp.getLunch())
@@ -739,24 +798,27 @@ public class DailyReportImpl implements IDailyReport {
                 .build();
     }
 
-    private List<DrEmployee> saveEmployees(
-            List<DrEmployeeCreateDto> employees,
-            DailyReport dailyReport
-    ){
-        if(employees == null || employees.isEmpty()) return null;
+    private List<DrEmployee> saveEmployees(List<DrEmployeeCreateDto> employees, DailyReport dailyReport) {
+        if (employees == null || employees.isEmpty()) return Collections.emptyList();
 
         LocalDateTime now = LocalDateTime.now();
-        List<DrEmployee> employeesList = new ArrayList<>();
 
-        for(DrEmployeeCreateDto dto : employees){
-            Employee employee = employeeDao.findById(dto.getEmployeesId())
-                    .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
-            String fullName = employee.getFirstName() +" "+employee.getLastName();
+        // Cargar todos los empleados en UNA SOLA QUERY en vez de dentro del loop
+        List<Integer> employeeIds = employees.stream().map(DrEmployeeCreateDto::getEmployeesId).toList();
+        Map<Integer, Employee> employeeMap = employeeDao.findAllById(employeeIds).stream()
+                .collect(Collectors.toMap(Employee::getEmployeesId, e -> e));
 
-            DrEmployee empCreated = DrEmployee.builder()
+        List<DrEmployee> toSave = new ArrayList<>();
+        for (DrEmployeeCreateDto dto : employees) {
+            Employee employee = employeeMap.get(dto.getEmployeesId());
+            if (employee == null) {
+                throw new IllegalArgumentException("Employee not found ID: " + dto.getEmployeesId());
+            }
+
+            toSave.add(DrEmployee.builder()
                     .dailyReportId(dailyReport.getDailyReportId())
-                    .employeesId(employee.getEmployeeNumber()) // this is the employee number
-                    .name(fullName)
+                    .employeesId(employee.getEmployeeNumber())
+                    .name(employee.getFirstName() + " " + employee.getLastName())
                     .title(employee.getTitle())
                     .inHour(dto.getInHour())
                     .outHour(dto.getOutHour())
@@ -768,11 +830,10 @@ public class DailyReportImpl implements IDailyReport {
                     .updatedBy(dailyReport.getUpdatedBy())
                     .updatedDate(now)
                     .status(ACTIVE)
-                    .build();
-
-            employeesList.add(drEmployeeDao.save(empCreated));
+                    .build());
         }
-        return employeesList;
+        // ✅ 1 sola instruccion INSERT batch a la BD
+        return drEmployeeDao.saveAll(toSave);
     }
 
     private DailyReportCreateDto toDto(DailyReport report) {
