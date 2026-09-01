@@ -24,7 +24,7 @@ public class IssueReportController {
     private final IIssueReport issueReportService;
 
     // 1. Obtener un reporte por su ID
-    @GetMapping("/report/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<IssueReportResponseDto> getById(@PathVariable Long id) {
         IssueReportResponseDto response = issueReportService.findById(id);
         return ResponseEntity.ok(response);
