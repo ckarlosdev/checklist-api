@@ -56,7 +56,7 @@ public class IssueReportImpl implements IIssueReport {
     @Override
     @Transactional(readOnly = true)
     public List<IssueReportResponseDto> findByEquipment(Integer equipmentId) {
-        List<IssueReport> issueList = issueReportDao.findByEquipmentId(equipmentId);
+        List<IssueReport> issueList = issueReportDao.findByEquipment_EquipmentsId(equipmentId);
 
         return issueList.stream()
                 .map(this::entityToDto)
