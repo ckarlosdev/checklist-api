@@ -64,7 +64,7 @@ public class Silica implements Serializable {
     @Column(name = "signature_folder")
     private String signatureFolder;
 
-    @Column(name = "diagram_data")
+    @Column(name = "diagram_data", columnDefinition = "LONGTEXT")
     private String diagramData;
 
     @Column(name = "created_by")

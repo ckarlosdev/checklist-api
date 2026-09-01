@@ -34,7 +34,7 @@ public class PreTask implements Serializable {
     @Column(name = "supervisor")
     private String supervisor;
 
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "TEXT")
     private String comment;
 
     @Column(name = "created_by")

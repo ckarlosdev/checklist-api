@@ -39,7 +39,7 @@ public class DemoChecklist implements Serializable {
     @Column(name = "foreman")
     private String foreman;
 
-    @Column(name = "notes")
+    @Column(name = "notes", columnDefinition = "TEXT")
     private String notes;
 
     @Column(name = "signature")
