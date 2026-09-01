@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface IssueReportDao extends JpaRepository<IssueReport, Long> {
-    List<IssueReport> findByEquipmentId(Integer equipmentId);
+    List<IssueReport> findByEquipment_EquipmentsId(Integer equipmentId);
 }
