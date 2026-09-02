@@ -131,8 +131,6 @@ public class ChecklistController {
     ) {
         List<Checklist> checklists = checklistService.findByJobAndDate(jobId, date);
 
-        System.out.println( checklists);
-
         return checklists.stream()
                 .map( checklist ->
                         ChecklistDto.builder()
