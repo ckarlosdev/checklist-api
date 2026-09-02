@@ -99,7 +99,6 @@ public class DrEmployeeController {
         }
 
         List<EmployeeHoursDTO> summary = dailyReportService.getHoursByDate(startDate, endDate);
-        System.out.println(summary);
 
         if (summary.isEmpty()) {
             return ResponseEntity.noContent().build();
