@@ -36,6 +36,7 @@ public class IssueReportImpl implements IIssueReport {
                 .priorityIssue(dto.getPriorityIssue())
                 .typeIssue(dto.getTypeIssue())
                 .descriptionIssue(dto.getDescriptionIssue())
+                .createdBy(dto.getReportedBy())
                 .build();
 
         // 3. Guardar (Spring Data Auditing asigna automáticamente created_by, created_at, etc.)
