@@ -13,4 +13,6 @@ public interface IIssueReport {
     List<IssueReportResponseDto> findByEquipment(Integer equipmentId);
 
     IssueReportResponseDto findById(Long id);
+
+    List<IssueReportResponseDto> getReports();
 }
