@@ -4,6 +4,10 @@ import com.ck.wi.model.dto.issue.IssueReportRequestDto;
 import com.ck.wi.model.dto.issue.IssueReportResponseDto;
 import com.ck.wi.service.issue.IIssueReport;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,8 +56,19 @@ public class IssueReportController {
     }
 
     @GetMapping("/actives")
-    public ResponseEntity<List<IssueReportResponseDto>> getActiveReports(){
-        List<IssueReportResponseDto> response = issueReportService.getReports();
+    public ResponseEntity<Page<IssueReportResponseDto>> getActiveReports(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "DESC") String direction
+    ){
+        Sort sort = direction.equalsIgnoreCase("ASC")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<IssueReportResponseDto> response = issueReportService.getReports(pageable);
+
         return ResponseEntity.ok(response);
     }
 }

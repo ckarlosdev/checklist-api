@@ -1,6 +1,8 @@
 package com.ck.wi.model.dao.issue;
 
 import com.ck.wi.model.entity.Issue.EquipmentIssue;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,9 @@ public interface EquipmentIssueDao extends CrudRepository<EquipmentIssue, Intege
     List<EquipmentIssue> findByFlowAndIssueStatus(String flow, String status);
 
     List<EquipmentIssue> findByIssueStatus(String issueStatus);
+
+    Page<EquipmentIssue> findByFlow(String flow, Pageable pageable);
+
+    Page<EquipmentIssue> findAll(Pageable pageable);
 
 }

@@ -9,6 +9,8 @@ import com.ck.wi.model.entity.Issue.IssueReport;
 import com.ck.wi.service.issue.IIssueReport;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,12 +76,10 @@ public class IssueReportImpl implements IIssueReport {
 
     @Override
     @Transactional(readOnly = true)
-    public List<IssueReportResponseDto> getReports() {
-        List<IssueReport> issueList = issueReportDao.findAll();
+    public Page<IssueReportResponseDto> getReports(Pageable pageable) {
+        Page<IssueReport> issuePage = issueReportDao.findAll(pageable);
 
-        return issueList.stream()
-                .map(this::entityToDto)
-                .collect(Collectors.toList());
+        return issuePage.map(this::entityToDto);
     }
 
     private IssueReportResponseDto entityToDto(IssueReport entity){

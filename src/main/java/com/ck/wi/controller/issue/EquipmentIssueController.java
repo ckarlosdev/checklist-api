@@ -6,6 +6,11 @@ import com.ck.wi.model.entity.Issue.EquipmentIssue;
 import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -91,6 +96,20 @@ public class EquipmentIssueController {
                                 .updatedBy(issue.getUpdatedBy())
                                 .build())
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("issues/pages")
+    public ResponseEntity<Page<EquipmentIssueRequestDto>> showAll(
+            @RequestParam(required = false) String flow,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "number") String sortBy,
+            @RequestParam(defaultValue = "DESC") String direction
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+        Page<EquipmentIssueRequestDto> response = equipmentIssueService.getIssues(flow, pageable);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("issues/{flow}")
