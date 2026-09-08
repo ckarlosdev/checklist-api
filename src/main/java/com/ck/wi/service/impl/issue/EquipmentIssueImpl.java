@@ -13,7 +13,10 @@ import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
 import com.ck.wi.service.issue.IIssuesHistory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -149,5 +152,36 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     public List<EquipmentIssue> findByFlow(String flow) {
 
         return (List<EquipmentIssue>) equipmentIssueDao.findByFlowAndIssueStatus(flow, "1");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<EquipmentIssueRequestDto> getIssues(String flow, Pageable pageable) {
+        Page<EquipmentIssue> issuesPage;
+
+        if (flow != null && !flow.trim().isEmpty()) {
+            issuesPage = equipmentIssueDao.findByFlow(flow, pageable);
+        } else {
+            issuesPage = equipmentIssueDao.findAll(pageable);
+        }
+
+        return issuesPage.map(this::entityToDto);
+    }
+
+    private EquipmentIssueRequestDto entityToDto(EquipmentIssue issue) {
+        return EquipmentIssueRequestDto.builder()
+                .equipmentsIssuesId(issue.getEquipmentsIssuesId())
+                .equipmentNumber(issue.getEquipment().getNumber())
+                .equipmentName(issue.getEquipment().getName())
+                .flow(issue.getFlow())
+                .reportedBy(issue.getReportedBy())
+                .reportedDate(issue.getReportedDate())
+                .priorityIssue(issue.getPriorityIssue())
+                .typeIssue(issue.getTypeIssue())
+                .descriptionIssue(issue.getDescriptionIssue())
+                .details(issue.getDetails())
+                .createdBy(issue.getCreatedBy())
+                .updatedBy(issue.getUpdatedBy())
+                .build();
     }
 }
