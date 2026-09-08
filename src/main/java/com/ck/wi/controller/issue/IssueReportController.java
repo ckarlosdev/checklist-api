@@ -50,4 +50,10 @@ public class IssueReportController {
         issueReportService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/actives")
+    public ResponseEntity<List<IssueReportResponseDto>> getActiveReports(){
+        List<IssueReportResponseDto> response = issueReportService.getReports();
+        return ResponseEntity.ok(response);
+    }
 }

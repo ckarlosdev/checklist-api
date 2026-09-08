@@ -72,6 +72,16 @@ public class IssueReportImpl implements IIssueReport {
         return entityToDto(issueReport);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<IssueReportResponseDto> getReports() {
+        List<IssueReport> issueList = issueReportDao.findAll();
+
+        return issueList.stream()
+                .map(this::entityToDto)
+                .collect(Collectors.toList());
+    }
+
     private IssueReportResponseDto entityToDto(IssueReport entity){
         return IssueReportResponseDto.builder()
                 .id(entity.getId())
