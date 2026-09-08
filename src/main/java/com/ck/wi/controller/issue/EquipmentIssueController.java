@@ -103,10 +103,14 @@ public class EquipmentIssueController {
             @RequestParam(required = false) String flow,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "number") String sortBy,
+            @RequestParam(defaultValue = "equipment.number") String sortBy,
             @RequestParam(defaultValue = "DESC") String direction
     ) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy).descending());
+        Sort sort = direction.equalsIgnoreCase("ASC")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
         Page<EquipmentIssueRequestDto> response = equipmentIssueService.getIssues(flow, pageable);
 
         return ResponseEntity.ok(response);
