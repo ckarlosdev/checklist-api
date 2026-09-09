@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,7 +19,21 @@ public interface IssueReportDao extends JpaRepository<IssueReport, Long> {
     @EntityGraph(attributePaths = {"equipment"})
     Page<IssueReport> findAll(Pageable pageable);
 
-    // Si necesitas filtrar por equipo en el futuro con paginación:
     @EntityGraph(attributePaths = {"equipment"})
     Page<IssueReport> findByEquipment_EquipmentsId(Integer equipmentId, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"equipment"}) // Carga ansiosa eficiente
+    @Query("SELECT r FROM IssueReport r WHERE " +
+            "(:search IS NULL OR " +
+            " LOWER(r.equipment.number) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            " LOWER(r.reportedBy) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+            "(:priority IS NULL OR r.priority = :priority) AND " +
+            "(:type IS NULL OR r.type = :type) AND " +
+            "r.active = true")
+    Page<IssueReport> findActiveWithFilters(
+            @Param("search") String search,
+            @Param("priority") String priority,
+            @Param("type") String type,
+            Pageable pageable
+    );
 }

@@ -60,14 +60,19 @@ public class IssueReportController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "createdAt") String sortBy,
-            @RequestParam(defaultValue = "DESC") String direction
+            @RequestParam(defaultValue = "DESC") String direction,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String priority,
+            @RequestParam(required = false) String type
     ){
         Sort sort = direction.equalsIgnoreCase("ASC")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<IssueReportResponseDto> response = issueReportService.getReports(pageable);
+
+        // Pasa los nuevos parámetros a tu servicio
+        Page<IssueReportResponseDto> response = issueReportService.getReports(pageable, search, priority, type);
 
         return ResponseEntity.ok(response);
     }

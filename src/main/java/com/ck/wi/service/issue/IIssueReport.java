@@ -16,5 +16,5 @@ public interface IIssueReport {
 
     IssueReportResponseDto findById(Long id);
 
-    Page<IssueReportResponseDto> getReports(Pageable pageable);
+    Page<IssueReportResponseDto> getReports(Pageable pageable, String search, String priority, String type);
 }
