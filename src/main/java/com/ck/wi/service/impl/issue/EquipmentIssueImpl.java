@@ -13,6 +13,7 @@ import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
 import com.ck.wi.service.issue.IIssueReport;
 import com.ck.wi.service.issue.IIssuesHistory;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EquipmentIssueImpl implements IEquipmentIssue {
@@ -44,7 +46,6 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     public EquipmentIssue save(EquipmentIssueDto equipmentIssueDto) {
 
         Checklist checklist = checklistDao.findById(equipmentIssueDto.getChecklistsId()).orElse(null);
-
         Equipment equipment = equipmentDao.findById(equipmentIssueDto.getEquipmentsId()).orElse(null);
 
         LocalDateTime today = LocalDateTime.now();
@@ -67,7 +68,6 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
                     .issueStatus("1")
                     .build();
 
-//            return equipmentIssueDao.save(equipmentIssue);
             EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
 
 
@@ -92,53 +92,64 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     }
 
     @Override
-    public EquipmentIssue update(EquipmentIssueRequestDto equipmentIssueRequestDto) {
+    @Transactional
+    public EquipmentIssue update(EquipmentIssueRequestDto dto) {
 
-        EquipmentIssue equipmentIssueObj = equipmentIssueDao.findById(equipmentIssueRequestDto.getEquipmentsIssuesId()).orElse(null);
+        EquipmentIssue equipmentIssue = equipmentIssueDao.findById(
+                dto.getEquipmentsIssuesId()
+        ).orElseThrow(() ->
+                new EntityNotFoundException(
+                        "Equipment issue not found with id: "
+                                + dto.getEquipmentsIssuesId()
+                )
+        );
 
-        LocalDateTime today = LocalDateTime.now();
-        String oldFlow = equipmentIssueObj.getFlow();
+        // Guardamos el valor anterior antes de modificar la entidad
+        String oldFlow = equipmentIssue.getFlow();
 
-//        if(checklist != null && equipment != null && equipmentIssueObj != null){
-        if(equipmentIssueObj != null){
-            EquipmentIssue equipmentIssue = EquipmentIssue.builder()
-                    .equipmentsIssuesId(equipmentIssueObj.getEquipmentsIssuesId())
-                    .checklist(equipmentIssueObj.getChecklist())
-                    .equipment(equipmentIssueObj.getEquipment())
-                    .flow(equipmentIssueRequestDto.getFlow())
-                    .reportedBy(equipmentIssueRequestDto.getReportedBy())
-                    .reportedDate(equipmentIssueRequestDto.getReportedDate())
-                    .priorityIssue(equipmentIssueRequestDto.getPriorityIssue())
-                    .typeIssue(equipmentIssueRequestDto.getTypeIssue())
-                    .descriptionIssue(equipmentIssueRequestDto.getDescriptionIssue())
-                    .details(equipmentIssueRequestDto.getDetails())
-                    .createdBy(equipmentIssueRequestDto.getCreatedBy())
-                    .createdDate(equipmentIssueObj.getCreatedDate())
-                    .updatedBy(equipmentIssueRequestDto.getUpdatedBy())
-                    .updatedDate(today)
-                    .issueStatus("1")
+        // Actualización de los campos
+        equipmentIssue.setFlow(dto.getFlow());
+        equipmentIssue.setReportedBy(dto.getReportedBy());
+        equipmentIssue.setReportedDate(dto.getReportedDate());
+        equipmentIssue.setPriorityIssue(dto.getPriorityIssue());
+        equipmentIssue.setTypeIssue(dto.getTypeIssue());
+        equipmentIssue.setDescriptionIssue(dto.getDescriptionIssue());
+        equipmentIssue.setDetails(dto.getDetails());
+
+        // Si tu aplicación maneja auditoría manualmente
+        equipmentIssue.setUpdatedBy(dto.getUpdatedBy());
+        equipmentIssue.setUpdatedDate(LocalDateTime.now());
+
+        equipmentIssue.setIssueStatus("1");
+
+        /*
+         * No modificamos:
+         * - equipmentsIssuesId
+         * - checklist
+         * - equipment
+         * - createdBy
+         * - createdDate
+         *
+         * porque pertenecen al registro original.
+         */
+
+        EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
+
+        // Crear historial únicamente si cambió el flow
+        if (!Objects.equals(oldFlow, updatedIssue.getFlow())) {
+
+            IssuesHistoryDto historyDto = IssuesHistoryDto.builder()
+                    .equipmentsIssuesId(updatedIssue.getEquipmentsIssuesId())
+                    .lastFlow(oldFlow)
+                    .newFlow(updatedIssue.getFlow())
+                    .comments(dto.getComments())
+                    .createdBy(dto.getUpdatedBy())
                     .build();
 
-//            return equipmentIssueDao.save(equipmentIssue);
-            EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
-
-
-            if (!oldFlow.equals(updatedIssue.getFlow())) {
-                IssuesHistoryDto historyDto = IssuesHistoryDto.builder()
-                        .equipmentsIssuesId(updatedIssue.getEquipmentsIssuesId()) // ID del Issue padre
-                        .lastFlow(oldFlow) // Flujo anterior
-                        .newFlow(updatedIssue.getFlow()) // Nuevo flujo
-                        .comments(equipmentIssueRequestDto.getComments()) // Asume que el DTO de Issue tiene un campo para comentarios de actualización
-                        .createdBy(equipmentIssueRequestDto.getUpdatedBy()) // Quien actualizó el Issue es quien crea el historial
-                        .build();
-
-                issuesHistoryService.save(historyDto); // Llama al servicio de historial
-            }
-
-            return updatedIssue;
-        } else {
-            throw new IllegalArgumentException("Issue not saved.");
+            issuesHistoryService.save(historyDto);
         }
+
+        return updatedIssue;
     }
 
     @Override
