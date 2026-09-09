@@ -11,6 +11,7 @@ import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.model.entity.Issue.EquipmentIssue;
 import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
+import com.ck.wi.service.issue.IIssueReport;
 import com.ck.wi.service.issue.IIssuesHistory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,9 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
 
     @Autowired
     private IIssuesHistory issuesHistoryService;
+
+    @Autowired
+    private IIssueReport issueReportService;
 
     @Override
     public EquipmentIssue save(EquipmentIssueDto equipmentIssueDto) {
@@ -76,6 +80,10 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
                     .build();
 
             issuesHistoryService.save(historyDto);
+
+            if (equipmentIssueDto.getIssueReportId() != null) {
+                issueReportService.delete(equipmentIssueDto.getIssueReportId());
+            }
 
             return updatedIssue;
         } else {

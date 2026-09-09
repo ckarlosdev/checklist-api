@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Builder
 public class EquipmentIssueDto implements Serializable {
 
+    private Long issueReportId;
     private Integer equipmentsIssuesId;
     private Integer checklistsId;
     private Integer equipmentsId;
