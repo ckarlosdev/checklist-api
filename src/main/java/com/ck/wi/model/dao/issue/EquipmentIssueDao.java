@@ -31,8 +31,8 @@ public interface EquipmentIssueDao extends CrudRepository<EquipmentIssue, Intege
             "(:search IS NULL OR " +
             " LOWER(i.equipment.number) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             " LOWER(i.reportedBy) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
-            "(:priority IS NULL OR i.priority = :priority) AND " +
-            "(:type IS NULL OR i.type = :type)")
+            "(:priority IS NULL OR i.priorityIssue = :priority) AND " + // Corrección: priorityIssue
+            "(:type IS NULL OR i.typeIssue = :type)")                     // Corrección: typeIssue
     Page<EquipmentIssue> findIssuesWithFilters(
             @Param("flow") String flow,
             @Param("search") String search,
