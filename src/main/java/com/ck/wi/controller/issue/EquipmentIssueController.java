@@ -101,6 +101,9 @@ public class EquipmentIssueController {
     @GetMapping("issues/pages")
     public ResponseEntity<Page<EquipmentIssueRequestDto>> showAll(
             @RequestParam(required = false) String flow,
+            @RequestParam(required = false) String search,     // <-- Añadido
+            @RequestParam(required = false) String priority,   // <-- Añadido
+            @RequestParam(required = false) String type,       // <-- Añadido
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "equipment.number") String sortBy,
@@ -111,7 +114,15 @@ public class EquipmentIssueController {
                 : Sort.by(sortBy).descending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<EquipmentIssueRequestDto> response = equipmentIssueService.getIssues(flow, pageable);
+
+        // Pasa flow y los nuevos filtros al servicio
+        Page<EquipmentIssueRequestDto> response = equipmentIssueService.getIssues(
+                flow,
+                search,
+                priority,
+                type,
+                pageable
+        );
 
         return ResponseEntity.ok(response);
     }

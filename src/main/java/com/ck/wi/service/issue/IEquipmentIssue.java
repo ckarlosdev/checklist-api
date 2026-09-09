@@ -22,5 +22,11 @@ public interface IEquipmentIssue {
 
     List<EquipmentIssue> findByFlow(String flow);
 
-    Page<EquipmentIssueRequestDto> getIssues(String flow, Pageable pageable);
+    Page<EquipmentIssueRequestDto> getIssues(
+            String flow,
+            String search,
+            String priority,
+            String type,
+            Pageable pageable
+    );
 }

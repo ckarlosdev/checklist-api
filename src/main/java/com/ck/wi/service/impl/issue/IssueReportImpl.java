@@ -76,9 +76,8 @@ public class IssueReportImpl implements IIssueReport {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<IssueReportResponseDto> getReports(Pageable pageable) {
-        Page<IssueReport> issuePage = issueReportDao.findAll(pageable);
-
+    public Page<IssueReportResponseDto> getReports(Pageable pageable, String search, String priority, String type) {
+        Page<IssueReport> issuePage = issueReportDao.findActiveWithFilters(search, priority, type, pageable);
         return issuePage.map(this::entityToDto);
     }
 

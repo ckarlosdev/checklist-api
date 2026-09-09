@@ -156,16 +156,22 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<EquipmentIssueRequestDto> getIssues(String flow, Pageable pageable) {
-        Page<EquipmentIssue> issuesPage;
+    public Page<EquipmentIssueRequestDto> getIssues(
+            String flow,
+            String search,
+            String priority,
+            String type,
+            Pageable pageable
+    ) {
+        Page<EquipmentIssue> issuePage = equipmentIssueDao.findIssuesWithFilters(
+                flow,
+                search,
+                priority,
+                type,
+                pageable
+        );
 
-        if (flow != null && !flow.trim().isEmpty()) {
-            issuesPage = equipmentIssueDao.findByFlow(flow, pageable);
-        } else {
-            issuesPage = equipmentIssueDao.findAll(pageable);
-        }
-
-        return issuesPage.map(this::entityToDto);
+        return issuePage.map(this::entityToDto);
     }
 
     private EquipmentIssueRequestDto entityToDto(EquipmentIssue issue) {
