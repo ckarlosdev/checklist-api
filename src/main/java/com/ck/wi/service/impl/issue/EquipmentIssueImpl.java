@@ -43,52 +43,60 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
     private IIssueReport issueReportService;
 
     @Override
+    @Transactional
     public EquipmentIssue save(EquipmentIssueDto equipmentIssueDto) {
 
-        Checklist checklist = checklistDao.findById(equipmentIssueDto.getChecklistsId()).orElse(null);
-        Equipment equipment = equipmentDao.findById(equipmentIssueDto.getEquipmentsId()).orElse(null);
+        // 1. Buscar Checklist o lanzar excepción clara
+        Checklist checklist = checklistDao.findById(equipmentIssueDto.getChecklistsId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Issue not saved: Checklist not found with ID " + equipmentIssueDto.getChecklistsId()
+                ));
+
+        // 2. Buscar Equipment o lanzar excepción clara
+        Equipment equipment = equipmentDao.findById(equipmentIssueDto.getEquipmentsId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Issue not saved: Equipment not found with ID " + equipmentIssueDto.getEquipmentsId()
+                ));
 
         LocalDateTime today = LocalDateTime.now();
 
-        if(checklist != null && equipment != null){
-            EquipmentIssue equipmentIssue = EquipmentIssue.builder()
-                    .checklist(checklist)
-                    .equipment(equipment)
-                    .flow(equipmentIssueDto.getFlow())
-                    .reportedBy(equipmentIssueDto.getReportedBy())
-                    .reportedDate(equipmentIssueDto.getReportedDate())
-                    .priorityIssue(equipmentIssueDto.getPriorityIssue())
-                    .typeIssue(equipmentIssueDto.getTypeIssue())
-                    .descriptionIssue(equipmentIssueDto.getDescriptionIssue())
-                    .details(equipmentIssueDto.getDetails())
-                    .createdBy(equipmentIssueDto.getCreatedBy())
-                    .createdDate(today)
-                    .updatedBy(equipmentIssueDto.getCreatedBy())
-                    .updatedDate(today)
-                    .issueStatus("1")
-                    .build();
+        // 3. Crear el nuevo EquipmentIssue
+        EquipmentIssue equipmentIssue = EquipmentIssue.builder()
+                .checklist(checklist)
+                .equipment(equipment)
+                .flow(equipmentIssueDto.getFlow())
+                .reportedBy(equipmentIssueDto.getReportedBy())
+                .reportedDate(equipmentIssueDto.getReportedDate())
+                .priorityIssue(equipmentIssueDto.getPriorityIssue())
+                .typeIssue(equipmentIssueDto.getTypeIssue())
+                .descriptionIssue(equipmentIssueDto.getDescriptionIssue())
+                .details(equipmentIssueDto.getDetails())
+                .createdBy(equipmentIssueDto.getCreatedBy())
+                .createdDate(today)
+                .updatedBy(equipmentIssueDto.getCreatedBy())
+                .updatedDate(today)
+                .issueStatus("1")
+                .build();
 
-            EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
+        EquipmentIssue updatedIssue = equipmentIssueDao.save(equipmentIssue);
 
+        // 4. Historial
+        IssuesHistoryDto historyDto = IssuesHistoryDto.builder()
+                .equipmentsIssuesId(updatedIssue.getEquipmentsIssuesId())
+                .lastFlow("New insert")
+                .newFlow(updatedIssue.getFlow())
+                .comments("")
+                .createdBy(equipmentIssueDto.getUpdatedBy())
+                .build();
 
-            IssuesHistoryDto historyDto = IssuesHistoryDto.builder()
-                    .equipmentsIssuesId(updatedIssue.getEquipmentsIssuesId()) // ID del Issue padre
-                    .lastFlow("New insert") // Flujo anterior
-                    .newFlow(updatedIssue.getFlow()) // Nuevo flujo
-                    .comments("") // Asume que el DTO de Issue tiene un campo para comentarios de actualización
-                    .createdBy(equipmentIssueDto.getUpdatedBy()) // Quien actualizó el Issue es quien crea el historial
-                    .build();
+        issuesHistoryService.save(historyDto);
 
-            issuesHistoryService.save(historyDto);
-
-            if (equipmentIssueDto.getIssueReportId() != null) {
-                issueReportService.delete(equipmentIssueDto.getIssueReportId());
-            }
-
-            return updatedIssue;
-        } else {
-            throw new IllegalArgumentException("Issue not saved.");
+        // 5. Eliminar el reporte si aplica
+        if (equipmentIssueDto.getIssueReportId() != null) {
+            issueReportService.delete(equipmentIssueDto.getIssueReportId());
         }
+
+        return updatedIssue;
     }
 
     @Override
