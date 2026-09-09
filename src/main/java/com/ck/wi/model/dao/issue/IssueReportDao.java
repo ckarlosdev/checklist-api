@@ -22,14 +22,13 @@ public interface IssueReportDao extends JpaRepository<IssueReport, Long> {
     @EntityGraph(attributePaths = {"equipment"})
     Page<IssueReport> findByEquipment_EquipmentsId(Integer equipmentId, Pageable pageable);
 
-    @EntityGraph(attributePaths = {"equipment"}) // Carga ansiosa eficiente
+    @EntityGraph(attributePaths = {"equipment"})
     @Query("SELECT r FROM IssueReport r WHERE " +
             "(:search IS NULL OR " +
             " LOWER(r.equipment.number) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             " LOWER(r.reportedBy) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
-            "(:priority IS NULL OR r.priority = :priority) AND " +
-            "(:type IS NULL OR r.type = :type) AND " +
-            "r.active = true")
+            "(:priority IS NULL OR r.priorityIssue = :priority) AND " + // Corrección: priorityIssue
+            "(:type IS NULL OR r.typeIssue = :type)")                     // Corrección: typeIssue
     Page<IssueReport> findActiveWithFilters(
             @Param("search") String search,
             @Param("priority") String priority,
