@@ -25,11 +25,11 @@ public interface IssueReportDao extends JpaRepository<IssueReport, Long> {
     @EntityGraph(attributePaths = {"equipment"})
     @Query("SELECT r FROM IssueReport r WHERE " +
             "(:search IS NULL OR " +
-            " LOWER(r.equipment.number) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            " LOWER(r.equipment.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-            " LOWER(r.reportedBy) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
-            "(:priority IS NULL OR r.priorityIssue = :priority) AND " + // Corrección: priorityIssue
-            "(:type IS NULL OR r.typeIssue = :type)")                     // Corrección: typeIssue
+            " LOWER(CAST(r.equipment.number AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            " LOWER(CAST(r.equipment.name AS string)) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            " LOWER(CAST(r.reportedBy AS string)) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
+            "(CAST(:priority AS string) IS NULL OR r.priorityIssue = :priority) AND " +
+            "(CAST(:type AS string) IS NULL OR r.typeIssue = :type)")
     Page<IssueReport> findActiveWithFilters(
             @Param("search") String search,
             @Param("priority") String priority,
