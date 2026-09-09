@@ -26,6 +26,7 @@ public interface IssueReportDao extends JpaRepository<IssueReport, Long> {
     @Query("SELECT r FROM IssueReport r WHERE " +
             "(:search IS NULL OR " +
             " LOWER(r.equipment.number) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
+            " LOWER(r.equipment.name) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
             " LOWER(r.reportedBy) LIKE LOWER(CONCAT('%', :search, '%'))) AND " +
             "(:priority IS NULL OR r.priorityIssue = :priority) AND " + // Corrección: priorityIssue
             "(:type IS NULL OR r.typeIssue = :type)")                     // Corrección: typeIssue
