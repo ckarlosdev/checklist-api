@@ -201,6 +201,16 @@ public class EquipmentIssueImpl implements IEquipmentIssue {
         return issuePage.map(this::entityToDto);
     }
 
+    @Transactional
+    @Override
+    public void updateIssueFlow(List<Integer> issueIds, String newFlow){
+        List<EquipmentIssue> issues = equipmentIssueDao.findAllById(issueIds);
+
+        issues.forEach(issue -> issue.setFlow(newFlow));
+
+        equipmentIssueDao.saveAll(issues);
+    }
+
     private EquipmentIssueRequestDto entityToDto(EquipmentIssue issue) {
         return EquipmentIssueRequestDto.builder()
                 .equipmentsIssuesId(issue.getEquipmentsIssuesId())

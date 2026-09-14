@@ -29,4 +29,8 @@ public interface IEquipmentIssue {
             String type,
             Pageable pageable
     );
+
+    void updateIssueFlow(List<Integer> issueIds, String newFlow);
 }
+
+
