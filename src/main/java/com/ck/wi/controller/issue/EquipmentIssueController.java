@@ -2,6 +2,7 @@ package com.ck.wi.controller.issue;
 
 import com.ck.wi.model.dto.issue.EquipmentIssueDto;
 import com.ck.wi.model.dto.issue.EquipmentIssueRequestDto;
+import com.ck.wi.model.dto.issue.UpdateIssueFlowRequest;
 import com.ck.wi.model.entity.Issue.EquipmentIssue;
 import com.ck.wi.model.entity.Issue.IssuesHistory;
 import com.ck.wi.service.issue.IEquipmentIssue;
@@ -75,6 +76,18 @@ public class EquipmentIssueController {
                     .build();
     }
 
+    // PATCH
+    @PatchMapping("issue/flow")
+    public void updateFlow(
+            @RequestBody UpdateIssueFlowRequest request
+    ){
+        equipmentIssueService.updateIssueFlow(
+                request.issueIds(),
+                request.newFlow()
+        );
+    }
+
+
     @GetMapping("issues")
     public List<EquipmentIssueRequestDto> showAll(){
         List<EquipmentIssue> issues = equipmentIssueService.findByIssueStatus();
@@ -106,7 +119,7 @@ public class EquipmentIssueController {
             @RequestParam(required = false) String type,       // <-- Añadido
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "equipment.number") String sortBy,
+            @RequestParam(defaultValue = "reportedDate") String sortBy,
             @RequestParam(defaultValue = "DESC") String direction
     ) {
         Sort sort = direction.equalsIgnoreCase("ASC")
