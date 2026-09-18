@@ -27,7 +27,7 @@ public interface EquipmentIssueDao extends JpaRepository<EquipmentIssue, Integer
 
     @EntityGraph(attributePaths = {"equipment"})
     @Query("SELECT i FROM EquipmentIssue i WHERE " +
-            "i.issueStatus = '0' AND " +
+            "i.issueStatus = '1' AND " +
             "(:flow IS NULL OR i.flow = :flow) AND " +
             "(:search IS NULL OR " +
             " LOWER(i.equipment.number) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
