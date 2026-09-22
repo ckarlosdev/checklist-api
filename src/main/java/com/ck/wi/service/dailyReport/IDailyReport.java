@@ -4,6 +4,9 @@ import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.dto.dailyReport.creation.DailyReportCreateDto;
+import com.ck.wi.model.dto.dailyReport.dashboard.JobDailyReportsResponseDto;
+import com.ck.wi.model.dto.dailyReport.dashboard.JobSummaryResponseDto;
+import com.ck.wi.model.dto.dashboard.summaryDetails.DashboardSummaryDTO;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,4 +38,10 @@ public interface IDailyReport {
     List<DailyReportGralDto> getDrGral(String jobNumber);
 
     List<EmployeeHoursDTO> getHoursByDate(LocalDate start, LocalDate end);
+
+    JobSummaryResponseDto getJobSummary(Long jobId);
+
+    JobDailyReportsResponseDto getDailyReportsByRange(Long jobId, String startDate, String endDate);
+
+    DashboardSummaryDTO getJobDashboardSummary(Long jobId, LocalDate startDate, LocalDate endDat);
 }

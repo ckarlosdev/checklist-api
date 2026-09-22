@@ -10,16 +10,15 @@ import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.dto.dailyReport.creation.*;
+import com.ck.wi.model.dto.dailyReport.dashboard.*;
+import com.ck.wi.model.dto.dashboard.summaryDetails.*;
 import com.ck.wi.model.entity.Attachment;
 import com.ck.wi.model.entity.Employee;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.model.entity.dailyReport.*;
 import com.ck.wi.service.dailyReport.IDailyReport;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.ParameterMode;
-import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.StoredProcedureQuery;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -28,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -948,4 +948,135 @@ public class DailyReportImpl implements IDailyReport {
     public List<EmployeeHoursDTO> getHoursByDate(LocalDate start, LocalDate end) {
         return dailyReportDao.findEmployeeHoursSummary(start.toString(), end.toString());
     }
+
+    public JobSummaryResponseDto getJobSummary(Long jobId) {
+        List<EmployeeSummaryProjection> empRows = dailyReportDao.findEmployeeSummaryByJobId(jobId);
+        List<EquipmentSummaryProjection> eqRows = dailyReportDao.findEquipmentSummaryByJobId(jobId);
+
+        if (empRows.isEmpty() && eqRows.isEmpty()) {
+            throw new RuntimeException("No se encontraron registros para el Job ID: " + jobId);
+        }
+
+        String jobNumber = !empRows.isEmpty() ? empRows.get(0).getJobNumber() : eqRows.get(0).getJobNumber();
+        String jobName = !empRows.isEmpty() ? empRows.get(0).getJobName() : "N/A";
+
+        List<EmployeeSummaryDto> employees = empRows.stream()
+                .map(r -> new EmployeeSummaryDto(
+                        r.getEmployeeTitle(),
+                        r.getEmployeeName(),
+                        r.getTotalReports(),
+                        r.getTotalEmployeeEntries(),
+                        r.getTotalHours() != null ? r.getTotalHours() : 0.0
+                )).toList();
+
+        List<EquipmentSummaryDto> equipments = eqRows.stream()
+                .map(r -> new EquipmentSummaryDto(
+                        r.getEquipmentName(),
+                        r.getTotalReports(),
+                        r.getTotalEquipmentEntries(),
+                        r.getTotalHours() != null ? r.getTotalHours() : 0.0
+                )).toList();
+
+        double totalLaborHours = employees.stream().mapToDouble(EmployeeSummaryDto::totalHours).sum();
+        double totalEquipmentHours = equipments.stream().mapToDouble(EquipmentSummaryDto::totalHours).sum();
+
+        return new JobSummaryResponseDto(
+                jobId,
+                jobNumber,
+                jobName,
+                Math.round(totalLaborHours * 100.0) / 100.0,
+                Math.round(totalEquipmentHours * 100.0) / 100.0,
+                employees,
+                equipments
+        );
+    }
+
+    public JobDailyReportsResponseDto getDailyReportsByRange(Long jobId, String startDate, String endDate) {
+        List<DailyReportDetailProjection> rows = dailyReportDao.findDailyReportsByJobIdAndDateRange(jobId, startDate, endDate);
+
+        if (rows.isEmpty()) {
+            return new JobDailyReportsResponseDto(jobId, "", "", startDate, endDate, List.of());
+        }
+
+        DailyReportDetailProjection first = rows.get(0);
+
+        Map<String, List<DailyReportDetailProjection>> groupedByDate = rows.stream()
+                .collect(Collectors.groupingBy(DailyReportDetailProjection::getReportDate, LinkedHashMap::new, Collectors.toList()));
+
+        List<DailyReportGroupDto> reportGroups = new ArrayList<>();
+
+        for (Map.Entry<String, List<DailyReportDetailProjection>> entry : groupedByDate.entrySet()) {
+            String date = entry.getKey();
+            List<DailyReportDetailProjection> dayRows = entry.getValue();
+            String foreman = dayRows.get(0).getForeman();
+
+            double dailyTotal = 0.0;
+            List<EmployeeDetailDto> employeeDtos = new ArrayList<>();
+
+            for (DailyReportDetailProjection r : dayRows) {
+                double hours = r.getHoursWorked() != null ? r.getHoursWorked() : 0.0;
+                boolean isLunch = "true".equalsIgnoreCase(r.getLunch()) || "1".equals(r.getLunch());
+                dailyTotal += hours;
+
+                employeeDtos.add(new EmployeeDetailDto(
+                        r.getDrEmployeesId(),
+                        r.getEmployeeName(),
+                        r.getEmployeeTitle(),
+                        r.getInHour(),
+                        r.getOutHour(),
+                        isLunch,
+                        hours
+                ));
+            }
+
+            reportGroups.add(new DailyReportGroupDto(
+                    date,
+                    foreman,
+                    Math.round(dailyTotal * 100.0) / 100.0,
+                    employeeDtos
+            ));
+        }
+
+        return new JobDailyReportsResponseDto(
+                first.getJobId(),
+                first.getJobNumber(),
+                first.getJobName(),
+                startDate,
+                endDate,
+                reportGroups
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public DashboardSummaryDTO getJobDashboardSummary(Long jobId, LocalDate startDate, LocalDate endDate) {
+
+        LocalDate start = (startDate != null) ? startDate : LocalDate.now().minusDays(7);
+        LocalDate end = (endDate != null) ? endDate : LocalDate.now();
+
+        // Ejecución en paralelo de las 4 consultas independientes
+        CompletableFuture<List<ToolSummaryDTO>> toolsFuture =
+                CompletableFuture.supplyAsync(() -> dailyReportDao.findToolsSummaryByJobId(jobId, startDate, endDate));
+
+        CompletableFuture<List<DumpsterSummaryDTO>> dumpstersFuture =
+                CompletableFuture.supplyAsync(() -> dailyReportDao.findDumpstersSummaryByJobId(jobId, startDate, endDate));
+
+        CompletableFuture<List<PhotoSummaryDTO>> photosFuture =
+                CompletableFuture.supplyAsync(() -> dailyReportDao.findPhotosSummaryByJobId(jobId, startDate, endDate));
+
+        CompletableFuture<List<RentalSummaryDTO>> rentalsFuture =
+                CompletableFuture.supplyAsync(() -> dailyReportDao.findRentalsSummaryByJobId(jobId, startDate, endDate));
+
+        // Esperar a que se completen todas las consultas
+        CompletableFuture.allOf(toolsFuture, dumpstersFuture, photosFuture, rentalsFuture).join();
+
+        // Ensamblar el DTO respuesta
+        return new DashboardSummaryDTO(
+                jobId,
+                toolsFuture.join(),
+                dumpstersFuture.join(),
+                photosFuture.join(),
+                rentalsFuture.join()
+        );
+    }
+
 }
