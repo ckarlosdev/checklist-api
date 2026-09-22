@@ -1,15 +1,15 @@
 package com.ck.wi.controller.dailyReport;
 
-import com.ck.wi.model.dao.dailyReport.DailyReportDao;
 import com.ck.wi.model.dto.dailyReport.DailyReportDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.dailyReport.creation.*;
+import com.ck.wi.model.dto.dailyReport.dashboard.JobDailyReportsResponseDto;
+import com.ck.wi.model.dto.dailyReport.dashboard.JobSummaryResponseDto;
+import com.ck.wi.model.dto.dashboard.summaryDetails.DashboardSummaryDTO;
 import com.ck.wi.model.dto.request.DailyReportRequest;
 import com.ck.wi.model.entity.dailyReport.DailyReport;
-import com.ck.wi.service.IEmployee;
 import com.ck.wi.service.dailyReport.*;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -274,5 +273,34 @@ public class DailyReportController {
             // Si hay un error de base de datos o nulo, lo veremos aquí en lugar del 404
             return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
         }
+    }
+
+    // GET /api/v1/jobs/128/summary
+    @GetMapping("/dr/{jobId}/summary")
+    public ResponseEntity<JobSummaryResponseDto> getJobSummary(@PathVariable Long jobId) {
+        return ResponseEntity.ok(dailyReportService.getJobSummary(jobId));
+    }
+
+    // GET /api/v1/jobs/128/daily-reports?startDate=2026-09-13&endDate=2026-09-19
+    @GetMapping("/dr/{jobId}/daily-reports")
+    public ResponseEntity<JobDailyReportsResponseDto> getDailyReports(
+            @PathVariable Long jobId,
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+        return ResponseEntity.ok(dailyReportService.getDailyReportsByRange(jobId, startDate, endDate));
+    }
+
+    // GET /api/v1/dr/128/dashboard-summary?startDate=2026-09-13&endDate=2026-09-19
+    @GetMapping("/dr/{jobId}/dashboard-summary")
+    public ResponseEntity<DashboardSummaryDTO> getDashboardSummary(
+            @PathVariable Long jobId,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+
+        DashboardSummaryDTO summary = dailyReportService.getJobDashboardSummary(jobId, startDate, endDate);
+        return ResponseEntity.ok(summary);
     }
 }
