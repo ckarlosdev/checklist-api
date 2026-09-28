@@ -1,6 +1,7 @@
 package com.ck.wi.service.impl;
 
 import com.ck.wi.model.dao.JobDao;
+import com.ck.wi.model.dto.BatchStatusUpdateDTO;
 import com.ck.wi.model.dto.JobDto;
 import com.ck.wi.model.entity.Employee;
 import com.ck.wi.model.entity.Job;
@@ -66,5 +67,10 @@ public class JobImpl implements IJob {
     @Override
     public void delete(Job job) {
         jobDao.delete(job);
+    }
+
+    @Transactional
+    public void updateBatchStatus(BatchStatusUpdateDTO dto) {
+        jobDao.updateStatusForJobs(dto.ids(), dto.status());
     }
 }
