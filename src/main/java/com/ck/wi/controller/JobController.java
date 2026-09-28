@@ -1,9 +1,11 @@
 package com.ck.wi.controller;
 
+import com.ck.wi.model.dto.BatchStatusUpdateDTO;
 import com.ck.wi.model.dto.JobDto;
 import com.ck.wi.model.entity.Job;
 import com.ck.wi.service.IJob;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -90,4 +92,11 @@ public class JobController {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @PatchMapping("job/batch-status")
+    public ResponseEntity<Void> updateBatchStatus(@RequestBody BatchStatusUpdateDTO dto) {
+        jobService.updateBatchStatus(dto);
+        return ResponseEntity.noContent().build();
+    }
 }
+

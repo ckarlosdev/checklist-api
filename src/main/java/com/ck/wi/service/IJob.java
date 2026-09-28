@@ -1,5 +1,6 @@
 package com.ck.wi.service;
 
+import com.ck.wi.model.dto.BatchStatusUpdateDTO;
 import com.ck.wi.model.dto.JobDto;
 import com.ck.wi.model.entity.Job;
 
@@ -16,4 +17,6 @@ public interface IJob {
     List<Job> findAll();
 
     void delete(Job job);
+
+    void updateBatchStatus(BatchStatusUpdateDTO dto);
 }
