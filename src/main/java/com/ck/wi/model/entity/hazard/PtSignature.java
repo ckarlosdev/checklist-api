@@ -26,7 +26,7 @@ public class PtSignature implements Serializable {
     private Integer employeesId;
 
     @Lob
-    @Column(name = "img_data")
+    @Column(name = "img_data", columnDefinition = "MEDIUMBLOB")
     private byte[] imgData;
 
     @Column(name = "created_by")
