@@ -33,7 +33,7 @@ public interface PreTaskDao extends JpaRepository<PreTask, Integer> {
 
     @Query(value = "SELECT pre_tasks_id AS preTasksId, jobs_id AS jobsId, date, supervisor, comment " +
             "FROM pre_tasks " +
-            "WHERE jobs_id = :id AND status = '0' " +
+            "WHERE jobs_id = :id AND status = '1' " +
             "ORDER BY date DESC",
             nativeQuery = true)
     List<PretaskViewDto> findPretaskById(@Param("id") Integer id);
