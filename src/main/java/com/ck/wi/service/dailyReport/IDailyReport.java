@@ -4,6 +4,7 @@ import com.ck.wi.model.dto.dailyReport.DailyReportGralDto;
 import com.ck.wi.model.dto.dailyReport.DailyReportSummaryDto;
 import com.ck.wi.model.dto.dailyReport.EmployeeHoursDTO;
 import com.ck.wi.model.dto.dailyReport.creation.DailyReportCreateDto;
+import com.ck.wi.model.dto.dailyReport.creation.DailyReportResponseDto;
 import com.ck.wi.model.dto.dailyReport.dashboard.JobDailyReportsResponseDto;
 import com.ck.wi.model.dto.dailyReport.dashboard.JobSummaryResponseDto;
 import com.ck.wi.model.dto.dashboard.summaryDetails.DashboardSummaryDTO;
@@ -18,7 +19,7 @@ public interface IDailyReport {
 
     DailyReportCreateDto save(DailyReportCreateDto dailyReportCreateDto, Integer jobsId);
 
-    DailyReportCreateDto findByDailyReportID(Integer dailyReportId);
+    DailyReportResponseDto findByDailyReportID(Integer dailyReportId);
 
     List<DailyReport> findByNumber(String number);
 

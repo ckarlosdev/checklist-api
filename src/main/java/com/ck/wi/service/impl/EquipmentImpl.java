@@ -2,6 +2,7 @@ package com.ck.wi.service.impl;
 
 import com.ck.wi.model.dao.EquipmentDao;
 import com.ck.wi.model.dto.EquipmentDto;
+import com.ck.wi.model.dto.EquipmentResponseDto;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.service.IEquipment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,5 +76,10 @@ public class EquipmentImpl implements IEquipment {
     @Override
     public List<Equipment> findAll() {
         return (List<Equipment>) equipmentDao.findAll();
+    }
+
+    @Override
+    public List<EquipmentResponseDto> getAllEquipmentsWithDetails() {
+        return equipmentDao.findAllWithDetails();
     }
 }

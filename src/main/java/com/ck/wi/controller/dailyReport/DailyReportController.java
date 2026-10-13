@@ -60,7 +60,7 @@ public class DailyReportController {
     }
 
     @GetMapping("/dailyReport/dto/{dailyReportId}")
-    public DailyReportCreateDto getDailyReportByDailyReportId(@PathVariable Integer dailyReportId){
+    public DailyReportResponseDto getDailyReportByDailyReportId(@PathVariable Integer dailyReportId){
         return dailyReportService.findByDailyReportID(dailyReportId);
     }
 

@@ -70,13 +70,13 @@ public class DailyReportImpl implements IDailyReport {
     private static final String INACTIVE = "0";
 
     @Override
-    public DailyReportCreateDto findByDailyReportID(Integer dailyReportId){
+    public DailyReportResponseDto findByDailyReportID(Integer dailyReportId){
         DailyReport dailyReport = dailyReportDao.findById(dailyReportId)
                 .orElseThrow(() -> new IllegalArgumentException("Daily Report not found"));
 
-        DailyReportCreateDto response = toDto(dailyReport);
+        DailyReportResponseDto response = toResponseDto(dailyReport);
 //        return response;
-        return allDto(response, dailyReportId);
+        return allResponseDto(response, dailyReportId);
     }
 
     @Override
@@ -106,6 +106,50 @@ public class DailyReportImpl implements IDailyReport {
 
         DailyReportCreateDto response = toDto(dailyReportUpdated);
         return allDto(response, dailyReportCreateDto.getDailyReportId());
+    }
+
+    private DailyReportResponseDto allResponseDto(DailyReportResponseDto response, Integer dailyReportId){
+        List<DrEmployee> actualDrEmployees = drEmployeeDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
+
+        // Carga rápida en lote para mapear employeeId
+        List<String> empNumbers = actualDrEmployees.stream().map(DrEmployee::getEmployeesId).toList();
+        // En caso de que se requiera convertir o buscar
+        Map<String, Integer> empNumberToIdMap = empNumbers.isEmpty() ? Collections.emptyMap() :
+                employeeDao.findAllById(
+                        actualDrEmployees.stream().map(DrEmployee::getDrEmployeesId).toList()
+                ).stream().collect(Collectors.toMap(Employee::getEmployeeNumber, Employee::getEmployeesId, (k1, k2) -> k1));
+
+        List<DrEmployeeCreateDto> employeesDto = actualDrEmployees.stream()
+                .map(this::toEmployeeDto)
+                .toList();
+
+        List<DrEquipment> actualDrEquipments = drEquipmentDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
+        List<DrEquipmentCreateDto> equipmentsDto = actualDrEquipments.stream()
+                .map(this::toEquipmentDto)
+                .toList();
+
+        List<DrRental> actualDrRentals = drRentalDao.findByDailyReportIdAndRentalsStatus(dailyReportId, ACTIVE);
+        List<DrRentalCreateDto> rentalsDto = actualDrRentals.stream()
+                .map(this::toRentalDto)
+                .toList();
+
+        List<Tool> actualDrTools = toolDao.findByDailyReportIdAndStatus(dailyReportId, ACTIVE);
+        List<DrToolCreateDto> toolsDto = actualDrTools.stream()
+                .map(this::toToolDto)
+                .toList();
+
+        List<DrDumpster> actualDrDumpsters = drDumpsterDao.findByDailyReportIdAndDumpstersStatus(dailyReportId, ACTIVE);
+        List<DrDumpsterCreateDto> dumpstersDto = actualDrDumpsters.stream()
+                .map(this::toDumpsterDto)
+                .toList();
+
+        response.setEmployees(employeesDto);
+        response.setEquipments(equipmentsDto);
+        response.setRentals(rentalsDto);
+        response.setTools(toolsDto);
+        response.setDumpsters(dumpstersDto);
+
+        return response;
     }
 
     private DailyReportCreateDto allDto(DailyReportCreateDto response, Integer dailyReportId) {
@@ -834,6 +878,24 @@ public class DailyReportImpl implements IDailyReport {
         }
         // ✅ 1 sola instruccion INSERT batch a la BD
         return drEmployeeDao.saveAll(toSave);
+    }
+
+    private DailyReportResponseDto toResponseDto(DailyReport report) {
+        Job job = jobDao.findByNumber(report.getNumber())
+                .orElseThrow(() -> new IllegalArgumentException("Job not found"));
+        return DailyReportResponseDto.builder()
+                .dailyReportId(report.getDailyReportId())
+                .jobsId(job.getJobsId())
+                .foreman(report.getForeman())
+                .userName(report.getUpdatedBy())
+                .date(report.getDate())
+                .description(report.getDescription())
+                .manOther(report.getManOther())
+                .equipmentOther(report.getEquipmentOther())
+                .issues(report.getIssues())
+                .createdDate(report.getCreatedDate())
+                .employees(null)
+                .build();
     }
 
     private DailyReportCreateDto toDto(DailyReport report) {

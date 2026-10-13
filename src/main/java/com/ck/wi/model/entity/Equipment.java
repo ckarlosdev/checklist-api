@@ -1,5 +1,6 @@
 package com.ck.wi.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -79,4 +80,8 @@ public class Equipment implements Serializable {
     @Column(name = "updated_date", insertable = false)
     @UpdateTimestamp
     private LocalDateTime updatedDate;
+
+    @OneToOne(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private EquipmentDetail equipmentDetail;
 }
