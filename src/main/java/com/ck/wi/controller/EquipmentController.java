@@ -1,9 +1,11 @@
 package com.ck.wi.controller;
 
 import com.ck.wi.model.dto.EquipmentDto;
+import com.ck.wi.model.dto.EquipmentResponseDto;
 import com.ck.wi.model.entity.Equipment;
 import com.ck.wi.service.IEquipment;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,5 +82,11 @@ public class EquipmentController {
     public List<Equipment> showAll(){
 
         return equipmentService.findAll();
+    }
+
+    @GetMapping("/equipments/with-details")
+    public ResponseEntity<List<EquipmentResponseDto>> showAllWithDetails() {
+        List<EquipmentResponseDto> list = equipmentService.getAllEquipmentsWithDetails();
+        return ResponseEntity.ok(list);
     }
 }

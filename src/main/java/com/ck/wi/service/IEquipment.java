@@ -1,6 +1,7 @@
 package com.ck.wi.service;
 
 import com.ck.wi.model.dto.EquipmentDto;
+import com.ck.wi.model.dto.EquipmentResponseDto;
 import com.ck.wi.model.entity.Equipment;
 
 import java.util.List;
@@ -16,4 +17,7 @@ public interface IEquipment {
     void delete(Equipment equipment);
 
     List<Equipment> findAll();
+
+    List<EquipmentResponseDto> getAllEquipmentsWithDetails();
+
 }
