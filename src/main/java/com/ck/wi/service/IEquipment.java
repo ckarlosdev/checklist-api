@@ -16,7 +16,7 @@ public interface IEquipment {
 
     void delete(Equipment equipment);
 
-    List<Equipment> findAll();
+    List<EquipmentDto> findAll();
 
     List<EquipmentResponseDto> getAllEquipmentsWithDetails();
 

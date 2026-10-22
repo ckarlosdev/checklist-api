@@ -14,7 +14,7 @@ public interface EquipmentDao extends JpaRepository<Equipment, Integer> {
 
     @Query("SELECT new com.ck.wi.model.dto.EquipmentResponseDto(" +
             "e.equipmentsId, e.family, e.number, e.name, e.hour, d.subtype, d.licensePlate) " +
-            "FROM Equipment e JOIN EquipmentDetail d ON e.equipmentsId = d.equipment.equipmentsId " +
+            "FROM Equipment e LEFT JOIN e.equipmentDetail d " +
             "WHERE e.equipmentStatus = '1'")
-    List<EquipmentResponseDto> findAllWithDetails();
+    List<EquipmentResponseDto> obtenerEquipmentsConDetalles();
 }
