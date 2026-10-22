@@ -79,8 +79,7 @@ public class EquipmentController {
     }
 
     @GetMapping("equipments")
-    public List<Equipment> showAll(){
-
+    public List<EquipmentDto> showAll(){
         return equipmentService.findAll();
     }
 
