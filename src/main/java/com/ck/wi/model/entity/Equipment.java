@@ -83,5 +83,6 @@ public class Equipment implements Serializable {
 
     @OneToOne(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
+    @ToString.Exclude
     private EquipmentDetail equipmentDetail;
 }
