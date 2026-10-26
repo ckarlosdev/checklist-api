@@ -3,10 +3,7 @@ package com.ck.wi.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.io.Serializable;
@@ -81,8 +78,9 @@ public class Equipment implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updatedDate;
 
-    @OneToOne(mappedBy = "equipment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "equipment", fetch = FetchType.LAZY)
     @JsonIgnore
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private EquipmentDetail equipmentDetail;
 }

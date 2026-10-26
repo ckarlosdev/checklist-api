@@ -1,15 +1,11 @@
 package com.ck.wi.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude = "equipment")
 @Entity
 @Table(name = "equipment_details")
 public class EquipmentDetail {
@@ -18,8 +14,14 @@ public class EquipmentDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "equipment_id", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "equipment_id",
+            nullable = false,
+            unique = true
+    )
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Equipment equipment;
 
     @Column(name = "sub_type", nullable = false, length = 150)
