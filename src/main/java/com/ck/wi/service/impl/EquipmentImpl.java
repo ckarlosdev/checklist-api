@@ -72,47 +72,10 @@ public class EquipmentImpl implements IEquipment {
         equipmentDao.delete(equipment);
     }
 
-//    @Transactional
-//    @Override
-//    public List<Equipment> findAll() {
-//        return (List<Equipment>) equipmentDao.findAll();
-//    }
-
     @Override
     @Transactional(readOnly = true)
     public List<EquipmentDto> findAll() {
-//        long t0 = System.currentTimeMillis();
-
-        // Medir la base de datos
-        List<Equipment> list = equipmentDao.findAll();
-//        long t1 = System.currentTimeMillis();
-//        System.out.println("⏱️ [DEBUG] Tiempo exacto en DAO.findAll(): " + (t1 - t0) + " ms");
-//
-//        // Simular el retorno
-//        long t2 = System.currentTimeMillis();
-//        System.out.println("⏱️ [DEBUG] Tiempo total del servicio: " + (t2 - t0) + " ms");
-
-        return list.stream()
-                .map(this::mapToDto)
-                .toList();
-    }
-
-    private EquipmentDto mapToDto(Equipment entity){
-        return new EquipmentDto(
-                entity.getEquipmentsId(),
-                entity.getFamily(),
-                entity.getNumber(),
-                entity.getName(),
-                entity.getManufacturing(),
-                entity.getModel(),
-                entity.getYear(),
-                entity.getPurchaseDate(),
-                entity.getStatus(),
-                entity.getCondition(),
-                entity.getSerialNumber(),
-                entity.getHour(),
-                entity.getCreatedBy()
-        );
+        return equipmentDao.findAllEquipmentDtos();
     }
 
     @Override
