@@ -42,6 +42,7 @@ public class EquipmentController {
                 .serialNumber(equipmentSaved.getSerialNumber())
                 .hour(equipmentSaved.getHour())
                 .user(equipmentSaved.getUpdatedBy())
+                .equipmentStatus(equipmentSaved.getEquipmentStatus())
                 .build();
     }
 
@@ -63,6 +64,7 @@ public class EquipmentController {
                 .serialNumber(equipmentUpdated.getSerialNumber())
                 .hour(equipmentUpdated.getHour())
                 .user(equipmentUpdated.getUpdatedBy())
+                .equipmentStatus(equipmentUpdated.getEquipmentStatus())
                 .build();
     }
 

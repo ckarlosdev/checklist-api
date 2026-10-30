@@ -27,7 +27,8 @@ public interface EquipmentDao extends JpaRepository<Equipment, Integer> {
             e.condition,
             e.serialNumber,
             e.hour,
-            e.createdBy
+            e.createdBy,
+            e.equipmentStatus
         )
         FROM Equipment e
         """)

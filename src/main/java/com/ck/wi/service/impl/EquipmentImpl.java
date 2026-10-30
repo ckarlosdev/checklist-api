@@ -41,7 +41,7 @@ public class EquipmentImpl implements IEquipment {
         equipment.setCondition(equipmentDto.getCondition());
         equipment.setSerialNumber(equipmentDto.getSerialNumber());
         equipment.setHour(equipmentDto.getHour());
-        equipment.setEquipmentStatus("1");
+        equipment.setEquipmentStatus(equipmentDto.getEquipmentStatus());
         equipment.setUpdatedBy(equipmentDto.getUser());
 
         return equipmentDao.save(equipment);
