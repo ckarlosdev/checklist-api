@@ -23,4 +23,5 @@ public class EquipmentDto implements Serializable {
     private String serialNumber;
     private float hour;
     private String user;
+    private String equipmentStatus;
 }
